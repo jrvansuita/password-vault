@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "189776501926",
+    "firebase_url": "https://password-vault-1a3eb.firebaseio.com",
+    "project_id": "password-vault-1a3eb",
+    "storage_bucket": "password-vault-1a3eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:189776501926:android:fc93a4f6f206227f",
+        "android_client_info": {
+          "package_name": "com.vansuita.passwordvault"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "189776501926-8blgkj870r0k1c8hg1bn3fl833jlsemk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vansuita.passwordvault",
+            "certificate_hash": "A95748981CDF62286024E606481BFD5144F46BAD"
+          }
+        },
+        {
+          "client_id": "189776501926-q0ngoqcss7c9iuf543ub0diiqa0mb770.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxjjrf5K-QqCz8Ipa3jaYneKEcqMoCnWk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "189776501926-q0ngoqcss7c9iuf543ub0diiqa0mb770.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
