@@ -19,7 +19,7 @@ import java.util.LinkedList;
  * Created by jrvansuita on 20/01/17.
  */
 
-public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapter.ViewHolder> implements View.OnClickListener, View.OnLongClickListener {
+public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapter.ViewHolder> {
 
     private LinkedList data = new LinkedList();
     private HashMap<String, Object> map = new HashMap();
@@ -37,19 +37,11 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         boolean isSelected = dataSelected.contains(position);
         holder.root.setActivated(isSelected);
-        holder.root.setTag("item:" + position);
-        holder.root.setOnClickListener(this);
-        holder.root.setOnLongClickListener(this);
-
         Bean b = getItem(position);
 
         holder.tvTitle.setText(b.getTitle());
         holder.tvDate.setText(DateFormat.getDateTimeInstance().format(b.getDate()));
-
-        holder.ivIcon.setTag("icon:" + position);
-
         holder.ivIcon.setImageResource(isSelected ? R.mipmap.ic_checked : b.getCategory().getIconRes());
-        holder.ivIcon.setOnClickListener(this);
     }
 
 
@@ -85,6 +77,29 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
             tvTitle = (TextView) v.findViewById(R.id.title);
             tvDate = (TextView) v.findViewById(R.id.date);
             ivIcon = (ImageView) v.findViewById(R.id.icon);
+
+            ivIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (callback != null)
+                        callback.onIconClicked(getLayoutPosition());
+                }
+            });
+
+            root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    callback.onItemClicked(getLayoutPosition(), false);
+                }
+            });
+            root.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    callback.onItemClicked(getLayoutPosition(), true);
+                    return true;
+                }
+            });
+
         }
     }
 
@@ -101,28 +116,6 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
         void onItemClicked(int index, boolean longClick);
 
         void onIconClicked(int index);
-    }
-
-    @Override
-    public void onClick(View view) {
-        String[] tag = ((String) view.getTag()).split(":");
-        int index = Integer.parseInt(tag[1]);
-
-        if (tag[0].equals("icon")) {
-            if (callback != null)
-                callback.onIconClicked(index);
-        } else if (callback != null) {
-            callback.onItemClicked(index, false);
-        }
-    }
-
-    @Override
-    public boolean onLongClick(View view) {
-        String[] tag = ((String) view.getTag()).split(":");
-        int index = Integer.parseInt(tag[1]);
-        if (callback != null)
-            callback.onItemClicked(index, true);
-        return false;
     }
 
     public void toggleSelected(int index) {
