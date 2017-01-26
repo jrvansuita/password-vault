@@ -1,17 +1,16 @@
 package com.vansuita.passwordvault.frag;
 
 import android.support.design.widget.TextInputLayout;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.vansuita.passwordvault.R;
+import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.bean.Note;
 import com.vansuita.passwordvault.fire.database.Vault;
 import com.vansuita.passwordvault.frag.base.BaseStoreFragment;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Validation;
-import com.vansuita.passwordvault.view.Snack;
 
 import butterknife.BindView;
 
@@ -47,24 +46,32 @@ public class StoreNoteFrag extends BaseStoreFragment {
         return edNote;
     }
 
+
+    @Override
+    protected void onLoad(Bean bean) {
+        super.onLoad(bean);
+
+        Note note = (Note) bean;
+
+        edNote.setText(note.getNote());
+    }
+
     @Override
     public boolean canStore() {
         return UI.error(tilNote, Validation.isEmpty(edNote), R.string.error_field_required);
     }
 
+
     @Override
     public void onStore() {
-        Note note = new Note(getTitleValue(), edNote.getText().toString());
-        Vault.put(note);
+        Note note = super.getObject(Note.class);
 
-        onClear();
-
-        Snack.show(edNote, R.string.saved, R.string.no, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().finish();
-            }
-        });
+        if (note != null) {
+            note.setTitle(getTitleValue());
+            note.setNote(edNote.getText().toString());
+            Vault.put(note);
+            super.onFinish();
+        }
     }
 
 

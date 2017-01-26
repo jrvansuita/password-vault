@@ -17,8 +17,6 @@ import com.vansuita.passwordvault.lis.IOnFireData;
 
 public class Vault {
 
-    public static final String NAME = "VAULT";
-
     private ECategory category;
     private IOnFireData listeners;
 
@@ -30,7 +28,7 @@ public class Vault {
 
     private synchronized static DatabaseReference getDatabaseNode() {
         if (databaseReference == null) {
-            databaseReference = FirebaseDatabase.getInstance().getReference(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(NAME);
+            databaseReference = FirebaseDatabase.getInstance().getReference(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(BeanCnt.NAME);
         }
 
         return databaseReference;
@@ -66,12 +64,14 @@ public class Vault {
     }
 
     public static void put(Bean bean) {
-        //getDatabaseNode().push().setValue(bean);
+        DatabaseReference databaseReference = null;
 
-        DatabaseReference databaseReference = getDatabaseNode().push();
-        String generatedKey = databaseReference.getKey();
-
-        bean.setKey(generatedKey);
+        if (bean.isNew()){
+            databaseReference = getDatabaseNode().push();
+            bean.setKey(databaseReference.getKey());
+        }else{
+            databaseReference = getDatabaseNode().child(bean.getKey());
+        }
 
         databaseReference.setValue(bean);
     }

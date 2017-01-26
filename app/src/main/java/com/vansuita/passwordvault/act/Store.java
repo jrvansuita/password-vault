@@ -10,6 +10,8 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.vansuita.passwordvault.R;
+import com.vansuita.passwordvault.bean.Bean;
+import com.vansuita.passwordvault.cnt.BeanCnt;
 import com.vansuita.passwordvault.enums.ECategory;
 
 /**
@@ -21,12 +23,22 @@ public class Store extends AppCompatActivity {
     private FrameLayout root;
 
     public static Intent openingIntent(Context context, ECategory e) {
+        return openingIntent(context, e, null);
+    }
+
+    public static Intent openingIntent(Context context, Bean bean) {
+        return openingIntent(context, bean.getCategory(), bean);
+    }
+
+    private static Intent openingIntent(Context context, ECategory e, Bean bean) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(ECategory.TYPE, e);
+        bundle.putSerializable(BeanCnt.NAME, bean);
         Intent intent = new Intent(context, Store.class);
         intent.putExtras(bundle);
         return intent;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +63,7 @@ public class Store extends AppCompatActivity {
 
             Class<? extends Fragment> clazz = ((ECategory) bundle.getSerializable(ECategory.TYPE)).getFragClass();
             Fragment fragment = clazz.newInstance();
+            fragment.setArguments(bundle);
 
             getSupportFragmentManager()
                     .beginTransaction().add(R.id.root_view, fragment)

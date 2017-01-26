@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.vansuita.passwordvault.R;
+import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.bean.Credential;
 import com.vansuita.passwordvault.fire.database.Vault;
 import com.vansuita.passwordvault.frag.base.BaseStoreFragment;
@@ -13,7 +14,6 @@ import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
 import com.vansuita.passwordvault.util.Validation;
 import com.vansuita.passwordvault.view.FavIconWebView;
-import com.vansuita.passwordvault.view.Snack;
 
 import butterknife.BindView;
 import butterknife.OnFocusChange;
@@ -24,16 +24,25 @@ import butterknife.OnFocusChange;
 
 public class StoreCredentialFrag extends BaseStoreFragment {
 
-    @BindView(R.id.login) EditText edLogin;
-    @BindView(R.id.email) EditText edEmail;
-    @BindView(R.id.password) EditText edPassword;
-    @BindView(R.id.website) EditText edWebsite;
-    @BindView(R.id.website_favicon) FavIconWebView favIconWebView;
+    @BindView(R.id.login)
+    EditText edLogin;
+    @BindView(R.id.email)
+    EditText edEmail;
+    @BindView(R.id.password)
+    EditText edPassword;
+    @BindView(R.id.website)
+    EditText edWebsite;
+    @BindView(R.id.website_favicon)
+    FavIconWebView favIconWebView;
 
-    @BindView(R.id.email_label) TextInputLayout tilEmail;
-    @BindView(R.id.login_label) TextInputLayout tilLogin;
-    @BindView(R.id.password_label) TextInputLayout tilPassword;
-    @BindView(R.id.website_label) TextInputLayout tilWebsite;
+    @BindView(R.id.email_label)
+    TextInputLayout tilEmail;
+    @BindView(R.id.login_label)
+    TextInputLayout tilLogin;
+    @BindView(R.id.password_label)
+    TextInputLayout tilPassword;
+    @BindView(R.id.website_label)
+    TextInputLayout tilWebsite;
 
     @Override
     public int getChildViewId() {
@@ -50,6 +59,20 @@ public class StoreCredentialFrag extends BaseStoreFragment {
         return edLogin.getText().toString();
     }
 
+
+    @Override
+    protected void onLoad(Bean bean) {
+        super.onLoad(bean);
+
+        Credential credential = (Credential) bean;
+
+        edLogin.setText(credential.getLogin());
+        edEmail.setText(credential.getEmail());
+        edPassword.setText(credential.getPassword());
+        edWebsite.setText(credential.getWebsite());
+
+        onWebsiteFocus(edWebsite, false);
+    }
 
     @OnFocusChange(R.id.login)
     public void onLoginFocus(View v, boolean active) {
@@ -95,32 +118,29 @@ public class StoreCredentialFrag extends BaseStoreFragment {
 
         good = good & UI.error(tilLogin, Validation.isEmpty(edLogin), R.string.login_is_empty);
         good = good & UI.error(tilPassword, Validation.isEmpty(edPassword), R.string.whats_password);
-        good = good & UI.error(tilEmail, !Validation.isEmail(edEmail), R.string.email_not_right);
+
+        if (!Validation.isEmpty(edEmail))
+            good = good & UI.error(tilEmail, !Validation.isEmail(edEmail), R.string.email_not_right);
 
         return good;
     }
 
     @Override
     public void onStore() {
-        Credential credential = new Credential();
+        Credential credential = super.getObject(Credential.class);
 
-        credential.setTitle(getTitleValue());
-        credential.setLogin(edLogin.getText().toString());
-        credential.setEmail(edEmail.getText().toString());
-        credential.setPassword(edPassword.getText().toString());
-        credential.setWebsite(edWebsite.getText().toString());
+        if (credential != null) {
+            credential.setTitle(getTitleValue());
+            credential.setLogin(edLogin.getText().toString());
+            credential.setEmail(edEmail.getText().toString());
+            credential.setPassword(edPassword.getText().toString());
+            credential.setWebsite(edWebsite.getText().toString());
 
-        Vault.put(credential);
+            Vault.put(credential);
 
-        onClear();
-        Snack.show(edEmail, R.string.saved, R.string.no, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().finish();
-            }
-        });
+            super.onFinish();
+        }
     }
-
 
     private void autoFillLogin() {
         if (Validation.isEmpty(edLogin)) {

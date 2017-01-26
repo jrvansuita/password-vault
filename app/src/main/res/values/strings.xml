@@ -25,6 +25,7 @@
     <string name="auth_failed">Authentication failed.</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="loading">Loading...</string>
+    <string name="update">Update</string>
     <string name="wait">Please wait...</string>
     <string name="want_delete">Do you want to delete the selected items?</string>
     <string name="authenticating">Authenticating...</string>
@@ -51,5 +52,5 @@
     <string name="no">No</string>
     <string name="retry">Retry</string>
     <string name="saved">Saved! Do you have another one?</string>
-
+    <string name="updated">Updated! Do you want to save a new one?</string>
 </resources>

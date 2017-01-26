@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.adapter.DomainAdapter;
+import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.bean.Domain;
 import com.vansuita.passwordvault.bean.Email;
 import com.vansuita.passwordvault.fire.database.Vault;
@@ -16,7 +17,6 @@ import com.vansuita.passwordvault.frag.base.BaseStoreFragment;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
 import com.vansuita.passwordvault.util.Validation;
-import com.vansuita.passwordvault.view.Snack;
 
 import butterknife.BindView;
 import butterknife.OnFocusChange;
@@ -64,6 +64,18 @@ public class StoreEmailFrag extends BaseStoreFragment {
     @Override
     public TextView getSubmitElement() {
         return actvDomain;
+    }
+
+
+    @Override
+    protected void onLoad(Bean bean) {
+        super.onLoad(bean);
+
+        Email email = (Email) bean;
+
+        edEmail.setText(email.getEmail());
+        edPassword.setText(email.getPassword());
+        autoFillDomain();
     }
 
     @OnFocusChange(R.id.email)
@@ -118,22 +130,16 @@ public class StoreEmailFrag extends BaseStoreFragment {
 
     @Override
     public void onStore() {
-        Email email = new Email();
+        Email email = super.getObject(Email.class);
 
-        email.setTitle(getTitleValue());
-        email.setEmail(edEmail.getText().toString());
-        email.setPassword(edPassword.getText().toString());
+        if (email != null) {
+            email.setTitle(getTitleValue());
+            email.setEmail(edEmail.getText().toString());
+            email.setPassword(edPassword.getText().toString());
 
-        Vault.put(email);
-
-        onClear();
-
-        Snack.show(edEmail, R.string.saved, R.string.no, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().finish();
-            }
-        });
+            Vault.put(email);
+            super.onFinish();
+        }
     }
 
 

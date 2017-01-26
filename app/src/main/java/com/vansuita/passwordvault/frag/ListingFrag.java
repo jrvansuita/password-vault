@@ -18,6 +18,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.act.Main;
+import com.vansuita.passwordvault.act.Store;
 import com.vansuita.passwordvault.adapter.VaultListingAdapter;
 import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.enums.ECategory;
@@ -129,6 +130,8 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
         if (longClick || (cab.isActive())) {
             onIconClicked(index);
             return;
+        }else if (!longClick){
+            startActivity(Store.openingIntent(getContext(), adapter.getItem(index)));
         }
     }
 

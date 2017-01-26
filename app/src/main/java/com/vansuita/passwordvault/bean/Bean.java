@@ -3,13 +3,14 @@ package com.vansuita.passwordvault.bean;
 import com.google.firebase.database.Exclude;
 import com.vansuita.passwordvault.enums.ECategory;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by jrvansuita on 08/11/16.
  */
 
-public class Bean {
+public class Bean  implements Serializable{
 
     private String key;
     private String title;
@@ -74,4 +75,9 @@ public class Bean {
         return new Date(time);
     }
 
+
+    @Exclude
+    public boolean isNew(){
+        return getKey() == null || getKey().isEmpty();
+    }
 }
