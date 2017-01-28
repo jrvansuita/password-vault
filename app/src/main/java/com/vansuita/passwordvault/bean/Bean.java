@@ -1,5 +1,7 @@
 package com.vansuita.passwordvault.bean;
 
+import android.graphics.Color;
+
 import com.google.firebase.database.Exclude;
 import com.vansuita.passwordvault.enums.ECategory;
 
@@ -10,12 +12,14 @@ import java.util.Date;
  * Created by jrvansuita on 08/11/16.
  */
 
-public class Bean  implements Serializable{
+public class Bean implements Serializable {
 
     private String key;
     private String title;
     private long time;
     private ECategory category;
+    private boolean favorite;
+    private int color;
 
     public String getKey() {
         return key;
@@ -53,10 +57,28 @@ public class Bean  implements Serializable{
         return getClass().getName();
     }
 
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
     public Bean(ECategory category) {
         setTitle("");
         setDate(new Date());
         setCategory(category);
+        setFavorite(false);
+        setColor(Color.WHITE);
     }
 
     //Prevent Firebase Database to serealize this method
@@ -77,7 +99,7 @@ public class Bean  implements Serializable{
 
 
     @Exclude
-    public boolean isNew(){
+    public boolean isNew() {
         return getKey() == null || getKey().isEmpty();
     }
 }

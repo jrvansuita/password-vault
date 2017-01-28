@@ -6,11 +6,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,6 +28,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialcab.MaterialCab;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +41,7 @@ import com.squareup.picasso.RequestCreator;
 import com.squareup.picasso.Transformation;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.adapter.CategoryListPageAdapter;
+import com.vansuita.passwordvault.adapter.TrashListPageAdapter;
 import com.vansuita.passwordvault.adapter.VaultItemChooserAdapter;
 import com.vansuita.passwordvault.enums.ECategory;
 import com.vansuita.passwordvault.fire.storage.ImageStorage;
@@ -52,9 +58,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.vansuita.passwordvault.R.id.fab;
-
-public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IPickResult.IPickResultUri, ViewPager.OnPageChangeListener {
+public class Main extends AppCompatActivity implements ColorChooserDialog.ColorCallback, NavigationView.OnNavigationItemSelectedListener, IPickResult.IPickResultUri, ViewPager.OnPageChangeListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -66,11 +70,13 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     ViewPager pager;
     @BindView(R.id.tabs)
     SmartTabLayout tabLayout;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     private MaterialCab cab;
     private FirebaseAuth auth;
     private MaterialDialog progress;
-    private CategoryListPageAdapter categoryListPageAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +85,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         ButterKnife.bind(Main.this);
         onSetup();
 
-        onNavigationSelected(R.id.nav_all);
+        onNavigationSelected(R.id.home);
 
         internet();
         internetChecking();
@@ -116,21 +122,22 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        categoryListPageAdapter = new CategoryListPageAdapter(getSupportFragmentManager(), this);
-        pager.setAdapter(categoryListPageAdapter);
         pager.addOnPageChangeListener(this);
 
-        tabLayout.setViewPager(pager);
-
         this.cab = new MaterialCab(this, R.id.cab_stub)
-                .setTitleRes(R.string.category)
+                .setTitle(getString(R.string.category))
                 .setMenu(R.menu.cab)
                 .setPopupMenuTheme(R.style.ThemeOverlay_AppCompat_Light)
                 .setBackgroundColorRes(R.color.primary_inactive)
                 .setCloseDrawableRes(R.drawable.mcab_nav_back);
     }
 
-    @OnClick(fab)
+    private void swapViewPagerAdapter(PagerAdapter adapter) {
+        pager.setAdapter(adapter);
+        tabLayout.setViewPager(pager);
+    }
+
+    @OnClick(R.id.fab)
     public void onFabClick(View v) {
 
         VaultItemChooserAdapter adapter = new VaultItemChooserAdapter();
@@ -150,12 +157,43 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         });
     }
 
+    @Override
     public boolean onNavigationItemSelected(MenuItem i) {
         return onNavigationSelected(i.getItemId());
     }
 
     public boolean onNavigationSelected(int res) {
+        AppBarLayout.LayoutParams toolbarLayoutParams = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+
         switch (res) {
+            case R.id.home:
+                //Set the toolbar title
+                toolbar.setTitle(R.string.app_name);
+                //Change the adapter
+                swapViewPagerAdapter(new CategoryListPageAdapter(getSupportFragmentManager(), this));
+                //Activate auto hide toolbar on scroll
+                toolbarLayoutParams.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+                //Show the tabs
+                tabLayout.setVisibility(View.VISIBLE);
+                //Show the fab
+                fab.show();
+                break;
+            case R.id.trash:
+                toolbar.setTitle(R.string.trash);
+                //Change the adapter
+                swapViewPagerAdapter(new TrashListPageAdapter(getSupportFragmentManager(), this));
+                //Deactivate auto hide toolbar on scroll
+                toolbarLayoutParams.setScrollFlags(0);
+                //Hide the tabs
+                tabLayout.setVisibility(View.GONE);
+                //Hide the fab
+                fab.hide();
+                break;
+            case R.id.nav_slideshow:
+                swapViewPagerAdapter(null);
+                break;
+
+
             case R.id.logout:
                 auth.signOut();
                 startActivity(new Intent(Main.this, Login.class));
@@ -270,13 +308,12 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         return cab;
     }
 
-
     public void selectionState(boolean is) {
         if (is) {
             UI.setStatusBarColor(Main.this, R.color.primary_inactive);
             tabLayout.setBackgroundColor(ContextCompat.getColor(Main.this, R.color.primary_inactive));
         } else {
-            UI.setStatusBarColor(Main.this, R.color.primary_dark);
+            UI.setStatusBarColor(Main.this, R.color.primary);
             tabLayout.setBackgroundColor(ContextCompat.getColor(Main.this, R.color.primary));
         }
     }
@@ -317,5 +354,17 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         }
     }
 
+    private ColorChooserDialog.ColorCallback onColorCallBack;
+
+    public void setOnColorCallBack(ColorChooserDialog.ColorCallback onColorCallBack) {
+        this.onColorCallBack = onColorCallBack;
+    }
+
+    @Override
+    public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
+        if (onColorCallBack != null){
+            onColorCallBack.onColorSelection(dialog, selectedColor);
+        }
+    }
 }
 

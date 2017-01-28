@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -87,4 +88,10 @@ public class UI {
             a.getWindow().setStatusBarColor(ContextCompat.getColor(a, color));
         }
     }
+
+
+    public static void setFavorite(View view, boolean favorite){
+        view.setVisibility(favorite ? View.VISIBLE: View.GONE);
+    }
+
 }

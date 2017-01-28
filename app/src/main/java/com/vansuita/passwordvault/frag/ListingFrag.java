@@ -1,9 +1,11 @@
 package com.vansuita.passwordvault.frag;
 
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,17 +16,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.afollestad.materialcab.MaterialCab;
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.act.Main;
 import com.vansuita.passwordvault.act.Store;
 import com.vansuita.passwordvault.adapter.VaultListingAdapter;
 import com.vansuita.passwordvault.bean.Bean;
+import com.vansuita.passwordvault.cnt.VaultCnt;
 import com.vansuita.passwordvault.enums.ECategory;
-import com.vansuita.passwordvault.fire.database.Vault;
+import com.vansuita.passwordvault.fire.dao.DataAccess;
 import com.vansuita.passwordvault.lis.IOnFireData;
-import com.vansuita.passwordvault.recycle.DividerItemDecoration;
+import com.vansuita.passwordvault.view.Snack;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,24 +45,21 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
     private Main main;
     private MaterialCab cab;
     private VaultListingAdapter adapter;
-    private Vault vault;
+
+    private ECategory category;
+    private boolean isShowingTrash;
 
     public static ListingFrag newInstance(ECategory e) {
+        return newInstance(e, false);
+    }
+
+    public static ListingFrag newInstance(ECategory e, boolean trash) {
         ListingFrag f = new ListingFrag();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ECategory.TYPE, e);
+        bundle.putBoolean(VaultCnt.TRASH, trash);
         f.setArguments(bundle);
         return f;
-    }
-
-    private ECategory getCategory() {
-        Bundle bundle = getArguments();
-        ECategory e = null;
-
-        if (bundle != null)
-            return (ECategory) bundle.getSerializable(ECategory.TYPE);
-
-        return e;
     }
 
     @Override
@@ -74,9 +73,14 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new VaultListingAdapter();
-        adapter.setCallback(this);
-        vault = Vault.on(getCategory()).listeners(new IOnFireData() {
+        this.adapter = new VaultListingAdapter();
+        this.adapter.setCallback(this);
+
+        Bundle bundle = getArguments();
+        this.category = (ECategory) bundle.getSerializable(ECategory.TYPE);
+        this.isShowingTrash = bundle.getBoolean(VaultCnt.TRASH);
+
+        DataAccess.on(category).trash(isShowingTrash).listeners(new IOnFireData() {
 
             @Override
             public void add(Bean data) {
@@ -97,8 +101,7 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
             public void moved(Bean data, String previousChild) {
                 adapter.move(data, previousChild);
             }
-        });
-        vault.get();
+        }).get();
     }
 
 
@@ -111,8 +114,6 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
 
         setup();
 
-        setRetainInstance(true);
-
         return view;
     }
 
@@ -121,8 +122,10 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
         rvVaultList.setLayoutManager(mLayoutManager);
         rvVaultList.setItemAnimator(new DefaultItemAnimator());
 
-        rvVaultList.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.divider));
+        //rvVaultList.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.divider));
         rvVaultList.setAdapter(adapter);
+        adapter.attachSwipe(rvVaultList);
+
     }
 
     @Override
@@ -130,7 +133,7 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
         if (longClick || (cab.isActive())) {
             onIconClicked(index);
             return;
-        }else if (!longClick){
+        } else if (!longClick) {
             startActivity(Store.openingIntent(getContext(), adapter.getItem(index)));
         }
     }
@@ -152,36 +155,84 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
 
 
     MaterialCab.Callback callback = new MaterialCab.Callback() {
+
         @Override
         public boolean onCabCreated(MaterialCab cab, Menu menu) {
             main.selectionState(true);
+
+            ViewCompat.setElevation(cab.getToolbar(), 0.01f);
+
+            menu.findItem(R.id.action_favorite).setVisible(!isShowingTrash);
+            menu.findItem(R.id.action_palette).setVisible(!isShowingTrash);
+            menu.findItem(R.id.action_undo).setVisible(isShowingTrash);
+            menu.findItem(R.id.action_settings).setVisible(false);
+
             return true;
         }
 
         @Override
-        public boolean onCabItemClicked(MenuItem item) {
+        public boolean onCabItemClicked(final MenuItem item) {
+            int msg = 0;
+
             switch (item.getItemId()) {
-                case R.id.action_delete:
-                    new MaterialDialog.Builder(main)
-                            .title(R.string.delete)
-                            .content(R.string.want_delete)
-                            .autoDismiss(true)
-                            .positiveText(R.string.yes)
-                            .negativeText(R.string.no)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    for (Integer pos : adapter.getDataSelected()) {
-                                        Vault.delete(adapter.getItem(pos).getKey());
-                                    }
+                case R.id.action_favorite:
+                    msg = R.string.toggled_favorite;
 
-                                    onCabFinished(cab);
-                                }
-                            })
+                    for (Integer pos : adapter.getDataSelected()) {
+                        DataAccess.favorite(adapter.getItem(pos));
+                    }
+                    break;
 
+                case R.id.action_undo:
+                    msg = R.string.restored;
+
+                    for (Integer pos : adapter.getDataSelected()) {
+                        DataAccess.trash(adapter.getItem(pos));
+                    }
+                    break;
+
+                case R.id.action_palette:
+
+                    main.setOnColorCallBack(new ColorChooserDialog.ColorCallback() {
+                        @Override
+                        public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
+                            for (Integer pos : adapter.getDataSelected()) {
+                                DataAccess.color(selectedColor, adapter.getItem(pos));
+                            }
+
+                            cab.finish();
+                        }
+                    });
+
+                    new ColorChooserDialog.Builder(main, R.string.color_palette)
+                            .titleSub(R.string.shade)
+                            .accentMode(false)
+                            .doneButton(R.string.md_done_label)
+                            .cancelButton(R.string.md_cancel_label)
+                            .backButton(R.string.md_back_label)
+                            .dynamicButtonColor(false)
                             .show();
 
+                    break;
+
+                case R.id.action_delete:
+                    msg = isShowingTrash ? R.string.deleted : R.string.moved_to_trash;
+
+                    for (Integer pos : adapter.getDataSelected()) {
+                        if (isShowingTrash) {
+                            DataAccess.delete(adapter.getItem(pos));
+                        } else {
+                            DataAccess.trash(adapter.getItem(pos));
+                        }
+                    }
+                    break;
             }
+
+            if (msg > 0) {
+                Snack.show(rvVaultList, msg, null);
+                cab.finish();
+            }
+
             return true;
         }
 

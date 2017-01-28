@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.bean.Bean;
-import com.vansuita.passwordvault.cnt.BeanCnt;
+import com.vansuita.passwordvault.cnt.VaultCnt;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
 import com.vansuita.passwordvault.util.Validation;
@@ -94,6 +94,7 @@ public abstract class BaseStoreFragment extends Fragment implements IBaseStoreFr
 
     }
 
+
     @OnClick(R.id.save)
     protected void onSave(View v) {
         autoFillTitle();
@@ -124,13 +125,15 @@ public abstract class BaseStoreFragment extends Fragment implements IBaseStoreFr
     protected void onClear() {
         edTitle.setText("");
         bean = null;
-        getArguments().remove(BeanCnt.NAME);
+        getArguments().remove(VaultCnt.NAME);
         btSave.setText(R.string.save);
+
+        edTitle.requestFocus();
     }
 
     public <T> T getObject(Class<T> clazz) {
         if (getArguments() != null) {
-            Object o = getArguments().getSerializable(BeanCnt.NAME);
+            Object o = getArguments().getSerializable(VaultCnt.NAME);
             if (o != null)
                 return (T) o;
         }
@@ -152,5 +155,6 @@ public abstract class BaseStoreFragment extends Fragment implements IBaseStoreFr
 
         onClear();
     }
+
 
 }

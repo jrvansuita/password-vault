@@ -24,6 +24,10 @@ public class Snack {
         show(v, v.getContext().getString(msg), v.getContext().getString(actionLabel), null);
     }
 
+    public static void show(View v, int msg, String actionLabel) {
+        show(v, v.getContext().getString(msg), actionLabel, null);
+    }
+
     public static void show(View v, int msg, int actionLabel, View.OnClickListener onClickListener) {
         show(v, v.getContext().getString(msg), v.getContext().getString(actionLabel), onClickListener);
     }

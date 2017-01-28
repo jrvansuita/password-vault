@@ -1,5 +1,6 @@
 package com.vansuita.passwordvault.adapter;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.bean.Bean;
+import com.vansuita.passwordvault.util.UI;
+import com.vansuita.passwordvault.util.Util;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -42,19 +45,27 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
         holder.tvTitle.setText(b.getTitle());
         holder.tvDate.setText(DateFormat.getDateTimeInstance().format(b.getDate()));
         holder.ivIcon.setImageResource(isSelected ? R.mipmap.ic_checked : b.getCategory().getIconRes());
-    }
 
+        boolean isDarken = Util.isColorDark(b.getColor());
+
+        holder.tvTitle.setTextColor(ContextCompat.getColor(holder.ivIcon.getContext(), isDarken && !isSelected ? android.R.color.white : R.color.primary_text));
+        holder.tvDate.setTextColor(ContextCompat.getColor(holder.ivIcon.getContext(), isDarken && !isSelected ? android.R.color.white : R.color.secondary_text));
+
+        holder.vColor.setBackgroundColor(b.getColor());
+
+        UI.setFavorite(holder.vFavorite, !isSelected && b.isFavorite());
+    }
 
     public ArrayList<Integer> getDataSelected() {
         return dataSelected;
     }
 
-    public  int getSelectedCount(){
+    public int getSelectedCount() {
         return dataSelected.size();
     }
 
 
-    public Bean getItem(int position){
+    public Bean getItem(int position) {
         return (Bean) data.get(position);
     }
 
@@ -69,14 +80,18 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
         TextView tvTitle;
         TextView tvDate;
         ImageView ivIcon;
+        View vFavorite;
+        View vColor;
 
         public ViewHolder(View v) {
             super(v);
 
-            root = v;
+            root = v.findViewById(R.id.content);
             tvTitle = (TextView) v.findViewById(R.id.title);
             tvDate = (TextView) v.findViewById(R.id.date);
             ivIcon = (ImageView) v.findViewById(R.id.icon);
+            vFavorite = v.findViewById(R.id.favorite);
+            vColor = v.findViewById(R.id.color);
 
             ivIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -96,7 +111,7 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
                 @Override
                 public boolean onLongClick(View view) {
                     callback.onItemClicked(getLayoutPosition(), true);
-                    return true;
+                    return false;
                 }
             });
 
@@ -204,4 +219,28 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
         notifyItemMoved(pos, finalPos);
     }
 
+
+    public void attachSwipe(RecyclerView rv) {
+        // swipeToDismiss.attachToRecyclerView(rv);
+    }
+
+    /*ItemTouchHelper swipeToDismiss = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            final Bean bean = getItem(viewHolder.getLayoutPosition());
+            DataAccess.trash(bean);
+            Snack.show(viewHolder.itemView, R.string.deleted, R.string.undo, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DataAccess.trash(bean);
+                }
+            });
+        }
+    });*/
 }

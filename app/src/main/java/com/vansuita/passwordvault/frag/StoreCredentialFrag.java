@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.bean.Credential;
-import com.vansuita.passwordvault.fire.database.Vault;
+import com.vansuita.passwordvault.fire.dao.DataAccess;
 import com.vansuita.passwordvault.frag.base.BaseStoreFragment;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
@@ -136,7 +136,7 @@ public class StoreCredentialFrag extends BaseStoreFragment {
             credential.setPassword(edPassword.getText().toString());
             credential.setWebsite(edWebsite.getText().toString());
 
-            Vault.put(credential);
+            DataAccess.put(credential);
 
             super.onFinish();
         }

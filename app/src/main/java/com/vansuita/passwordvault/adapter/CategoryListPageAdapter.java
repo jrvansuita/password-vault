@@ -40,4 +40,6 @@ public class CategoryListPageAdapter extends FragmentPagerAdapter {
     private ECategory getCategory(int position) {
         return position == 0 ? null : ECategory.values()[position - 1];
     }
+
+
 }

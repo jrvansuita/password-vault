@@ -1,50 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     style="@style/match_wrap"
-    android:paddingBottom="10dp"
-    android:clickable="true"
-    android:background="@drawable/list_selector"
-    android:layout_marginTop="1dp"
-    android:paddingLeft="14dp"
-    android:paddingRight="14dp"
-    android:paddingTop="10dp">
+    android:layout_marginBottom="3dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="2.5dp"
+    card_view:cardCornerRadius="3dp"
+    card_view:cardElevation="1.5dp">
 
 
-
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:src="@mipmap/envelop" />
-
-    <LinearLayout
+    <View
+        android:id="@+id/color"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_toRightOf="@+id/icon"
-        android:orientation="vertical"
-        android:paddingLeft="10dp">
+        android:layout_height="match_parent"/>
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
+    <FrameLayout
+        android:id="@+id/content"
+        style="@style/match_wrap"
+        android:clickable="true"
+        android:background="@drawable/list_selector">
+
+        <ImageView
+            android:id="@+id/favorite"
+            android:layout_width="23dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:textSize="14dp"
-            android:layout_marginBottom="2dp"
-            android:text="Teste"
-            android:textColor="@color/primary_text" />
+            android:layout_gravity="top|right"
+            android:layout_marginRight="5dp"
+            android:elevation="4dp"
+            android:adjustViewBounds="true"
+            android:padding="0dp"
+            android:layout_marginTop="-4.5dp"
+            android:scaleType="fitStart"
+            android:src="@mipmap/bookmark" />
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="10dp"
-            android:text="34/34/34"
-            android:textColor="@color/secondary_text" />
-    </LinearLayout>
 
-</RelativeLayout>
+        <RelativeLayout
+            style="@style/match_wrap"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp">
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:src="@mipmap/envelop" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@+id/icon"
+                android:orientation="vertical"
+                android:paddingLeft="10dp">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginBottom="2dp"
+                    android:text="Teste"
+                    android:textColor="@color/primary_text"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="34/34/34"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="10dp" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </FrameLayout>
+</android.support.v7.widget.CardView>

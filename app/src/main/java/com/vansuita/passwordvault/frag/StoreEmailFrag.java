@@ -12,7 +12,7 @@ import com.vansuita.passwordvault.adapter.DomainAdapter;
 import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.bean.Domain;
 import com.vansuita.passwordvault.bean.Email;
-import com.vansuita.passwordvault.fire.database.Vault;
+import com.vansuita.passwordvault.fire.dao.DataAccess;
 import com.vansuita.passwordvault.frag.base.BaseStoreFragment;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
@@ -137,7 +137,7 @@ public class StoreEmailFrag extends BaseStoreFragment {
             email.setEmail(edEmail.getText().toString());
             email.setPassword(edPassword.getText().toString());
 
-            Vault.put(email);
+            DataAccess.put(email);
             super.onFinish();
         }
     }

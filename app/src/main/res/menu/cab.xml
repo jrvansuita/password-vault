@@ -11,6 +11,27 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/action_undo"
+        android:orderInCategory="100"
+        android:title="@string/undo"
+        android:icon="@mipmap/ic_undo"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_favorite"
+        android:orderInCategory="100"
+        android:title="@string/favorite"
+        android:icon="@mipmap/ic_favorite"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_palette"
+        android:orderInCategory="100"
+        android:title="@string/palette"
+        android:icon="@mipmap/ic_palette"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="101"
         android:title="@string/action_settings"

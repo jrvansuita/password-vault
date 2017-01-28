@@ -335,21 +335,26 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     }
 
     private void submit() {
-        btSubmit.requestFocus();
+        if (!com.vansuita.passwordvault.util.Util.internet(this)) {
+            showSnack(getString(R.string.no_internet));
+        } else {
 
-        if (checkFields()) {
-            progress.show();
+            btSubmit.requestFocus();
 
-            switch (lastType) {
-                case CREATE_ACCOUNT:
-                    createAccountEmailPassword();
-                    break;
-                case SIGN_IN:
-                    signInEmailPassword();
-                    break;
-                case FORGOT_PASSWORD:
-                    forgotPassword();
-                    break;
+            if (checkFields()) {
+                progress.show();
+
+                switch (lastType) {
+                    case CREATE_ACCOUNT:
+                        createAccountEmailPassword();
+                        break;
+                    case SIGN_IN:
+                        signInEmailPassword();
+                        break;
+                    case FORGOT_PASSWORD:
+                        forgotPassword();
+                        break;
+                }
             }
         }
     }

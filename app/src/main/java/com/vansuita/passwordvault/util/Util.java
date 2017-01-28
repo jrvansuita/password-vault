@@ -3,6 +3,7 @@ package com.vansuita.passwordvault.util;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -127,26 +128,35 @@ public class Util extends com.vansuita.pickimage.Util {
     }
 
 
-    public static String shorter(String s, int count){
-        if (s != null && (s.length() > count)){
-           return s.substring(0, count - 3) + "...";
+    public static String shorter(String s, int count) {
+        if (s != null && (s.length() > count)) {
+            return s.substring(0, count - 3) + "...";
         }
 
         return s;
     }
 
-    public static String getDomain(String email){
+    public static String getDomain(String email) {
         if (Validation.isEmail(email))
             return email.split("@")[1];
 
         return null;
     }
 
-    public static String getLogin(String email){
+    public static String getLogin(String email) {
         if (Validation.isEmail(email))
             return email.split("@")[0];
 
         return null;
+    }
+
+    public static boolean isColorDark(int color) {
+        double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
+        if (darkness < 0.5 || color == 0) {
+            return false; // It's a light color
+        } else {
+            return true; // It's a dark color
+        }
     }
 
 

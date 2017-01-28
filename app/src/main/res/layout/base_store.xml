@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/match_match"
-    android:fillViewport="true"
-    android:background="@color/primary">
+    android:background="@color/primary"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="40dp"
+        android:orientation="horizontal"
         android:paddingBottom="40dp"
-        android:orientation="horizontal">
+        android:paddingTop="40dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,11 +27,11 @@
                 android:layout_weight="0.8"
                 android:orientation="vertical">
 
+
                 <TextView
                     android:id="@+id/screen_title"
                     style="@style/label"
                     android:text="@string/email_registering" />
-
 
                 <LinearLayout
                     android:layout_width="match_parent"

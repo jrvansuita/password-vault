@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.bean.Note;
-import com.vansuita.passwordvault.fire.database.Vault;
+import com.vansuita.passwordvault.fire.dao.DataAccess;
 import com.vansuita.passwordvault.frag.base.BaseStoreFragment;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Validation;
@@ -69,7 +69,8 @@ public class StoreNoteFrag extends BaseStoreFragment {
         if (note != null) {
             note.setTitle(getTitleValue());
             note.setNote(edNote.getText().toString());
-            Vault.put(note);
+
+            DataAccess.put(note);
             super.onFinish();
         }
     }

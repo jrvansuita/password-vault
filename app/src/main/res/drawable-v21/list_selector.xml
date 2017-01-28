@@ -1,15 +1,13 @@
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="@color/ripple_material_light">
 
-    <item
-        android:id="@android:id/mask"
-        android:drawable="@android:color/white" />
+    <item android:drawable="@drawable/normal_item" />
     <item>
         <selector>
-            <item
-                android:drawable="@color/secondary_pressed"
-                android:state_activated="true" />
+            <item android:state_activated="true" android:drawable="@drawable/selected_item" />
+            <item android:drawable="@drawable/normal_item" />
         </selector>
     </item>
+
 
 </ripple>

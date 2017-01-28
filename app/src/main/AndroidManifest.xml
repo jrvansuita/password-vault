@@ -28,7 +28,7 @@
         <activity
             android:name=".act.Login"
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme.Login"></activity>
 
         <activity
             android:name=".act.Main"

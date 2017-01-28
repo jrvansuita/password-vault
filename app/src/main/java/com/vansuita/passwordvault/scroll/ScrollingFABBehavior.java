@@ -1,4 +1,4 @@
-package com.vansuita.passwordvault.fab;
+package com.vansuita.passwordvault.scroll;
 
 import android.content.Context;
 import android.os.Handler;
@@ -6,7 +6,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
@@ -14,8 +13,8 @@ import android.view.animation.LinearInterpolator;
  * Created by jrvansuita on 22/01/17.
  */
 
-public class ScrollingFABBehavior extends CoordinatorLayout.Behavior<FloatingActionButton> {
-    private static final String TAG = "ScrollingFABBehavior";
+public class ScrollingFABBehavior extends FloatingActionButton.Behavior  {
+
     Handler mHandler;
 
     public ScrollingFABBehavior(Context context, AttributeSet attrs) {
@@ -34,9 +33,8 @@ public class ScrollingFABBehavior extends CoordinatorLayout.Behavior<FloatingAct
             @Override
             public void run() {
                 child.animate().translationY(0).setInterpolator(new LinearInterpolator()).start();
-                Log.d("FabAnim","startHandler()");
             }
-        },1000);
+        },2000);
 
     }
 
@@ -46,22 +44,40 @@ public class ScrollingFABBehavior extends CoordinatorLayout.Behavior<FloatingAct
 
         //child -> Floating Action Button
         if (dyConsumed > 0) {
-            Log.d("Scrolling","Up");
             CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
             int fab_bottomMargin = layoutParams.bottomMargin;
             child.animate().translationY(child.getHeight() + fab_bottomMargin).setInterpolator(new LinearInterpolator()).start();
         } else if (dyConsumed < 0) {
-            Log.d("Scrolling","down");
             child.animate().translationY(0).setInterpolator(new LinearInterpolator()).start();
         }
     }
+
+
+
+    //Fade in and out fab
+  /*  @Override
+    public void onNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child,
+                               View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed,
+                dyUnconsumed);
+
+        if (dyConsumed > 0 && child.getVisibility() == View.VISIBLE) {
+            child.hide();
+        } else if (dyConsumed < 0 && child.getVisibility() != View.VISIBLE) {
+            child.show();
+        }
+    }*/
+
+
 
     @Override
     public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View directTargetChild, View target, int nestedScrollAxes) {
         if(mHandler!=null) {
             mHandler.removeMessages(0);
-            Log.d("Scrolling","stopHandler()");
         }
-        return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL;
+
+        return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL ||
+                super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target,
+                        nestedScrollAxes);
     }
 }

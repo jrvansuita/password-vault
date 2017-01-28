@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.bean.Bean;
-import com.vansuita.passwordvault.cnt.BeanCnt;
+import com.vansuita.passwordvault.cnt.VaultCnt;
 import com.vansuita.passwordvault.enums.ECategory;
 
 /**
@@ -33,7 +33,7 @@ public class Store extends AppCompatActivity {
     private static Intent openingIntent(Context context, ECategory e, Bean bean) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(ECategory.TYPE, e);
-        bundle.putSerializable(BeanCnt.NAME, bean);
+        bundle.putSerializable(VaultCnt.NAME, bean);
         Intent intent = new Intent(context, Store.class);
         intent.putExtras(bundle);
         return intent;

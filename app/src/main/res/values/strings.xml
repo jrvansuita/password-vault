@@ -46,11 +46,22 @@
     <string name="save">save</string>
     <string name="category">Category</string>
     <string name="delete">Delete</string>
+    <string name="color">Color</string>
+    <string name="color_palette">Color Palette</string>
+    <string name="shade">Shade</string>
+    <string name="favorite">Favorite</string>
+    <string name="palette">Palette</string>
+    <string name="deleted">Deleted!</string>
+    <string name="moved_to_trash">Moved to trash!</string>
+    <string name="restored">Restored!</string>
+    <string name="toggled_favorite">Toggled favorite!</string>
+    <string name="undo">Undo</string>
     <string name="all">All</string>
     <string name="internal_error">Internal error. Please try again later.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="retry">Retry</string>
+    <string name="trash">Trash</string>
     <string name="saved">Saved! Do you have another one?</string>
     <string name="updated">Updated! Do you want to save a new one?</string>
 </resources>
