@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.vansuita.library.Icon;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.bean.Credential;
@@ -157,7 +158,7 @@ public class StoreCredentialFrag extends BaseStoreFragment {
         edPassword.setText("");
         edWebsite.setText("");
 
-        UI.applyIcon(edEmail, 0);
+        Icon.clear(edEmail);
         favIconWebView.clear();
     }
 }

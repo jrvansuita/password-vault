@@ -4,16 +4,17 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/home"
-            android:icon="@drawable/ic_home_black_24dp"
+            android:icon="@drawable/ic_action_home"
             android:title="@string/all_passwords" />
         <item
-            android:id="@+id/trash"
-            android:icon="@drawable/ic_trash"
-            android:title="@string/trash" />
+            android:id="@+id/favorite"
+            android:icon="@drawable/ic_action_star"
+            android:title="@string/favorites" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/trash"
+            android:icon="@drawable/ic_action_trash"
+            android:title="@string/trash" />
+
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"

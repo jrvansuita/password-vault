@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.vansuita.library.Icon;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.enums.ECategory;
 
@@ -14,7 +15,7 @@ import com.vansuita.passwordvault.enums.ECategory;
  * Created by jrvansuita on 16/01/17.
  */
 
-public class VaultItemChooserAdapter extends RecyclerView.Adapter<VaultItemChooserAdapter.ViewHolder> {
+public class CategoryChooserAdapter extends RecyclerView.Adapter<CategoryChooserAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -28,7 +29,7 @@ public class VaultItemChooserAdapter extends RecyclerView.Adapter<VaultItemChoos
         ECategory e = ECategory.values()[position];
 
         holder.title.setText(e.getTitleRes());
-        holder.icon.setImageResource(e.getIconRes());
+        Icon.on(holder.icon).color(R.color.primary).icon(e.getIconRes()).put();
     }
 
     @Override
@@ -40,9 +41,9 @@ public class VaultItemChooserAdapter extends RecyclerView.Adapter<VaultItemChoos
 
         final TextView title;
         final ImageView icon;
-        final VaultItemChooserAdapter adapter;
+        final CategoryChooserAdapter adapter;
 
-        ViewHolder(View v, VaultItemChooserAdapter adapter) {
+        ViewHolder(View v, CategoryChooserAdapter adapter) {
             super(v);
             title = (TextView) v.findViewById(R.id.title);
             icon = (ImageView) v.findViewById(R.id.icon);

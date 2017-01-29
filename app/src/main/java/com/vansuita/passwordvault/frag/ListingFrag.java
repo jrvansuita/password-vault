@@ -5,12 +5,15 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +25,8 @@ import com.vansuita.passwordvault.act.Main;
 import com.vansuita.passwordvault.act.Store;
 import com.vansuita.passwordvault.adapter.VaultListingAdapter;
 import com.vansuita.passwordvault.bean.Bean;
-import com.vansuita.passwordvault.cnt.VaultCnt;
 import com.vansuita.passwordvault.enums.ECategory;
+import com.vansuita.passwordvault.enums.EShowType;
 import com.vansuita.passwordvault.fire.dao.DataAccess;
 import com.vansuita.passwordvault.lis.IOnFireData;
 import com.vansuita.passwordvault.view.Snack;
@@ -37,7 +40,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by jrvansuita on 20/01/17.
  */
 
-public class ListingFrag extends Fragment implements VaultListingAdapter.Callback {
+public class ListingFrag extends Fragment implements VaultListingAdapter.Callback, SearchView.OnQueryTextListener {
 
     @BindView(R.id.recycle_view)
     RecyclerView rvVaultList;
@@ -45,19 +48,19 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
     private Main main;
     private MaterialCab cab;
     private VaultListingAdapter adapter;
-
+    private SearchView searchView;
     private ECategory category;
-    private boolean isShowingTrash;
+    private EShowType showType;
 
-    public static ListingFrag newInstance(ECategory e) {
-        return newInstance(e, false);
+    public static ListingFrag newInstance(ECategory category) {
+        return newInstance(category, EShowType.HOME);
     }
 
-    public static ListingFrag newInstance(ECategory e, boolean trash) {
+    public static ListingFrag newInstance(ECategory category, EShowType showType) {
         ListingFrag f = new ListingFrag();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ECategory.TYPE, e);
-        bundle.putBoolean(VaultCnt.TRASH, trash);
+        bundle.putSerializable(ECategory.TAG, category);
+        bundle.putSerializable(EShowType.TAG, showType);
         f.setArguments(bundle);
         return f;
     }
@@ -73,14 +76,16 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
+
         this.adapter = new VaultListingAdapter();
         this.adapter.setCallback(this);
 
         Bundle bundle = getArguments();
-        this.category = (ECategory) bundle.getSerializable(ECategory.TYPE);
-        this.isShowingTrash = bundle.getBoolean(VaultCnt.TRASH);
+        this.category = (ECategory) bundle.getSerializable(ECategory.TAG);
+        this.showType = (EShowType) bundle.getSerializable(EShowType.TAG);
 
-        DataAccess.on(category).trash(isShowingTrash).listeners(new IOnFireData() {
+        DataAccess.on(category, showType).listeners(new IOnFireData() {
 
             @Override
             public void add(Bean data) {
@@ -162,9 +167,9 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
 
             ViewCompat.setElevation(cab.getToolbar(), 0.01f);
 
-            menu.findItem(R.id.action_favorite).setVisible(!isShowingTrash);
-            menu.findItem(R.id.action_palette).setVisible(!isShowingTrash);
-            menu.findItem(R.id.action_undo).setVisible(isShowingTrash);
+            menu.findItem(R.id.action_favorite).setVisible(!isShowingTrash());
+            menu.findItem(R.id.action_palette).setVisible(!isShowingTrash());
+            menu.findItem(R.id.action_undo).setVisible(isShowingTrash());
             menu.findItem(R.id.action_settings).setVisible(false);
 
             return true;
@@ -211,15 +216,17 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
                             .cancelButton(R.string.md_cancel_label)
                             .backButton(R.string.md_back_label)
                             .dynamicButtonColor(false)
+                            .allowUserColorInput(false)
+                            .customButton(R.string.update)
                             .show();
 
                     break;
 
                 case R.id.action_delete:
-                    msg = isShowingTrash ? R.string.deleted : R.string.moved_to_trash;
+                    msg = isShowingTrash() ? R.string.deleted : R.string.moved_to_trash;
 
                     for (Integer pos : adapter.getDataSelected()) {
-                        if (isShowingTrash) {
+                        if (isShowingTrash()) {
                             DataAccess.delete(adapter.getItem(pos));
                         } else {
                             DataAccess.trash(adapter.getItem(pos));
@@ -244,6 +251,10 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
         }
     };
 
+    private boolean isShowingTrash() {
+        return showType == EShowType.TRASH;
+    }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -253,5 +264,37 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
         }
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main, menu);
 
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setOnQueryTextListener(this);
+        searchView.setQueryHint(getString(R.string.search_hint));
+    }
+
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        MenuItemCompat.collapseActionView(menu.findItem(R.id.action_search));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adapter.getFilter().filter(newText);
+        return false;
+    }
 }

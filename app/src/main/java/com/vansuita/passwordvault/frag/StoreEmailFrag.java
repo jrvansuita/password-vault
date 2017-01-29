@@ -5,8 +5,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.vansuita.library.Icon;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.adapter.DomainAdapter;
 import com.vansuita.passwordvault.bean.Bean;
@@ -44,6 +46,9 @@ public class StoreEmailFrag extends BaseStoreFragment {
 
     @BindView(R.id.domain_label)
     TextInputLayout tilDomain;
+
+    @BindView(R.id.domain_icon)
+    ImageView ivDomainIcon;
 
 
     @Override
@@ -113,7 +118,7 @@ public class StoreEmailFrag extends BaseStoreFragment {
         actvDomain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                UI.applyIcon(actvDomain, domainAdapter.getItem(i).getIcon());
+                Icon.put(ivDomainIcon, domainAdapter.getItem(i).getIcon());
             }
         });
     }
@@ -156,11 +161,14 @@ public class StoreEmailFrag extends BaseStoreFragment {
         Domain domain = domainAdapter.findDomain(actvDomain.getText().toString());
 
         if (domain != null) {
-            UI.applyIcon(actvDomain, domain.getIcon());
+            Icon.put(ivDomainIcon, domain.getIcon());
+            //UI.applyIcon(actvDomain, domain.getIcon());
         } else if (Validation.isEmail(edEmail)) {
-            UI.applyIcon(actvDomain, R.mipmap.envelop);
+            Icon.put(ivDomainIcon, R.mipmap.envelop);
+            //UI.applyIcon(actvDomain, R.mipmap.envelop);
         } else {
-            UI.applyIcon(actvDomain, 0);
+            Icon.clear(ivDomainIcon);
+            //UI.applyIcon(actvDomain, 0);
         }
     }
 
@@ -172,7 +180,7 @@ public class StoreEmailFrag extends BaseStoreFragment {
         edPassword.setText("");
         actvDomain.setText("");
 
-        UI.applyIcon(actvDomain, 0);
-        UI.applyIcon(edEmail, 0);
+        Icon.clear(ivDomainIcon);
+        Icon.clear(edEmail);
     }
 }

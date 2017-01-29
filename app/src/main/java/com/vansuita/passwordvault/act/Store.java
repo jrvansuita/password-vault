@@ -32,7 +32,7 @@ public class Store extends AppCompatActivity {
 
     private static Intent openingIntent(Context context, ECategory e, Bean bean) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ECategory.TYPE, e);
+        bundle.putSerializable(ECategory.TAG, e);
         bundle.putSerializable(VaultCnt.NAME, bean);
         Intent intent = new Intent(context, Store.class);
         intent.putExtras(bundle);
@@ -61,7 +61,7 @@ public class Store extends AppCompatActivity {
             if (bundle == null)
                 new Exception();
 
-            Class<? extends Fragment> clazz = ((ECategory) bundle.getSerializable(ECategory.TYPE)).getFragClass();
+            Class<? extends Fragment> clazz = ((ECategory) bundle.getSerializable(ECategory.TAG)).getFragClass();
             Fragment fragment = clazz.newInstance();
             fragment.setArguments(bundle);
 

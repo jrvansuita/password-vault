@@ -8,6 +8,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.cnt.VaultCnt;
 import com.vansuita.passwordvault.enums.ECategory;
+import com.vansuita.passwordvault.enums.EShowType;
 import com.vansuita.passwordvault.lis.IOnFireData;
 
 import java.util.ArrayList;
@@ -22,41 +23,33 @@ import static com.vansuita.passwordvault.fire.database.DatabaseAccess.getVaultNo
 
 public class DataAccess {
 
-
-    private boolean showTrash = false;
     private ECategory category;
+    private EShowType showType;
     private IOnFireData listeners;
 
-    DataAccess(ECategory category) {
+    DataAccess(ECategory category, EShowType showType) {
         this.category = category;
+        this.showType = showType;
     }
 
     private void bindListener(ChildEventListener l) {
-        DatabaseReference databaseReference = showTrash ? getTrashNode() : getVaultNode();
+        DatabaseReference databaseReference = showType == EShowType.TRASH ? getTrashNode() : getVaultNode();
 
         if (category != null) {
             databaseReference.orderByChild(VaultCnt.CATEGORY)
                     .equalTo(category.name()).addChildEventListener(l);
         } else {
-            databaseReference.addChildEventListener(l);
+            if (showType == EShowType.FAVORITE){
+                databaseReference.orderByChild(VaultCnt.FAVORITE)
+                        .equalTo(true).addChildEventListener(l);
+            }else {
+                databaseReference.addChildEventListener(l);
+            }
         }
     }
 
-    public static DataAccess on(String e) {
-        return new DataAccess(ECategory.valueOf(e));
-    }
-
-    public static DataAccess on(ECategory e) {
-        return new DataAccess(e);
-    }
-
-    public DataAccess trash(boolean isShowingTrash) {
-        showTrash = isShowingTrash;
-        return this;
-    }
-
-    public DataAccess trash() {
-        return trash(!showTrash);
+    public static DataAccess on(ECategory category, EShowType showType) {
+        return new DataAccess(category, showType);
     }
 
     public DataAccess listeners(IOnFireData listeners) {

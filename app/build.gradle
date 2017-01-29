@@ -47,7 +47,7 @@ dependencies {
     compile 'com.afollestad:material-cab:0.1.12'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 
-    compile 'com.github.jrvansuita:IconHandler:v1.0.1'
+    compile 'com.github.jrvansuita:IconHandler:v1.0.2'
 
 
 }

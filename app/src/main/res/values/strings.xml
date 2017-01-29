@@ -17,6 +17,7 @@
     <string name="website">Website</string>
     <string name="x_selected">%1$d selected</string>
     <string name="sign_in">Sign in </string>
+    <string name="search">Search</string>
     <string name="renew_password">Renew Password</string>
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
@@ -50,6 +51,8 @@
     <string name="color_palette">Color Palette</string>
     <string name="shade">Shade</string>
     <string name="favorite">Favorite</string>
+    <string name="favorites">Favorites</string>
+    <string name="search_hint">Search by title</string>
     <string name="palette">Palette</string>
     <string name="deleted">Deleted!</string>
     <string name="moved_to_trash">Moved to trash!</string>

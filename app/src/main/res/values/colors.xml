@@ -9,7 +9,7 @@
     <color name="primary_light">#B2DFDB</color>
     <color name="accent">#00796B</color>
     <color name="primary_inactive">#5c736f</color>
-    <color name="primary_text">#212121</color>
+    <color name="primary_text">#262626</color>
     <color name="secondary_text">#757575</color>
     <color name="icons">#FFFFFF</color>
     <color name="white_alpha">#adffffff</color>
@@ -21,10 +21,11 @@
     <color name="primary_pressed">#e7f1f0</color>
     <color name="secondary_pressed">#d1d0d0</color>
     <color name="stroke">#949494</color>
-    <!--<color name="card_shadow">#b5b5b5</color>-->
+
     <color name="facebook">#3b5998</color>
     <color name="facebook_stronger">#273c66</color>
-
     <color name="google">#ffffff</color>
     <color name="google_stronger">#c7c6c6</color>
+
+
 </resources>

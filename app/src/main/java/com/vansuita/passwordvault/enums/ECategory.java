@@ -40,7 +40,7 @@ public enum ECategory {
         return iconRes;
     }
 
-    public static final String TYPE = "TYPE";
+    public static final String TAG = "ECATEGORY";
 
 
 

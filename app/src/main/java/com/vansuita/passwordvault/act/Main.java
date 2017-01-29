@@ -20,7 +20,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,9 +39,10 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 import com.squareup.picasso.Transformation;
 import com.vansuita.passwordvault.R;
+import com.vansuita.passwordvault.adapter.CategoryChooserAdapter;
 import com.vansuita.passwordvault.adapter.CategoryListPageAdapter;
+import com.vansuita.passwordvault.adapter.FavoriteListPageAdapter;
 import com.vansuita.passwordvault.adapter.TrashListPageAdapter;
-import com.vansuita.passwordvault.adapter.VaultItemChooserAdapter;
 import com.vansuita.passwordvault.enums.ECategory;
 import com.vansuita.passwordvault.fire.storage.ImageStorage;
 import com.vansuita.passwordvault.lis.IOnResult;
@@ -140,7 +140,7 @@ public class Main extends AppCompatActivity implements ColorChooserDialog.ColorC
     @OnClick(R.id.fab)
     public void onFabClick(View v) {
 
-        VaultItemChooserAdapter adapter = new VaultItemChooserAdapter();
+        CategoryChooserAdapter adapter = new CategoryChooserAdapter();
 
         final MaterialDialog md = new MaterialDialog.Builder(this)
                 .title(R.string.category)
@@ -148,7 +148,7 @@ public class Main extends AppCompatActivity implements ColorChooserDialog.ColorC
                 .cancelable(true)
                 .show();
 
-        adapter.setOnClickItem(new VaultItemChooserAdapter.OnItemClick() {
+        adapter.setOnClickItem(new CategoryChooserAdapter.OnItemClick() {
             @Override
             public void onItemClicked(ECategory type) {
                 startActivity(Store.openingIntent(Main.this, type));
@@ -178,6 +178,18 @@ public class Main extends AppCompatActivity implements ColorChooserDialog.ColorC
                 //Show the fab
                 fab.show();
                 break;
+            case R.id.favorite:
+                //Set the toolbar title
+                toolbar.setTitle(R.string.favorites);
+                //Change the adapter
+                swapViewPagerAdapter(new FavoriteListPageAdapter(getSupportFragmentManager(), this));
+                //Activate auto hide toolbar on scroll
+                toolbarLayoutParams.setScrollFlags(0);
+                //Show the tabs
+                tabLayout.setVisibility(View.GONE);
+                //Show the fab
+                fab.hide();
+                break;
             case R.id.trash:
                 toolbar.setTitle(R.string.trash);
                 //Change the adapter
@@ -189,10 +201,6 @@ public class Main extends AppCompatActivity implements ColorChooserDialog.ColorC
                 //Hide the fab
                 fab.hide();
                 break;
-            case R.id.nav_slideshow:
-                swapViewPagerAdapter(null);
-                break;
-
 
             case R.id.logout:
                 auth.signOut();
@@ -217,9 +225,10 @@ public class Main extends AppCompatActivity implements ColorChooserDialog.ColorC
         }
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        menu.findItem(R.id.action_search).setVisible(false);
         return true;
     }
 
@@ -232,7 +241,7 @@ public class Main extends AppCompatActivity implements ColorChooserDialog.ColorC
             default:
                 return super.onOptionsItemSelected(i);
         }
-    }
+    }*/
 
     private TextView tvName;
     private TextView tvEmail;

@@ -1,30 +1,38 @@
 package com.vansuita.passwordvault.adapter;
 
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.vansuita.library.Icon;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
+import com.vansuita.passwordvault.view.Ripple;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by jrvansuita on 20/01/17.
  */
 
-public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapter.ViewHolder> {
+public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapter.ViewHolder> implements Filterable {
 
     private LinkedList data = new LinkedList();
+    private LinkedList showData = new LinkedList();
     private HashMap<String, Object> map = new HashMap();
     private ArrayList<Integer> dataSelected = new ArrayList();
 
@@ -44,16 +52,24 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
 
         holder.tvTitle.setText(b.getTitle());
         holder.tvDate.setText(DateFormat.getDateTimeInstance().format(b.getDate()));
-        holder.ivIcon.setImageResource(isSelected ? R.mipmap.ic_checked : b.getCategory().getIconRes());
+
+        UI.setFavorite(holder.vFavorite, !isSelected && b.isFavorite());
 
         boolean isDarken = Util.isColorDark(b.getColor());
+
+        if (isSelected) {
+            holder.ivIcon.setImageResource(R.mipmap.ic_checked);
+        } else {
+            Icon.on(holder.ivIcon).color(isDarken ? android.R.color.white : R.color.primary_text).icon(b.getCategory().getIconRes()).put();
+        }
 
         holder.tvTitle.setTextColor(ContextCompat.getColor(holder.ivIcon.getContext(), isDarken && !isSelected ? android.R.color.white : R.color.primary_text));
         holder.tvDate.setTextColor(ContextCompat.getColor(holder.ivIcon.getContext(), isDarken && !isSelected ? android.R.color.white : R.color.secondary_text));
 
-        holder.vColor.setBackgroundColor(b.getColor());
+        holder.vColor.setVisibility(isSelected ? View.GONE : View.VISIBLE);
 
-        UI.setFavorite(holder.vFavorite, !isSelected && b.isFavorite());
+        ViewCompat.setBackground(holder.vColor, Ripple.getAdaptiveRippleDrawable(b.getColor(), Util.darker(b.getColor())));
+
     }
 
     public ArrayList<Integer> getDataSelected() {
@@ -66,12 +82,53 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
 
 
     public Bean getItem(int position) {
-        return (Bean) data.get(position);
+        return (Bean) showData.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return showData.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                showData.clear();
+                showData.addAll((Collection) results.values);
+                notifyDataSetChanged();
+            }
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                List filteredResults;
+                if (constraint.length() == 0) {
+                    filteredResults = data;
+                } else {
+                    filteredResults = getFilteredResults(constraint.toString().toLowerCase());
+                }
+
+                FilterResults results = new FilterResults();
+                results.values = filteredResults;
+
+                return results;
+            }
+
+
+            protected List getFilteredResults(String constraint) {
+                List results = new ArrayList<>();
+
+                for (Object item : data) {
+                    if (((Bean) item).getTitle().toLowerCase().contains(constraint)) {
+                        results.add(item);
+                    }
+                }
+                return results;
+            }
+
+        };
     }
 
 
@@ -143,7 +200,6 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
         notifyItemChanged(index);
     }
 
-
     public void clearSelected() {
         if (getSelectedCount() > 0) {
             dataSelected.clear();
@@ -156,6 +212,7 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
 
     private int addItem(Bean o) {
         data.add(o);
+        showData.add(o);
         map.put(o.getKey(), o);
         return data.size() - 1;
     }
@@ -166,6 +223,7 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
 
     private int addItemAt(int pos, Bean o) {
         data.add(pos, o);
+        showData.add(pos, o);
         map.put(o.getKey(), o);
         return pos;
     }
@@ -175,6 +233,7 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
 
         if (pos >= 0) {
             data.set(pos, o);
+            showData.set(pos, o);
             map.put(o.getKey(), o);
         }
 
@@ -188,6 +247,7 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
     private int removeItem(String key) {
         int pos = data.indexOf(map.get(key));
         data.remove(pos);
+        showData.remove(pos);
         map.remove(key);
         return pos;
     }
@@ -200,6 +260,7 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
         int pos = data.indexOf(map.get(o.getKey()));
 
         data.remove(pos);
+        showData.remove(pos);
 
         if (prev == null) {
             addItemAt(0, o);

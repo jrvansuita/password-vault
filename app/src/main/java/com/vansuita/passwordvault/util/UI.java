@@ -1,9 +1,6 @@
 package com.vansuita.passwordvault.util;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
@@ -11,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.vansuita.library.Icon;
 import com.vansuita.passwordvault.R;
 
 /**
@@ -58,28 +56,30 @@ public class UI {
     }
 
 
-    public static void applyIcon(EditText edit, int res) {
+   /* public static void applyIcon(EditText edit, int res) {
         applyIcon(edit, res == 0 ? null : ContextCompat.getDrawable(edit.getContext(), res));
     }
 
     public static void applyIcon(EditText edit, Bitmap res) {
         Drawable drawable = new BitmapDrawable(edit.getResources(), res);
         applyIcon(edit, drawable);
-    }
-
+    }*/
+/*
     public static void applyIcon(EditText edit, Drawable res) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             edit.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, res, null);
         } else {
             edit.setCompoundDrawablesWithIntrinsicBounds(null, null, res, null);
         }
-    }
+    }*/
 
     public static void applyCheck(boolean apply, TextInputLayout til, EditText edit) {
-        applyIcon(edit, apply ? R.drawable.check : 0);
+        Icon.clear(edit);
 
-        if (apply)
+        if (apply) {
             setError(til);
+            Icon.right(edit, R.drawable.check);
+        }
     }
 
 
@@ -90,8 +90,8 @@ public class UI {
     }
 
 
-    public static void setFavorite(View view, boolean favorite){
-        view.setVisibility(favorite ? View.VISIBLE: View.GONE);
+    public static void setFavorite(View view, boolean favorite) {
+        view.setVisibility(favorite ? View.VISIBLE : View.GONE);
     }
 
 }

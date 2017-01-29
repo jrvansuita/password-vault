@@ -45,12 +45,14 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:text="Name"
+                android:textSize="16sp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/email"
                 style="@style/match_wrap"
+                android:textSize="15sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"

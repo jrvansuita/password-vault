@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.vansuita.passwordvault.R;
+import com.vansuita.passwordvault.enums.EShowType;
 import com.vansuita.passwordvault.frag.ListingFrag;
 
 /**
@@ -23,7 +24,7 @@ public class TrashListPageAdapter extends FragmentStatePagerAdapter{
 
     @Override
     public Fragment getItem(int position) {
-        return ListingFrag.newInstance(null, true);
+        return ListingFrag.newInstance(null, EShowType.TRASH);
     }
 
     @Override

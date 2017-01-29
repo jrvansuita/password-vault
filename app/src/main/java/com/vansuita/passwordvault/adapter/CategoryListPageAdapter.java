@@ -3,7 +3,7 @@ package com.vansuita.passwordvault.adapter;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.enums.ECategory;
@@ -13,7 +13,7 @@ import com.vansuita.passwordvault.frag.ListingFrag;
  * Created by jrvansuita on 20/01/17.
  */
 
-public class CategoryListPageAdapter extends FragmentPagerAdapter {
+public class CategoryListPageAdapter extends FragmentStatePagerAdapter {
 
     private Context context;
 

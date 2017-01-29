@@ -10,6 +10,6 @@ public class VaultCnt {
     public static final String TRASH = "TRASH";
     public static final String CATEGORY = "category";
     public static final String CLAZZ = "clazz";
-
+    public static final String FAVORITE = "favorite";
 
 }

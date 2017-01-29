@@ -159,5 +159,13 @@ public class Util extends com.vansuita.pickimage.Util {
         }
     }
 
+    public static int darker(int color){
+        int r = Color.red(color);
+        int b = Color.blue(color);
+        int g = Color.green(color);
+
+        return Color.rgb((int)(r*.9), (int)(g*.9), (int)(b*.9));
+    }
+
 
 }
