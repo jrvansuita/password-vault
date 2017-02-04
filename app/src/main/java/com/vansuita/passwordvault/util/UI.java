@@ -2,8 +2,14 @@ package com.vansuita.passwordvault.util;
 
 import android.app.Activity;
 import android.os.Build;
+import android.preference.EditTextPreference;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceGroup;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -32,20 +38,6 @@ public class UI {
         t.setErrorEnabled(!(msg == null || msg.isEmpty()));
     }
 
-    /*public static void clearErrors(ViewGroup holder) {
-        for (int i = 0; i < holder.getChildCount(); i++) {
-            View v = holder.getChildAt(i);
-
-            if (v instanceof TextInputLayout) {
-                setError(((TextInputLayout) v));
-            } else if (v instanceof EditText) {
-                ((EditText) v).setError(null);
-            } else if (v instanceof ViewGroup) {
-                clearErrors((ViewGroup) v);
-            }
-        }
-    }*/
-
     public static boolean error(TextInputLayout til, boolean doThrow, int msg) {
         til.setErrorEnabled(doThrow);
 
@@ -56,22 +48,13 @@ public class UI {
     }
 
 
-   /* public static void applyIcon(EditText edit, int res) {
-        applyIcon(edit, res == 0 ? null : ContextCompat.getDrawable(edit.getContext(), res));
-    }
+    public static void menuVisibility(Menu menu, boolean show) {
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
 
-    public static void applyIcon(EditText edit, Bitmap res) {
-        Drawable drawable = new BitmapDrawable(edit.getResources(), res);
-        applyIcon(edit, drawable);
-    }*/
-/*
-    public static void applyIcon(EditText edit, Drawable res) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            edit.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, res, null);
-        } else {
-            edit.setCompoundDrawablesWithIntrinsicBounds(null, null, res, null);
+            item.setVisible(show);
         }
-    }*/
+    }
 
     public static void applyCheck(boolean apply, TextInputLayout til, EditText edit) {
         Icon.clear(edit);
@@ -94,4 +77,23 @@ public class UI {
         view.setVisibility(favorite ? View.VISIBLE : View.GONE);
     }
 
+    public static void setSummary(PreferenceGroup group) {
+        for (int i = 0; i < group.getPreferenceCount(); i++) {
+            Preference pref = group.getPreference(i);
+
+            if (pref instanceof PreferenceGroup) {
+                setSummary((PreferenceGroup) pref);
+            } else {
+                setSummary(pref);
+            }
+        }
+    }
+
+    public static void setSummary(Preference pref) {
+        if (pref instanceof EditTextPreference) {
+            pref.setSummary(((EditTextPreference) pref).getText());
+        } else if (pref instanceof ListPreference) {
+            pref.setSummary(((ListPreference) pref).getEntry());
+        }
+    }
 }

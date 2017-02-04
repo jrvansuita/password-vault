@@ -32,8 +32,14 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/action_edit"
+        android:orderInCategory="101"
+        android:title="@string/edit"
+        app:showAsAction="never" />
+
+    <!--<item
         android:id="@+id/action_settings"
         android:orderInCategory="101"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
 </menu>

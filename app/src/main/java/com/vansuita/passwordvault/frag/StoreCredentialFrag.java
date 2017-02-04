@@ -7,9 +7,7 @@ import android.widget.TextView;
 
 import com.vansuita.library.Icon;
 import com.vansuita.passwordvault.R;
-import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.bean.Credential;
-import com.vansuita.passwordvault.fire.dao.DataAccess;
 import com.vansuita.passwordvault.frag.base.BaseStoreFragment;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
@@ -23,7 +21,7 @@ import butterknife.OnFocusChange;
  * Created by jrvansuita on 26/11/16.
  */
 
-public class StoreCredentialFrag extends BaseStoreFragment {
+public class StoreCredentialFrag extends BaseStoreFragment<Credential> {
 
     @BindView(R.id.login)
     EditText edLogin;
@@ -60,13 +58,8 @@ public class StoreCredentialFrag extends BaseStoreFragment {
         return edLogin.getText().toString();
     }
 
-
     @Override
-    protected void onLoad(Bean bean) {
-        super.onLoad(bean);
-
-        Credential credential = (Credential) bean;
-
+    public void onLoad(Credential credential) {
         edLogin.setText(credential.getLogin());
         edEmail.setText(credential.getEmail());
         edPassword.setText(credential.getPassword());
@@ -86,6 +79,11 @@ public class StoreCredentialFrag extends BaseStoreFragment {
     @Override
     public TextView getSubmitElement() {
         return edWebsite;
+    }
+
+    @Override
+    public void onSetup() {
+
     }
 
     @OnFocusChange(R.id.password)
@@ -112,7 +110,7 @@ public class StoreCredentialFrag extends BaseStoreFragment {
 
 
     @Override
-    public boolean canStore() {
+    public boolean onCanStore() {
         boolean good = true;
 
         autoFillLogin();
@@ -127,20 +125,11 @@ public class StoreCredentialFrag extends BaseStoreFragment {
     }
 
     @Override
-    public void onStore() {
-        Credential credential = super.getObject(Credential.class);
-
-        if (credential != null) {
-            credential.setTitle(getTitleValue());
-            credential.setLogin(edLogin.getText().toString());
-            credential.setEmail(edEmail.getText().toString());
-            credential.setPassword(edPassword.getText().toString());
-            credential.setWebsite(edWebsite.getText().toString());
-
-            DataAccess.put(credential);
-
-            super.onFinish();
-        }
+    public void onStore(Credential credential) {
+        credential.setLogin(edLogin.getText().toString());
+        credential.setEmail(edEmail.getText().toString());
+        credential.setPassword(edPassword.getText().toString());
+        credential.setWebsite(edWebsite.getText().toString());
     }
 
     private void autoFillLogin() {
@@ -150,15 +139,14 @@ public class StoreCredentialFrag extends BaseStoreFragment {
     }
 
     @Override
-    protected void onClear() {
-        super.onClear();
-
+    public void onClear() {
         edLogin.setText("");
         edEmail.setText("");
         edPassword.setText("");
         edWebsite.setText("");
 
         Icon.clear(edEmail);
+        UI.setError(tilEmail);
         favIconWebView.clear();
     }
 }

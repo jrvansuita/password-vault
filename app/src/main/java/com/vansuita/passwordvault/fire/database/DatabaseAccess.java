@@ -25,12 +25,13 @@ public class DatabaseAccess {
         return getDatabaseNode().child(VaultCnt.NAME);
     }
 
-
-
     public synchronized static DatabaseReference getTrashNode() {
         return getDatabaseNode().child(VaultCnt.TRASH);
     }
 
+    public static void clear(){
+        databaseReference = null;
+    }
 
 
 }

@@ -29,7 +29,7 @@ public class CategoryChooserAdapter extends RecyclerView.Adapter<CategoryChooser
         ECategory e = ECategory.values()[position];
 
         holder.title.setText(e.getTitleRes());
-        Icon.on(holder.icon).color(R.color.primary).icon(e.getIconRes()).put();
+        Icon.on(holder.icon).color(R.color.secondary_text).pressedEffect(false).icon(e.getIconRes()).put();
     }
 
     @Override

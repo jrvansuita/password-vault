@@ -12,29 +12,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vansuita.passwordvault.R;
-import com.vansuita.passwordvault.bean.Domain;
+import com.vansuita.passwordvault.enums.EEmailDomain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by jrvansuita on 18/01/17.
  */
 
-public class DomainAdapter extends ArrayAdapter<Domain> {
+public class DomainAdapter extends ArrayAdapter<EEmailDomain> {
 
-    private List<Domain> original = new ArrayList();
-    private ArrayList<Domain> suggestions = new ArrayList<>();
+    private List<EEmailDomain> original = new ArrayList();
+    private ArrayList<EEmailDomain> suggestions = new ArrayList<>();
 
     public DomainAdapter(Context context) {
         super(context, 0);
 
-
-        original.add(new Domain("gmail.com", R.mipmap.gmail));
-        original.add(new Domain("outlook.com", R.mipmap.outlook));
-        original.add(new Domain("hotmail.com", R.mipmap.hotmail));
-        original.add(new Domain("yahoo.com", R.mipmap.yahoo));
-        original.add(new Domain("terra.com", R.mipmap.terra));
+        original.addAll(Arrays.asList(EEmailDomain.values()));
     }
 
 
@@ -45,7 +41,7 @@ public class DomainAdapter extends ArrayAdapter<Domain> {
         if (v == null)
             v = LayoutInflater.from(getContext()).inflate(R.layout.domain_item, null);
 
-        Domain domain = getItem(position);
+        EEmailDomain domain = getItem(position);
         ((ImageView) v.findViewById(R.id.icon)).setImageResource(domain.getIcon());
         ((TextView) v.findViewById(R.id.name)).setText(domain.getName());
 
@@ -54,7 +50,7 @@ public class DomainAdapter extends ArrayAdapter<Domain> {
 
     @Nullable
     @Override
-    public Domain getItem(int position) {
+    public EEmailDomain getItem(int position) {
         return suggestions.get(position);
     }
 
@@ -78,7 +74,7 @@ public class DomainAdapter extends ArrayAdapter<Domain> {
             suggestions.clear();
 
             if (original != null && constraint != null)
-                for (Domain domain : original) {
+                for (EEmailDomain domain : original) {
                     if (domain.getName().toLowerCase().startsWith(constraint.toString().toLowerCase()))
                         suggestions.add(domain);
                 }
@@ -100,12 +96,4 @@ public class DomainAdapter extends ArrayAdapter<Domain> {
         }
     }
 
-    public Domain findDomain(String name) {
-        if (name != null)
-            for (Domain domain : original)
-                if (domain.getName().equalsIgnoreCase(name.toString().toLowerCase()))
-                    return domain;
-
-        return null;
-    }
 }

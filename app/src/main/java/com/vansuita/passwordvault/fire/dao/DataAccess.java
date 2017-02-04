@@ -43,7 +43,7 @@ public class DataAccess {
                 databaseReference.orderByChild(VaultCnt.FAVORITE)
                         .equalTo(true).addChildEventListener(l);
             }else {
-                databaseReference.addChildEventListener(l);
+                databaseReference.orderByChild(VaultCnt.LAST_DATE).addChildEventListener(l);
             }
         }
     }

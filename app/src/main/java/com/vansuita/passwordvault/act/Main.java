@@ -38,27 +38,30 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 import com.squareup.picasso.Transformation;
+import com.vansuita.passwordvault.BuildConfig;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.adapter.CategoryChooserAdapter;
 import com.vansuita.passwordvault.adapter.CategoryListPageAdapter;
 import com.vansuita.passwordvault.adapter.FavoriteListPageAdapter;
 import com.vansuita.passwordvault.adapter.TrashListPageAdapter;
 import com.vansuita.passwordvault.enums.ECategory;
+import com.vansuita.passwordvault.fire.database.DatabaseAccess;
 import com.vansuita.passwordvault.fire.storage.ImageStorage;
 import com.vansuita.passwordvault.lis.IOnResult;
 import com.vansuita.passwordvault.receiver.NetworkStateChangeReceiver;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
 import com.vansuita.passwordvault.view.Snack;
-import com.vansuita.pickimage.IPickResult;
 import com.vansuita.pickimage.PickImageDialog;
 import com.vansuita.pickimage.PickSetup;
+import com.vansuita.pickimage.bean.PickResult;
+import com.vansuita.pickimage.listeners.IPickResult;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class Main extends AppCompatActivity implements ColorChooserDialog.ColorCallback, NavigationView.OnNavigationItemSelectedListener, IPickResult.IPickResultUri, ViewPager.OnPageChangeListener {
+public class Main extends AppCompatActivity implements ColorChooserDialog.ColorCallback, IPickResult, NavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -202,7 +205,12 @@ public class Main extends AppCompatActivity implements ColorChooserDialog.ColorC
                 fab.hide();
                 break;
 
+            case R.id.settings:
+                startActivity(new Intent(Main.this, Preferences.class));
+                break;
+
             case R.id.logout:
+                DatabaseAccess.clear();
                 auth.signOut();
                 startActivity(new Intent(Main.this, Login.class));
                 finish();
@@ -284,7 +292,8 @@ public class Main extends AppCompatActivity implements ColorChooserDialog.ColorC
                 imAvatar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        PickImageDialog.on(Main.this, new PickSetup());
+                        PickSetup setup = new PickSetup(BuildConfig.APPLICATION_ID);
+                        PickImageDialog.on(Main.this, setup);
                     }
                 });
             }
@@ -292,7 +301,7 @@ public class Main extends AppCompatActivity implements ColorChooserDialog.ColorC
     };
 
     @Override
-    public void onPickImageResult(Uri uri) {
+    public void onPickResult(PickResult r) {
         progress.show();
         ImageStorage.with(this).setName(auth.getCurrentUser().getUid()).setOnResult(new IOnResult<Uri>() {
             @Override
@@ -310,7 +319,7 @@ public class Main extends AppCompatActivity implements ColorChooserDialog.ColorC
                             }
                         });
             }
-        }).store(uri);
+        }).store(r.getUri());
     }
 
     public MaterialCab getCab() {
@@ -371,7 +380,7 @@ public class Main extends AppCompatActivity implements ColorChooserDialog.ColorC
 
     @Override
     public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
-        if (onColorCallBack != null){
+        if (onColorCallBack != null) {
             onColorCallBack.onColorSelection(dialog, selectedColor);
         }
     }

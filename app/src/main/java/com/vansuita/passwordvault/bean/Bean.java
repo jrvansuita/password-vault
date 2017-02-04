@@ -16,10 +16,12 @@ public class Bean implements Serializable {
 
     private String key;
     private String title;
-    private long time;
     private ECategory category;
     private boolean favorite;
     private int color;
+
+    private long time;
+    private long lastTime;
 
     public String getKey() {
         return key;
@@ -73,12 +75,21 @@ public class Bean implements Serializable {
         this.color = color;
     }
 
+    public long getLastTime() {
+        return lastTime;
+    }
+
+    public void setLastTime(long lastTime) {
+        this.lastTime = lastTime;
+    }
+
     public Bean(ECategory category) {
         setTitle("");
         setDate(new Date());
         setCategory(category);
         setFavorite(false);
         setColor(Color.WHITE);
+        setLastDate(new Date());
     }
 
     //Prevent Firebase Database to serealize this method
@@ -91,12 +102,24 @@ public class Bean implements Serializable {
         }
     }
 
-    //Prevent Firebase Database to serealize this method
     @Exclude
     public Date getDate() {
         return new Date(time);
     }
 
+    @Exclude
+    public void setLastDate(Date date) {
+        if (date != null) {
+            setLastTime(date.getTime());
+        } else {
+            setLastTime(0);
+        }
+    }
+
+    @Exclude
+    public Date getLastDate() {
+        return new Date(lastTime);
+    }
 
     @Exclude
     public boolean isNew() {

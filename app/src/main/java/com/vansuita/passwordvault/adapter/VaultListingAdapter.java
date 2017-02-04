@@ -1,11 +1,15 @@
 package com.vansuita.passwordvault.adapter;
 
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -14,13 +18,19 @@ import android.widget.TextView;
 import com.vansuita.library.Icon;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.bean.Bean;
+import com.vansuita.passwordvault.bean.Email;
+import com.vansuita.passwordvault.enums.EEmailDomain;
+import com.vansuita.passwordvault.fire.dao.DataAccess;
+import com.vansuita.passwordvault.pref.Pref;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
+import com.vansuita.passwordvault.util.Visible;
 import com.vansuita.passwordvault.view.Ripple;
+import com.vansuita.passwordvault.view.Snack;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,28 +58,43 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         boolean isSelected = dataSelected.contains(position);
         holder.root.setActivated(isSelected);
-        Bean b = getItem(position);
+        Bean bean = getItem(position);
 
-        holder.tvTitle.setText(b.getTitle());
-        holder.tvDate.setText(DateFormat.getDateTimeInstance().format(b.getDate()));
+        holder.tvTitle.setText(bean.getTitle());
 
-        UI.setFavorite(holder.vFavorite, !isSelected && b.isFavorite());
+        CharSequence s = DateUtils.getRelativeTimeSpanString(bean.getLastTime(), new Date().getTime(), 0L, DateUtils.FORMAT_ABBREV_ALL);
 
-        boolean isDarken = Util.isColorDark(b.getColor());
+        holder.tvDate.setText(s);
 
-        if (isSelected) {
-            holder.ivIcon.setImageResource(R.mipmap.ic_checked);
+        UI.setFavorite(holder.vFavorite, bean.isFavorite());
+
+        boolean isDarken = Util.isColorDark(bean.getColor());
+        boolean canColor = Pref.with(holder.ivIcon.getContext()).canChangeItemsColor();
+
+        if (!canColor)
+            bean.setColor(Color.WHITE);
+
+        if (bean instanceof Email) {
+            EEmailDomain domain = EEmailDomain.findDomain(((Email) bean).getEmail());
+            Icon.on(holder.ivIcon).icon(domain.getIcon()).put();
         } else {
-            Icon.on(holder.ivIcon).color(isDarken ? android.R.color.white : R.color.primary_text).icon(b.getCategory().getIconRes()).put();
+            Icon.on(holder.ivIcon).color(android.R.color.white).icon(bean.getCategory().getIconRes()).put();
         }
 
-        holder.tvTitle.setTextColor(ContextCompat.getColor(holder.ivIcon.getContext(), isDarken && !isSelected ? android.R.color.white : R.color.primary_text));
-        holder.tvDate.setTextColor(ContextCompat.getColor(holder.ivIcon.getContext(), isDarken && !isSelected ? android.R.color.white : R.color.secondary_text));
+        Visible.with(holder.vSelected).gone(!isSelected);
+
+        if (isSelected) {
+            holder.vSelected.startAnimation(AnimationUtils.loadAnimation(holder.vSelected.getContext(), R.anim.expand_in));
+        }
 
         holder.vColor.setVisibility(isSelected ? View.GONE : View.VISIBLE);
 
-        ViewCompat.setBackground(holder.vColor, Ripple.getAdaptiveRippleDrawable(b.getColor(), Util.darker(b.getColor())));
+        if(canColor) {
+            holder.tvTitle.setTextColor(ContextCompat.getColor(holder.ivIcon.getContext(), isDarken && !isSelected ? android.R.color.white : R.color.secondary_text));
+            holder.tvDate.setTextColor(ContextCompat.getColor(holder.ivIcon.getContext(), isDarken && !isSelected ? android.R.color.white : R.color.secondary_text));
+        }
 
+        ViewCompat.setBackground(holder.vColor, Ripple.getAdaptiveRippleDrawable(bean.getColor(), Util.darker(bean.getColor())));
     }
 
     public ArrayList<Integer> getDataSelected() {
@@ -139,6 +164,7 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
         ImageView ivIcon;
         View vFavorite;
         View vColor;
+        View vSelected;
 
         public ViewHolder(View v) {
             super(v);
@@ -149,6 +175,7 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
             ivIcon = (ImageView) v.findViewById(R.id.icon);
             vFavorite = v.findViewById(R.id.favorite);
             vColor = v.findViewById(R.id.color);
+            vSelected = v.findViewById(R.id.selected);
 
             ivIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -168,7 +195,7 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
                 @Override
                 public boolean onLongClick(View view) {
                     callback.onItemClicked(getLayoutPosition(), true);
-                    return false;
+                    return true;
                 }
             });
 
@@ -282,10 +309,11 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
 
 
     public void attachSwipe(RecyclerView rv) {
-        // swipeToDismiss.attachToRecyclerView(rv);
+        if (Pref.with(rv.getContext()).isSwipeToDeleteActive())
+            swipeToDismiss.attachToRecyclerView(rv);
     }
 
-    /*ItemTouchHelper swipeToDismiss = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
+    ItemTouchHelper swipeToDismiss = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         @Override
         public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -303,5 +331,5 @@ public class VaultListingAdapter extends RecyclerView.Adapter<VaultListingAdapte
                 }
             });
         }
-    });*/
+    });
 }

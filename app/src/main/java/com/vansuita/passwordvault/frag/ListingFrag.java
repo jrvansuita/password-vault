@@ -29,6 +29,7 @@ import com.vansuita.passwordvault.enums.ECategory;
 import com.vansuita.passwordvault.enums.EShowType;
 import com.vansuita.passwordvault.fire.dao.DataAccess;
 import com.vansuita.passwordvault.lis.IOnFireData;
+import com.vansuita.passwordvault.pref.Pref;
 import com.vansuita.passwordvault.view.Snack;
 
 import butterknife.BindView;
@@ -48,7 +49,9 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
     private Main main;
     private MaterialCab cab;
     private VaultListingAdapter adapter;
+    private MenuItem searchMenuItem;
     private SearchView searchView;
+    private MenuItem editMenuItem;
     private ECategory category;
     private EShowType showType;
 
@@ -123,8 +126,14 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
     }
 
     private void setup() {
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        rvVaultList.setLayoutManager(mLayoutManager);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+
+        if (Pref.with(getContext()).isLastFirst()) {
+            layoutManager.setReverseLayout(true);
+            layoutManager.setStackFromEnd(true);
+        }
+
+        rvVaultList.setLayoutManager(layoutManager);
         rvVaultList.setItemAnimator(new DefaultItemAnimator());
 
         //rvVaultList.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.divider));
@@ -133,18 +142,28 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
 
     }
 
-    @Override
-    public void onItemClicked(int index, boolean longClick) {
-        if (longClick || (cab.isActive())) {
-            onIconClicked(index);
-            return;
-        } else if (!longClick) {
-            startActivity(Store.openingIntent(getContext(), adapter.getItem(index)));
-        }
-    }
 
     @Override
     public void onIconClicked(int index) {
+        onItemSelected(index);
+    }
+
+    @Override
+    public void onItemClicked(int index, boolean longClick) {
+        if (longClick || (cab.isActive())) {
+            onItemSelected(index);
+            return;
+        } else if (!longClick) {
+            openEditItem(index);
+        }
+    }
+
+    private void openEditItem(int index) {
+        startActivity(Store.openingIntent(getContext(), adapter.getItem(index)));
+    }
+
+
+    private void onItemSelected(int index) {
         adapter.toggleSelected(index);
 
         if (adapter.getSelectedCount() == 0) {
@@ -156,6 +175,10 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
             cab.start(callback);
 
         cab.setTitle(getString(R.string.x_selected, adapter.getSelectedCount()));
+
+        if (editMenuItem != null){
+            editMenuItem.setVisible(adapter.getSelectedCount() == 1);
+        }
     }
 
 
@@ -165,12 +188,13 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
         public boolean onCabCreated(MaterialCab cab, Menu menu) {
             main.selectionState(true);
 
+
             ViewCompat.setElevation(cab.getToolbar(), 0.01f);
 
             menu.findItem(R.id.action_favorite).setVisible(!isShowingTrash());
-            menu.findItem(R.id.action_palette).setVisible(!isShowingTrash());
+            menu.findItem(R.id.action_palette).setVisible(!isShowingTrash() && Pref.with(getContext()).canChangeItemsColor());
             menu.findItem(R.id.action_undo).setVisible(isShowingTrash());
-            menu.findItem(R.id.action_settings).setVisible(false);
+            editMenuItem = menu.findItem(R.id.action_edit);
 
             return true;
         }
@@ -233,6 +257,11 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
                         }
                     }
                     break;
+
+
+                case R.id.action_edit:
+                    openEditItem(adapter.getDataSelected().get(0));
+                    break;
             }
 
             if (msg > 0) {
@@ -247,6 +276,7 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
         public boolean onCabFinished(MaterialCab cab) {
             main.selectionState(false);
             adapter.clearSelected();
+            editMenuItem = null;
             return true;
         }
     };
@@ -264,11 +294,13 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
         }
     }
 
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main, menu);
 
-        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchMenuItem = menu.findItem(R.id.action_search);
+        searchView = (SearchView) searchMenuItem.getActionView();
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint(getString(R.string.search_hint));
     }
@@ -278,7 +310,9 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        MenuItemCompat.collapseActionView(menu.findItem(R.id.action_search));
+        if (searchMenuItem.isActionViewExpanded()) {
+            MenuItemCompat.collapseActionView(searchMenuItem);
+        }
     }
 
     @Override

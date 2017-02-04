@@ -3,24 +3,32 @@ package com.vansuita.passwordvault.act;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.FrameLayout;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.cnt.VaultCnt;
 import com.vansuita.passwordvault.enums.ECategory;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by jrvansuita on 16/01/17.
  */
 
-public class Store extends AppCompatActivity {
+public class Store extends AppCompatActivity implements ColorChooserDialog.ColorCallback {
 
-    private FrameLayout root;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
 
     public static Intent openingIntent(Context context, ECategory e) {
         return openingIntent(context, e, null);
@@ -44,11 +52,14 @@ public class Store extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        root = new FrameLayout(this);
-        root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        root.setId(R.id.root_view);
+        setContentView(R.layout.store_activity);
 
-        setContentView(root);
+        ButterKnife.bind(Store.this);
+
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         onSetup();
 
@@ -66,13 +77,27 @@ public class Store extends AppCompatActivity {
             fragment.setArguments(bundle);
 
             getSupportFragmentManager()
-                    .beginTransaction().add(R.id.root_view, fragment)
+                    .beginTransaction().add(R.id.fragment_holder, fragment)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
 
         } catch (Exception e) {
             Toast.makeText(this, getString(R.string.internal_error), Toast.LENGTH_SHORT).show();
             finish();
+        }
+    }
+
+
+    private ColorChooserDialog.ColorCallback onColorCallBack;
+
+    public void setOnColorCallBack(ColorChooserDialog.ColorCallback onColorCallBack) {
+        this.onColorCallBack = onColorCallBack;
+    }
+
+    @Override
+    public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
+        if (onColorCallBack != null) {
+            onColorCallBack.onColorSelection(dialog, selectedColor);
         }
     }
 }

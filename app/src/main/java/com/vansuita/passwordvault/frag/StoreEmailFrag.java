@@ -11,10 +11,8 @@ import android.widget.TextView;
 import com.vansuita.library.Icon;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.adapter.DomainAdapter;
-import com.vansuita.passwordvault.bean.Bean;
-import com.vansuita.passwordvault.bean.Domain;
 import com.vansuita.passwordvault.bean.Email;
-import com.vansuita.passwordvault.fire.dao.DataAccess;
+import com.vansuita.passwordvault.enums.EEmailDomain;
 import com.vansuita.passwordvault.frag.base.BaseStoreFragment;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
@@ -27,7 +25,7 @@ import butterknife.OnFocusChange;
  * Created by jrvansuita on 26/11/16.
  */
 
-public class StoreEmailFrag extends BaseStoreFragment {
+public class StoreEmailFrag extends BaseStoreFragment<Email> {
 
     @BindView(R.id.email)
     EditText edEmail;
@@ -73,11 +71,7 @@ public class StoreEmailFrag extends BaseStoreFragment {
 
 
     @Override
-    protected void onLoad(Bean bean) {
-        super.onLoad(bean);
-
-        Email email = (Email) bean;
-
+    public void onLoad(Email email) {
         edEmail.setText(email.getEmail());
         edPassword.setText(email.getPassword());
         autoFillDomain();
@@ -109,10 +103,7 @@ public class StoreEmailFrag extends BaseStoreFragment {
     DomainAdapter domainAdapter;
 
     @Override
-    protected void setup() {
-        super.setup();
-
-
+    public void onSetup() {
         domainAdapter = new DomainAdapter(getActivity());
         actvDomain.setAdapter(domainAdapter);
         actvDomain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -124,7 +115,7 @@ public class StoreEmailFrag extends BaseStoreFragment {
     }
 
     @Override
-    public boolean canStore() {
+    public boolean onCanStore() {
         boolean good = true;
 
         good = good & UI.error(tilEmail, !Validation.isEmail(edEmail), R.string.email_not_right);
@@ -134,17 +125,9 @@ public class StoreEmailFrag extends BaseStoreFragment {
     }
 
     @Override
-    public void onStore() {
-        Email email = super.getObject(Email.class);
-
-        if (email != null) {
-            email.setTitle(getTitleValue());
-            email.setEmail(edEmail.getText().toString());
-            email.setPassword(edPassword.getText().toString());
-
-            DataAccess.put(email);
-            super.onFinish();
-        }
+    public void onStore(Email email) {
+        email.setEmail(edEmail.getText().toString());
+        email.setPassword(edPassword.getText().toString());
     }
 
 
@@ -158,24 +141,19 @@ public class StoreEmailFrag extends BaseStoreFragment {
     }
 
     private void fillDomainIcon() {
-        Domain domain = domainAdapter.findDomain(actvDomain.getText().toString());
+        EEmailDomain domain = EEmailDomain.match(actvDomain.getText().toString());
 
         if (domain != null) {
             Icon.put(ivDomainIcon, domain.getIcon());
-            //UI.applyIcon(actvDomain, domain.getIcon());
         } else if (Validation.isEmail(edEmail)) {
             Icon.put(ivDomainIcon, R.mipmap.envelop);
-            //UI.applyIcon(actvDomain, R.mipmap.envelop);
         } else {
             Icon.clear(ivDomainIcon);
-            //UI.applyIcon(actvDomain, 0);
         }
     }
 
     @Override
-    protected void onClear() {
-        super.onClear();
-
+    public void onClear() {
         edEmail.setText("");
         edPassword.setText("");
         actvDomain.setText("");

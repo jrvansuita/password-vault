@@ -42,12 +42,16 @@
             android:parentActivityName=".act.Main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|stateVisible">
+            android:windowSoftInputMode="adjustResize|stateVisible"></activity>
 
 
+        <activity
+            android:name=".act.Preferences"
+            android:parentActivityName=".act.Main"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Pref"
+            android:windowSoftInputMode="adjustResize|stateVisible"></activity>
 
-
-        </activity>
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -55,6 +59,7 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             tools:replace="android:theme" />
+
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -67,6 +72,16 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.com.vansuita.pickimage.provider"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
 
     </application>
 

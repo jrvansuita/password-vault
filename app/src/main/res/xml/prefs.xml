@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="@string/key_root">
+
+        <PreferenceCategory
+            android:key="@string/key_dynamic"
+            android:title="@string/dynamic">
+
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="@string/key_swipe_to_delete"
+                android:title="@string/swipe_to_delete" />
+
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="@string/key_changing_colors"
+                android:title="@string/change_items_color" />
+
+
+        </PreferenceCategory>
+
+
+        <PreferenceCategory
+            android:key="@string/key_ordination"
+            android:title="@string/ordination">
+
+
+            <EditTextPreference
+                android:defaultValue="0.3"
+                android:key="sdsd"
+                android:numeric="decimal"
+                android:title="oisdoisjd" />
+
+
+            <ListPreference
+                android:defaultValue="0"
+                android:entries="@array/items_order_entry"
+                android:entryValues="@array/items_order_values"
+                android:key="@string/key_items_order"
+                android:title="@string/items_order" />
+
+        </PreferenceCategory>
+</PreferenceScreen>

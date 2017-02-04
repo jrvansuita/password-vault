@@ -5,9 +5,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.vansuita.passwordvault.R;
-import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.bean.Note;
-import com.vansuita.passwordvault.fire.dao.DataAccess;
 import com.vansuita.passwordvault.frag.base.BaseStoreFragment;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Validation;
@@ -18,7 +16,7 @@ import butterknife.BindView;
  * Created by jrvansuita on 26/11/16.
  */
 
-public class StoreNoteFrag extends BaseStoreFragment {
+public class StoreNoteFrag extends BaseStoreFragment<Note> {
 
     @BindView(R.id.note)
     EditText edNote;
@@ -46,40 +44,27 @@ public class StoreNoteFrag extends BaseStoreFragment {
         return edNote;
     }
 
+    @Override
+    public void onSetup() {
+    }
 
     @Override
-    protected void onLoad(Bean bean) {
-        super.onLoad(bean);
-
-        Note note = (Note) bean;
-
+    public void onLoad(Note note) {
         edNote.setText(note.getNote());
     }
 
     @Override
-    public boolean canStore() {
+    public boolean onCanStore() {
         return UI.error(tilNote, Validation.isEmpty(edNote), R.string.error_field_required);
     }
 
-
     @Override
-    public void onStore() {
-        Note note = super.getObject(Note.class);
-
-        if (note != null) {
-            note.setTitle(getTitleValue());
-            note.setNote(edNote.getText().toString());
-
-            DataAccess.put(note);
-            super.onFinish();
-        }
+    public void onStore(Note note) {
+        note.setNote(edNote.getText().toString());
     }
 
-
     @Override
-    protected void onClear() {
-        super.onClear();
-
+    public void onClear() {
         edNote.setText("");
     }
 }

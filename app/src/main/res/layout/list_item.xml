@@ -18,6 +18,7 @@
 
         <View
             android:id="@+id/color"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -38,26 +39,47 @@
 
         <RelativeLayout
             style="@style/match_wrap"
-            android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp">
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp">
 
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+
+            <FrameLayout
+                android:id="@+id/icon_holder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:src="@mipmap/envelop" />
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/icon"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/icon_background"
+                    android:padding="4dp"
+                    android:src="@mipmap/envelop" />
+
+                <ImageView
+                    android:id="@+id/selected"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_gravity="bottom|right"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/selected_item_icon" />
+            </FrameLayout>
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_toRightOf="@+id/icon"
+                android:layout_toLeftOf="@+id/right_holder"
+                android:layout_toRightOf="@+id/icon_holder"
                 android:orientation="vertical"
                 android:paddingLeft="10dp">
 
@@ -68,8 +90,19 @@
                     android:layout_gravity="left"
                     android:layout_marginBottom="2dp"
                     android:text="Teste"
-                    android:textColor="@color/primary_text"
-                    android:textSize="14dp" />
+                    android:textColor="@color/secondary_text"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/right_holder"
+                android:padding="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true">
 
                 <TextView
                     android:id="@+id/date"
