@@ -21,9 +21,10 @@
             android:title="@string/settings" />
     </group>
 
-    <item android:title="">
+    <item android:title="@string/account">
         <menu>
             <item
+                android:icon="@drawable/logout"
                 android:id="@+id/logout"
                 android:title="@string/logout" />
         </menu>

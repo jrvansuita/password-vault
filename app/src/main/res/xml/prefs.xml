@@ -2,42 +2,59 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="@string/key_root">
 
-        <PreferenceCategory
-            android:key="@string/key_dynamic"
-            android:title="@string/dynamic">
+    <PreferenceCategory
+        android:key="@string/key_layout_dynamics"
+        android:title="@string/layout_dynamics">
 
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="@string/key_swipe_to_delete"
-                android:title="@string/swipe_to_delete" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/key_swipe_to_delete"
+            android:title="@string/swipe_to_delete" />
 
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="@string/key_changing_colors"
-                android:title="@string/change_items_color" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/key_changing_colors"
+            android:title="@string/change_items_color" />
 
-
-        </PreferenceCategory>
-
-
-        <PreferenceCategory
-            android:key="@string/key_ordination"
-            android:title="@string/ordination">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/key_domain_icons"
+            android:title="@string/domain_icons" />
 
 
-            <EditTextPreference
-                android:defaultValue="0.3"
-                android:key="sdsd"
-                android:numeric="decimal"
-                android:title="oisdoisjd" />
+    </PreferenceCategory>
 
 
-            <ListPreference
-                android:defaultValue="0"
-                android:entries="@array/items_order_entry"
-                android:entryValues="@array/items_order_values"
-                android:key="@string/key_items_order"
-                android:title="@string/items_order" />
+    <PreferenceCategory
+        android:key="@string/key_ordination"
+        android:title="@string/ordination">
 
-        </PreferenceCategory>
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/items_order_entry"
+            android:entryValues="@array/items_order_values"
+            android:key="@string/key_items_order"
+            android:title="@string/items_order" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:key="@string/key_auto_lock"
+        android:title="@string/auto_lock">
+
+        <Preference
+            android:key="@string/key_reset_lock_password"
+            android:title="@string/reset_vault_password" />
+
+        <ListPreference
+            android:defaultValue="1000"
+            android:entries="@array/auto_lock_entry"
+            android:entryValues="@array/auto_lock_values"
+            android:key="@string/key_time_to_lock"
+            android:title="@string/auto_lock_delay" />
+
+
+    </PreferenceCategory>
 </PreferenceScreen>

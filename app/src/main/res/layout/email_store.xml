@@ -55,11 +55,10 @@
         <ImageView
             android:id="@+id/domain_icon"
             android:layout_width="35dp"
-            android:scaleType="fitCenter"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="-10dp"
             android:layout_height="35dp"
             android:layout_gravity="right|center"
-            />
+            android:scaleType="fitCenter" />
     </FrameLayout>
 
 

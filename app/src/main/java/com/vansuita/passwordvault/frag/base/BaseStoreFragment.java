@@ -25,14 +25,16 @@ import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.act.Store;
 import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.cnt.VaultCnt;
-import com.vansuita.passwordvault.fire.dao.DataAccess;
+import com.vansuita.passwordvault.fire.dao.VaultDAO;
 import com.vansuita.passwordvault.pref.Pref;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
 import com.vansuita.passwordvault.util.Validation;
+import com.vansuita.passwordvault.util.Visible;
 import com.vansuita.passwordvault.view.Snack;
 
 import java.lang.reflect.ParameterizedType;
+import java.text.DateFormat;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -55,6 +57,10 @@ public abstract class BaseStoreFragment<T extends Bean> extends Fragment impleme
 
     @BindView(R.id.title_label)
     TextInputLayout tilTitle;
+
+    @BindView(R.id.dates)
+    TextView tvDates;
+
 
     @BindView(R.id.save)
     Button btSave;
@@ -121,6 +127,7 @@ public abstract class BaseStoreFragment<T extends Bean> extends Fragment impleme
         setHasOptionsMenu(true);
 
         tvTitle.setText(getScreenTitle());
+        Visible.with(tvDates).gone(true);
 
         if (getSubmitElement() != null)
             getSubmitElement().setOnKeyListener(new View.OnKeyListener() {
@@ -138,11 +145,15 @@ public abstract class BaseStoreFragment<T extends Bean> extends Fragment impleme
     }
 
     public void load(T object) {
-        if (object.isNew()) {
-            btSave.setText(R.string.save);
-        } else {
-            btSave.setText(R.string.update);
-        }
+        btSave.setText(R.string.update);
+
+        Visible.with(tvDates).gone(false);
+
+        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
+        String dates = getString(R.string.creation) + " " + dateFormat.format(object.getDate()) + "   ";
+        dates += getString(R.string.last_update) + " " + dateFormat.format(object.getLastDate());
+
+        tvDates.setText(dates);
 
         edTitle.setText(object.getTitle());
 
@@ -161,7 +172,7 @@ public abstract class BaseStoreFragment<T extends Bean> extends Fragment impleme
 
         if (canStore()) {
             store();
-            DataAccess.put(object);
+            VaultDAO.put(object);
             finish();
         }
     }
@@ -179,7 +190,7 @@ public abstract class BaseStoreFragment<T extends Bean> extends Fragment impleme
     }
 
     protected void autoFillTitle() {
-        if (Validation.isEmpty(edTitle) && !getAutoFillTitleValue().isEmpty())
+        if (Validation.isEmpty(edTitle) || !getAutoFillTitleValue().isEmpty())
             edTitle.setText(getAutoFillTitleValue());
     }
 
@@ -230,7 +241,7 @@ public abstract class BaseStoreFragment<T extends Bean> extends Fragment impleme
                 if (object.isNew()) {
                     object.setFavorite(!object.isFavorite());
                 } else {
-                    DataAccess.favorite(object);
+                    VaultDAO.favorite(object);
                 }
 
                 getActivity().invalidateOptionsMenu();
@@ -246,7 +257,7 @@ public abstract class BaseStoreFragment<T extends Bean> extends Fragment impleme
                         }
                     });
 
-                    DataAccess.trash(object);
+                    VaultDAO.trash(object);
                     clear();
                 }
                 break;
@@ -259,7 +270,7 @@ public abstract class BaseStoreFragment<T extends Bean> extends Fragment impleme
                         if (object.isNew()) {
                             object.setColor(selectedColor);
                         } else {
-                            DataAccess.color(selectedColor, object);
+                            VaultDAO.color(selectedColor, object);
                         }
 
                         getActivity().invalidateOptionsMenu();

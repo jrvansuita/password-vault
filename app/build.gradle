@@ -14,11 +14,18 @@ android {
         vectorDrawables.useSupportLibrary true
     }
     buildTypes {
-        release {
+        debug {
+            debuggable true
             minifyEnabled false
+        }
+
+        release {
+            debuggable false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -46,10 +53,7 @@ dependencies {
 
     compile 'com.afollestad:material-cab:0.1.12'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
-
     compile 'com.github.jrvansuita:IconHandler:v2.0.0'
-
-
 }
 
 apply plugin: 'com.google.gms.google-services'

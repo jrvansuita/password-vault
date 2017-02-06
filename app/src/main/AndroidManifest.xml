@@ -9,7 +9,7 @@
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/vault_green"
         android:label="@string/app_name"
         android:launchMode="singleInstance"
         android:supportsRtl="true"
@@ -29,7 +29,7 @@
             android:name=".act.Login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Login"
-            android:windowSoftInputMode="adjustResize|stateAlwaysVisible"></activity>
+            android:windowSoftInputMode="adjustPan|stateVisible"></activity>
 
         <activity
             android:name=".act.Main"
@@ -42,7 +42,7 @@
             android:parentActivityName=".act.Main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|stateVisible"></activity>
+            android:windowSoftInputMode="adjustPan"></activity>
 
 
         <activity
@@ -50,7 +50,14 @@
             android:parentActivityName=".act.Main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Pref"
-            android:windowSoftInputMode="adjustResize|stateVisible"></activity>
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
+
+
+        <activity
+            android:name=".act.Lock"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Login"
+            android:windowSoftInputMode="adjustPan|stateVisible"></activity>
 
 
         <activity

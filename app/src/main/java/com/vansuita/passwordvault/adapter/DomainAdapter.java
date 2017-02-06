@@ -43,7 +43,7 @@ public class DomainAdapter extends ArrayAdapter<EEmailDomain> {
 
         EEmailDomain domain = getItem(position);
         ((ImageView) v.findViewById(R.id.icon)).setImageResource(domain.getIcon());
-        ((TextView) v.findViewById(R.id.name)).setText(domain.getName());
+        ((TextView) v.findViewById(R.id.name)).setText(domain.getDomain());
 
         return v;
     }
@@ -75,7 +75,7 @@ public class DomainAdapter extends ArrayAdapter<EEmailDomain> {
 
             if (original != null && constraint != null)
                 for (EEmailDomain domain : original) {
-                    if (domain.getName().toLowerCase().startsWith(constraint.toString().toLowerCase()))
+                    if (domain.getDomain().toLowerCase().startsWith(constraint.toString().toLowerCase()))
                         suggestions.add(domain);
                 }
 
@@ -93,6 +93,11 @@ public class DomainAdapter extends ArrayAdapter<EEmailDomain> {
             } else {
                 notifyDataSetInvalidated();
             }
+        }
+
+        @Override
+        public CharSequence convertResultToString(Object resultValue) {
+            return ((EEmailDomain)resultValue).getDomain();
         }
     }
 

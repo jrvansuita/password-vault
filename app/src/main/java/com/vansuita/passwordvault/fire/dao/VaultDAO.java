@@ -1,15 +1,14 @@
 package com.vansuita.passwordvault.fire.dao;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.cnt.VaultCnt;
 import com.vansuita.passwordvault.enums.ECategory;
 import com.vansuita.passwordvault.enums.EShowType;
-import com.vansuita.passwordvault.lis.IOnFireData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,40 +20,37 @@ import static com.vansuita.passwordvault.fire.database.DatabaseAccess.getVaultNo
  * Created by jrvansuita on 19/01/17.
  */
 
-public class DataAccess {
+public class VaultDAO {
 
     private ECategory category;
     private EShowType showType;
-    private IOnFireData listeners;
 
-    DataAccess(ECategory category, EShowType showType) {
+    VaultDAO(ECategory category, EShowType showType) {
         this.category = category;
         this.showType = showType;
     }
 
-    private void bindListener(ChildEventListener l) {
+    public Query get() {
+        Query query;
         DatabaseReference databaseReference = showType == EShowType.TRASH ? getTrashNode() : getVaultNode();
 
+
         if (category != null) {
-            databaseReference.orderByChild(VaultCnt.CATEGORY)
-                    .equalTo(category.name()).addChildEventListener(l);
+            query = databaseReference.orderByChild(VaultCnt.CATEGORY)
+                    .equalTo(category.name());
         } else {
-            if (showType == EShowType.FAVORITE){
-                databaseReference.orderByChild(VaultCnt.FAVORITE)
-                        .equalTo(true).addChildEventListener(l);
-            }else {
-                databaseReference.orderByChild(VaultCnt.LAST_DATE).addChildEventListener(l);
+            if (showType == EShowType.FAVORITE) {
+                query = databaseReference.orderByChild(VaultCnt.FAVORITE)
+                        .equalTo(true);
+            } else {
+                query = databaseReference;
             }
         }
-    }
 
-    public static DataAccess on(ECategory category, EShowType showType) {
-        return new DataAccess(category, showType);
+        return query;
     }
-
-    public DataAccess listeners(IOnFireData listeners) {
-        this.listeners = listeners;
-        return this;
+    public static VaultDAO on(ECategory category, EShowType showType) {
+        return new VaultDAO(category, showType);
     }
 
     public static void color(int color, Bean... items) {
@@ -148,52 +144,6 @@ public class DataAccess {
         }
 
         databaseReference.setValue(bean);
-    }
-
-    private ChildEventListener childEventListener;
-
-    public void get() {
-        if (childEventListener != null)
-            getVaultNode().removeEventListener(childEventListener);
-
-        childEventListener = new ChildEventListener() {
-
-            private Bean getBean(DataSnapshot snap) {
-                try {
-                    String clazz = snap.child(VaultCnt.CLAZZ).getValue(String.class);
-                    return (Bean) snap.getValue(Class.forName(clazz));
-                } catch (ClassNotFoundException e) {
-                    return null;
-                }
-            }
-
-            @Override
-            public void onChildAdded(DataSnapshot snap, String s) {
-                listeners.add(getBean(snap));
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot snap, String s) {
-                listeners.changed(getBean(snap));
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot snap) {
-                listeners.removed(snap.getKey());
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot snap, String previousChildName) {
-                listeners.moved(getBean(snap), previousChildName);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-
-        bindListener(childEventListener);
     }
 
 

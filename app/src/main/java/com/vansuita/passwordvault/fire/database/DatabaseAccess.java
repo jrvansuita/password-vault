@@ -3,13 +3,16 @@ package com.vansuita.passwordvault.fire.database;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.vansuita.passwordvault.cnt.VaultCnt;
 
 /**
  * Created by jrvansuita on 27/01/17.
  */
 
 public class DatabaseAccess {
+
+    private static final String VAULT_NODE = "VAULT";
+    private static final String TRASH_NODE = "TRASH";
+    private static final String PREF_NODE = "PREF";
 
     private static DatabaseReference databaseReference;
 
@@ -22,12 +25,17 @@ public class DatabaseAccess {
     }
 
     public synchronized static DatabaseReference getVaultNode() {
-        return getDatabaseNode().child(VaultCnt.NAME);
+        return getDatabaseNode().child(VAULT_NODE);
     }
 
     public synchronized static DatabaseReference getTrashNode() {
-        return getDatabaseNode().child(VaultCnt.TRASH);
+        return getDatabaseNode().child(TRASH_NODE);
     }
+
+    public synchronized static DatabaseReference getPrefNode() {
+        return getDatabaseNode().child(PREF_NODE);
+    }
+
 
     public static void clear(){
         databaseReference = null;

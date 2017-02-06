@@ -2,10 +2,13 @@ package com.vansuita.passwordvault.frag;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
 
 import com.vansuita.passwordvault.R;
+import com.vansuita.passwordvault.act.Lock;
+import com.vansuita.passwordvault.pref.Pref;
 import com.vansuita.passwordvault.util.UI;
 
 /**
@@ -17,7 +20,10 @@ public class PreferenceFrag extends PreferenceFragment implements SharedPreferen
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getPreferenceManager().setSharedPreferencesName(Pref.NAME);
+
         addPreferencesFromResource(R.xml.prefs);
+
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
@@ -26,6 +32,14 @@ public class PreferenceFrag extends PreferenceFragment implements SharedPreferen
         super.onActivityCreated(savedInstanceState);
 
         UI.setSummary((PreferenceGroup) findPreference(getString(R.string.key_root)));
+
+        findPreference(getString(R.string.key_reset_lock_password)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Lock.start(getActivity(), true);
+                return true;
+            }
+        });
     }
 
     @Override

@@ -11,5 +11,26 @@
     </string-array>
 
 
+    <string-array name="auto_lock_entry">
+        <item>Disable</item>
+        <item>1 second</item>
+        <item>5 seconds</item>
+        <item>15 seconds</item>
+        <item>30 seconds</item>
+        <item>1 minute</item>
+        <item>5 minutes</item>
+        <item>15 minutes</item>
+    </string-array>
+
+    <string-array name="auto_lock_values">
+        <item>0</item>
+        <item>1000</item>
+        <item>5000</item>
+        <item>15000</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>300000</item>
+        <item>900000</item>
+    </string-array>
 
 </resources>

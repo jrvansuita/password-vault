@@ -20,15 +20,14 @@ import android.view.ViewGroup;
 
 import com.afollestad.materialcab.MaterialCab;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
+import com.google.firebase.auth.FirebaseAuth;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.act.Main;
 import com.vansuita.passwordvault.act.Store;
-import com.vansuita.passwordvault.adapter.VaultListingAdapter;
-import com.vansuita.passwordvault.bean.Bean;
+import com.vansuita.passwordvault.adapter.VaultListAdapter;
 import com.vansuita.passwordvault.enums.ECategory;
 import com.vansuita.passwordvault.enums.EShowType;
-import com.vansuita.passwordvault.fire.dao.DataAccess;
-import com.vansuita.passwordvault.lis.IOnFireData;
+import com.vansuita.passwordvault.fire.dao.VaultDAO;
 import com.vansuita.passwordvault.pref.Pref;
 import com.vansuita.passwordvault.view.Snack;
 
@@ -41,14 +40,14 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by jrvansuita on 20/01/17.
  */
 
-public class ListingFrag extends Fragment implements VaultListingAdapter.Callback, SearchView.OnQueryTextListener {
+public class ListingFrag extends Fragment implements VaultListAdapter.Callback, SearchView.OnQueryTextListener {
 
     @BindView(R.id.recycle_view)
     RecyclerView rvVaultList;
 
     private Main main;
     private MaterialCab cab;
-    private VaultListingAdapter adapter;
+    private VaultListAdapter adapter;
     private MenuItem searchMenuItem;
     private SearchView searchView;
     private MenuItem editMenuItem;
@@ -81,37 +80,11 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
 
         setHasOptionsMenu(true);
 
-        this.adapter = new VaultListingAdapter();
-        this.adapter.setCallback(this);
 
         Bundle bundle = getArguments();
         this.category = (ECategory) bundle.getSerializable(ECategory.TAG);
         this.showType = (EShowType) bundle.getSerializable(EShowType.TAG);
-
-        DataAccess.on(category, showType).listeners(new IOnFireData() {
-
-            @Override
-            public void add(Bean data) {
-                adapter.add(data);
-            }
-
-            @Override
-            public void changed(Bean data) {
-                adapter.update(data);
-            }
-
-            @Override
-            public void removed(String key) {
-                adapter.remove(key);
-            }
-
-            @Override
-            public void moved(Bean data, String previousChild) {
-                adapter.move(data, previousChild);
-            }
-        }).get();
     }
-
 
     @Nullable
     @Override
@@ -135,11 +108,22 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
 
         rvVaultList.setLayoutManager(layoutManager);
         rvVaultList.setItemAnimator(new DefaultItemAnimator());
+    }
 
-        //rvVaultList.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.divider));
-        rvVaultList.setAdapter(adapter);
-        adapter.attachSwipe(rvVaultList);
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+            if (adapter == null) {
+                this.adapter = new VaultListAdapter(VaultDAO.on(category, showType).get());
+                this.adapter.setCallback(this);
+                this.adapter.attachSwipe(rvVaultList);
+
+                rvVaultList.setAdapter(adapter);
+            }
+
+        getActivity().invalidateOptionsMenu();
     }
 
 
@@ -176,7 +160,7 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
 
         cab.setTitle(getString(R.string.x_selected, adapter.getSelectedCount()));
 
-        if (editMenuItem != null){
+        if (editMenuItem != null) {
             editMenuItem.setVisible(adapter.getSelectedCount() == 1);
         }
     }
@@ -208,7 +192,7 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
                     msg = R.string.toggled_favorite;
 
                     for (Integer pos : adapter.getDataSelected()) {
-                        DataAccess.favorite(adapter.getItem(pos));
+                        VaultDAO.favorite(adapter.getItem(pos));
                     }
                     break;
 
@@ -216,7 +200,7 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
                     msg = R.string.restored;
 
                     for (Integer pos : adapter.getDataSelected()) {
-                        DataAccess.trash(adapter.getItem(pos));
+                        VaultDAO.trash(adapter.getItem(pos));
                     }
                     break;
 
@@ -226,7 +210,7 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
                         @Override
                         public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
                             for (Integer pos : adapter.getDataSelected()) {
-                                DataAccess.color(selectedColor, adapter.getItem(pos));
+                                VaultDAO.color(selectedColor, adapter.getItem(pos));
                             }
 
                             cab.finish();
@@ -251,9 +235,9 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
 
                     for (Integer pos : adapter.getDataSelected()) {
                         if (isShowingTrash()) {
-                            DataAccess.delete(adapter.getItem(pos));
+                            VaultDAO.delete(adapter.getItem(pos));
                         } else {
-                            DataAccess.trash(adapter.getItem(pos));
+                            VaultDAO.trash(adapter.getItem(pos));
                         }
                     }
                     break;
@@ -313,12 +297,6 @@ public class ListingFrag extends Fragment implements VaultListingAdapter.Callbac
         if (searchMenuItem.isActionViewExpanded()) {
             MenuItemCompat.collapseActionView(searchMenuItem);
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().invalidateOptionsMenu();
     }
 
     @Override

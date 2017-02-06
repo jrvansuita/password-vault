@@ -18,7 +18,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,7 +44,6 @@ import com.vansuita.passwordvault.adapter.CategoryListPageAdapter;
 import com.vansuita.passwordvault.adapter.FavoriteListPageAdapter;
 import com.vansuita.passwordvault.adapter.TrashListPageAdapter;
 import com.vansuita.passwordvault.enums.ECategory;
-import com.vansuita.passwordvault.fire.database.DatabaseAccess;
 import com.vansuita.passwordvault.fire.storage.ImageStorage;
 import com.vansuita.passwordvault.lis.IOnResult;
 import com.vansuita.passwordvault.receiver.NetworkStateChangeReceiver;
@@ -61,7 +59,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class Main extends AppCompatActivity implements ColorChooserDialog.ColorCallback, IPickResult, NavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener {
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+
+public class Main extends AbstractActivity implements ColorChooserDialog.ColorCallback, IPickResult, NavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -79,6 +79,13 @@ public class Main extends AppCompatActivity implements ColorChooserDialog.ColorC
     private MaterialCab cab;
     private FirebaseAuth auth;
     private MaterialDialog progress;
+
+
+    public static Intent intent(Context context) {
+        Intent intent = new Intent(context, Main.class);
+        intent.addFlags(FLAG_ACTIVITY_SINGLE_TOP);
+        return intent;
+    }
 
 
     @Override
@@ -210,10 +217,7 @@ public class Main extends AppCompatActivity implements ColorChooserDialog.ColorC
                 break;
 
             case R.id.logout:
-                DatabaseAccess.clear();
-                auth.signOut();
-                startActivity(new Intent(Main.this, Login.class));
-                finish();
+                signOut();
                 break;
         }
 

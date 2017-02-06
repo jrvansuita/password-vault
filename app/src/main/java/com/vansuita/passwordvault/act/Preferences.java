@@ -2,7 +2,6 @@ package com.vansuita.passwordvault.act;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -12,7 +11,7 @@ import com.vansuita.passwordvault.R;
  * Created by jrvansuita on 03/02/17.
  */
 
-public class Preferences extends AppCompatActivity {
+public class Preferences extends AbstractActivity {
 
 
     @Override

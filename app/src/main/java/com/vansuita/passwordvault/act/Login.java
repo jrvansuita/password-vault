@@ -1,10 +1,10 @@
 package com.vansuita.passwordvault.act;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,7 +20,6 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -36,6 +35,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.vansuita.passwordvault.R;
+import com.vansuita.passwordvault.fire.dao.PrefDAO;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Validation;
 import com.vansuita.passwordvault.util.Visible;
@@ -49,7 +49,9 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.OnFocusChange;
 
-public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+
+public class Login extends AbstractActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     @BindView(R.id.name)
     EditText edName;
@@ -66,9 +68,14 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     @BindView(R.id.password)
     EditText edPassword;
 
-    @BindView(R.id.pass_label)
+    @BindView(R.id.password_label)
     TextInputLayout tilPassword;
 
+    @BindView(R.id.password_retype)
+    EditText edPasswordRetype;
+
+    @BindView(R.id.password_retype_label)
+    TextInputLayout tilPasswordRetype;
 
     @BindView(R.id.submit)
     AppCompatButton btSubmit;
@@ -86,8 +93,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     private FirebaseAuth auth;
     private MaterialDialog progress;
-    private GoogleApiClient googleApiClient;
     private CallbackManager callbackManager;
+
+    public static Intent intent(Context context) {
+        Intent intent = new Intent(context, Login.class);
+        intent.addFlags(FLAG_ACTIVITY_SINGLE_TOP);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +112,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 .contentColorRes(R.color.primary_text)
                 .widgetColorRes(R.color.primary_text)
                 .content(R.string.loading)
+                .cancelable(false)
                 .progress(true, 0).build();
 
         onSetup();
@@ -107,7 +120,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         refresh(EScreenType.CREATE_ACCOUNT);
     }
 
-    @OnEditorAction(R.id.password)
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @OnEditorAction({R.id.password, R.id.password_retype})
     public boolean onPasswordEnter(int id) {
         if (id == EditorInfo.IME_ACTION_DONE) {
             submit();
@@ -165,6 +184,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         if (!active && !Validation.isEmail(edPassword)) {
             UI.setError(tilPassword);
         }
+
+        if (active && lastType.equals(EScreenType.CREATE_ACCOUNT)) {
+            Visible.with(tilPasswordRetype).gone(false);
+            edPassword.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        }
     }
 
     @Override
@@ -179,11 +203,16 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private EScreenType lastType;
 
     private void refresh(EScreenType type) {
+        edPassword.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
         Visible.with(edName).gone(false);
         Visible.with(tvLink).gone(false);
         Visible.with(tilPassword).gone(false);
+        Visible.with(tilPasswordRetype).gone(true);
+
         Visible.with(vSocialButtons).gone(true);
         Visible.with(tvForgotPassword).gone(true);
+
 
         switch (type) {
             case CREATE_ACCOUNT:
@@ -191,6 +220,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 btSubmit.setText(R.string.create_account);
                 edName.requestFocus();
                 Visible.with(vSocialButtons).gone(false);
+
                 break;
             case SIGN_IN:
                 edEmail.requestFocus();
@@ -215,26 +245,27 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     }
 
 
-    private Intent intent;
-
     private FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
         @Override
         public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-            progress.hide();
 
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
                 if (user.getDisplayName() == null && !getName().isEmpty()) {
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                             .setDisplayName(getName())
-                            //.setPhotoUri(Uri.parse("https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSdklJHrM3-TgPIJHfPg0vJkVAf-WmlzPD84KNzuMpOPBmMtl7YYL7jBzo"))
                             .build();
 
                     user.updateProfile(profileUpdates);
                 } else {
-                    if (intent == null) {
-                        intent = new Intent(Login.this, Main.class);
-                        startActivity(intent);
+                    progress.hide();
+
+                    if (getSession().getUserID().isEmpty()) {
+
+                        PrefDAO.with(Login.this).restore();
+
+                        getSession().setUserID(user.getUid());
+                        Lock.start(Login.this, true);
                         finish();
                     }
                 }
@@ -260,17 +291,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private void onSetup() {
         this.auth = FirebaseAuth.getInstance();
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestProfile()
-                .requestEmail()
-                .build();
-
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
         callbackManager = CallbackManager.Factory.create();
 
         LoginManager.getInstance().registerCallback(callbackManager,
@@ -284,7 +304,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
                     @Override
                     public void onCancel() {
-                        // App code
+                        progress.dismiss();
                     }
 
                     @Override
@@ -321,14 +341,21 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private boolean checkFields() {
         boolean good = true;
 
-        good = good & UI.error(tilName, Visible.is(edName) && TextUtils.isEmpty(getName()), R.string.error_field_required);
+        good = good & UI.error(tilName, Visible.is(edName) && TextUtils.isEmpty(getName()), R.string.whats_name);
         good = good & UI.error(tilEmail, !Validation.isEmail(getEmail()), R.string.email_not_right);
 
-        if (Visible.is(edPassword))
+        if (Visible.is(tilPassword))
             if (TextUtils.isEmpty(getPassword())) {
-                good = good & UI.error(tilPassword, true, R.string.error_field_required);
+                good = good & UI.error(tilPassword, true, R.string.whats_password);
             } else if (!isPasswordValid(getPassword())) {
                 good = good & UI.error(tilPassword, true, R.string.error_invalid_password);
+            }
+
+        if (Visible.is(tilPasswordRetype))
+            if (TextUtils.isEmpty(edPasswordRetype.getText().toString())) {
+                good = good & UI.error(tilPasswordRetype, true, R.string.whats_password);
+            } else {
+                good = good & UI.error(tilPasswordRetype, !edPasswordRetype.getText().toString().equals(edPassword.getText().toString()), R.string.passwords_do_not_match);
             }
 
         return good;
@@ -373,13 +400,16 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private static final int RC_SIGN_IN = 990;
 
     private void googleLogin() {
-        progress.show();
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        if (!progress.isShowing())
+            progress.show();
+
+        startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(getApp().getGoogleApiClient(this)), RC_SIGN_IN);
     }
 
     private void facebookLogin() {
-        //progress.show();
+        if (!progress.isShowing())
+            progress.show();
+
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
     }
 
@@ -396,12 +426,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 auth.signInWithCredential(credential)
                         .addOnCompleteListener(this, defaultTask);
             } else {
-                String msg = result.getStatus().getStatusMessage();
-
-                if (msg == null)
-                    msg = getString(R.string.no_internet);
-
-                showSnack(msg);
+                showSnack(result.getStatus().getStatusMessage());
             }
         }
     }
@@ -432,8 +457,14 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
 
     private void showSnack(String s) {
-        progress.dismiss();
-        Snack.show(edEmail, s);
+        if (!com.vansuita.passwordvault.util.Util.internet(this))
+            s = getString(R.string.no_internet);
+
+        if (progress.isShowing())
+            progress.dismiss();
+
+        if (s != null)
+            Snack.show(edEmail, s);
     }
 }
 

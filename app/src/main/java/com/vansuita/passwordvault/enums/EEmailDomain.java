@@ -13,19 +13,25 @@ public enum EEmailDomain {
     HOTMAL("hotmail.com", R.mipmap.hotmail),
     YAHOO("yahoo.com", R.mipmap.yahoo),
     TERRA("terra.com", R.mipmap.terra),
+    AOL("aol.com", R.mipmap.aol),
+    APPLE("apple.com", R.mipmap.apple),
+    MAIL("mail.com", R.mipmap.mail),
+    ZOHO("zoho.com", R.mipmap.zoho),
+    LIVE("live.com", R.mipmap.live),
+    YANDEX("yandex.com", R.mipmap.yandex),
     DEFAULT("", R.mipmap.envelop);
 
 
-    final String name;
+    final String domain;
     final int icon;
 
-    EEmailDomain(String name, int icon) {
-        this.name = name;
+    EEmailDomain(String domain, int icon) {
+        this.domain = domain;
         this.icon = icon;
     }
 
-    public String getName() {
-        return name;
+    public String getDomain() {
+        return domain;
     }
 
     public int getIcon() {
@@ -36,7 +42,7 @@ public enum EEmailDomain {
     public static EEmailDomain findDomain(String name) {
         if (name != null)
             for (EEmailDomain domain : values())
-                if (name.toLowerCase().contains(domain.getName()))
+                if (name.toLowerCase().contains(domain.getDomain()))
                     return domain;
 
         return DEFAULT;
@@ -45,9 +51,10 @@ public enum EEmailDomain {
     public static EEmailDomain match(String name) {
         if (name != null)
             for (EEmailDomain domain : values())
-                if (name.toLowerCase().equalsIgnoreCase(domain.getName()))
+                if (name.toLowerCase().equalsIgnoreCase(domain.getDomain()))
                     return domain;
 
         return null;
     }
+
 }

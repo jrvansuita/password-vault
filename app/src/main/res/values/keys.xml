@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="key_vault_password">key_vault_password</string>
+    <string name="key_vault_password_hint">key_vault_password_hint</string>
+
     <string name="key_root">key_root</string>
 
-    <string name="key_dynamic">key_dynamic</string>
+    <string name="key_layout_dynamics">key_layout_dynamics</string>
     <string name="key_swipe_to_delete">key_swipe_to_delete</string>
     <string name="key_changing_colors">key_changing_colors</string>
+    <string name="key_domain_icons">key_domain_icons</string>
 
     <string name="key_ordination">key_ordination</string>
     <string name="key_items_order">key_items_order</string>
+
+    <string name="key_reset_lock_password">key_reset_lock_password</string>
+    <string name="key_time_to_lock">key_time_to_lock</string>
+    <string name="key_user_uid">key_user_uid</string>
+
+    <string name="key_auto_lock">key_auto_lock</string>
 </resources>

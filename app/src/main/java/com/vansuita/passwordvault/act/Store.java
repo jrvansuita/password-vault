@@ -7,7 +7,6 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
@@ -24,7 +23,7 @@ import butterknife.ButterKnife;
  * Created by jrvansuita on 16/01/17.
  */
 
-public class Store extends AppCompatActivity implements ColorChooserDialog.ColorCallback {
+public class Store extends AbstractActivity implements ColorChooserDialog.ColorCallback {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -62,7 +61,6 @@ public class Store extends AppCompatActivity implements ColorChooserDialog.Color
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         onSetup();
-
     }
 
     private void onSetup() {
@@ -77,7 +75,7 @@ public class Store extends AppCompatActivity implements ColorChooserDialog.Color
             fragment.setArguments(bundle);
 
             getSupportFragmentManager()
-                    .beginTransaction().add(R.id.fragment_holder, fragment)
+                    .beginTransaction().replace(R.id.fragment_holder, fragment)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
 

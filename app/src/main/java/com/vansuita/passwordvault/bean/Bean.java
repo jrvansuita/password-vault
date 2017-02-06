@@ -12,7 +12,7 @@ import java.util.Date;
  * Created by jrvansuita on 08/11/16.
  */
 
-public class Bean implements Serializable {
+public class Bean implements Serializable{
 
     private String key;
     private String title;
@@ -125,4 +125,6 @@ public class Bean implements Serializable {
     public boolean isNew() {
         return getKey() == null || getKey().isEmpty();
     }
+
+
 }

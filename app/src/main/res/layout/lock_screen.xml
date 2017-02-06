@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_dark">
+
+    <android.support.design.widget.CoordinatorLayout
+        style="@style/match_match"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.AppBarLayout
+            style="@style/match_wrap"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:elevation="0dp">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/primary_dark"
+                android:elevation="0dp"
+                app:layout_scrollFlags="scroll|enterAlways" />
+
+        </android.support.design.widget.AppBarLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1" />
+
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <include
+                        layout="@layout/logo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/intro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/title_holder"
+                        android:layout_marginTop="50dp"
+                        android:text="@string/first_intro"
+                        android:textColor="@android:color/white" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/password_label"
+                        style="@style/text_input"
+                        android:layout_below="@+id/intro"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="50dp"
+                        app:passwordToggleEnabled="true"
+                        app:passwordToggleTint="@android:color/white">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/password"
+                            style="@style/edit"
+                            android:hint="@string/access_password"
+                            android:inputType="textPassword"
+                            android:maxLines="1" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/password_retype_label"
+                        style="@style/text_input"
+                        android:layout_below="@+id/password_label"
+                        android:layout_centerInParent="true"
+                        app:passwordToggleEnabled="true"
+                        app:passwordToggleTint="@android:color/white">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/password_retype"
+                            style="@style/edit"
+                            android:hint="@string/retype_access_password"
+                            android:inputType="textPassword"
+                            android:maxLines="1" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/hint_label"
+                        style="@style/text_input"
+                        android:layout_below="@+id/password_retype_label"
+                        android:layout_centerInParent="true">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/hint"
+                            style="@style/edit"
+
+                            android:hint="@string/password_hint"
+                            android:imeOptions="actionDone"
+                            android:inputType="textShortMessage"
+                            android:maxLines="1" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </RelativeLayout>
+
+            </FrameLayout>
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1" />
+
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            style="@style/wrap_wrap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            app:backgroundTint="@color/primary"
+            app:elevation="5dp"
+            app:layout_behavior="com.vansuita.passwordvault.scroll.ScrollingFABBehavior"
+            app:pressedTranslationZ="12dp"
+            app:srcCompat="@drawable/forward" />
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
+</FrameLayout>

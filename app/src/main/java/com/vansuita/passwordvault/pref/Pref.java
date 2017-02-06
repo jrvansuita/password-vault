@@ -1,8 +1,6 @@
 package com.vansuita.passwordvault.pref;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.vansuita.passwordvault.R;
 
@@ -10,44 +8,22 @@ import com.vansuita.passwordvault.R;
  * Created by jrvansuita on 03/02/17.
  */
 
-public class Pref {
+public class Pref extends Shared{
 
-    Context context;
-    SharedPreferences pref;
+    public static final String NAME = "PREF";
 
-    Pref(Context context) {
-        this.context = context;
-        this.pref = PreferenceManager.getDefaultSharedPreferences(context);
+    protected Pref(Context context) {
+        super(context);
     }
 
     public static Pref with(Context context) {
         return new Pref(context);
     }
 
-    private String getStr(int key) {
-        return getStr(key, "");
+    @Override
+    String getSharedName() {
+        return NAME;
     }
-
-    private String getStr(int key, String def) {
-        return pref.getString(context.getString(key), def);
-    }
-
-    private int getInt(int key) {
-        return getInt(key, 0);
-    }
-
-    private int getInt(int key, int def) {
-        return pref.getInt(context.getString(key), def);
-    }
-
-    private boolean getBool(int key) {
-        return getBool(key, false);
-    }
-
-    private boolean getBool(int key, boolean def) {
-        return pref.getBoolean(context.getString(key), def);
-    }
-
 
     public boolean isSwipeToDeleteActive() {
         return getBool(R.string.key_swipe_to_delete);
@@ -57,20 +33,18 @@ public class Pref {
         return getBool(R.string.key_changing_colors);
     }
 
+    public boolean showEmailDomainsIcons() {
+        return getBool(R.string.key_domain_icons, true);
+    }
+
+    public int autoLockDelay() {
+        return Integer.valueOf(getStr(R.string.key_time_to_lock, "1000"));
+    }
+
     public boolean isLastFirst() {
-        return getStr(R.string.key_items_order).equalsIgnoreCase("0");
+        return getStr(R.string.key_items_order, "0").equalsIgnoreCase("0");
     }
 
-    /*
-
-    protected float getFloat(int key) {
-        return Float.parseFloat(pref.getString(getString(key), "0"));
-    }
-
-    protected int getNum(int key) {
-        return Integer.parseInt(pref.getString(getString(key), "0"));
-    }
-*/
 
 
 }
