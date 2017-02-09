@@ -4,32 +4,23 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
-import android.widget.Toast;
 
 import com.facebook.appevents.AppEventsLogger;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.vansuita.passwordvault.act.Lock;
-import com.vansuita.passwordvault.act.Login;
 import com.vansuita.passwordvault.act.Preferences;
-import com.vansuita.passwordvault.act.Splash;
 import com.vansuita.passwordvault.fire.dao.PrefDAO;
 import com.vansuita.passwordvault.pref.Pref;
 import com.vansuita.passwordvault.pref.Session;
 
-import java.util.Arrays;
+import static com.vansuita.passwordvault.act.Lock.isLockable;
 
 /**
  * Created by jrvansuita on 08/11/16.
  */
 
-public class App extends Application implements Application.ActivityLifecycleCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class App extends Application implements Application.ActivityLifecycleCallbacks {
 
     private boolean lock;
     private Handler handler;
@@ -69,7 +60,7 @@ public class App extends Application implements Application.ActivityLifecycleCal
     public void onActivityResumed(Activity activity) {
         handler.removeCallbacks(lockRunner);
 
-        if (isLockable(activity))
+        if (Lock.isLockable(activity))
 
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                 int delay = getPref().autoLockDelay();
@@ -85,7 +76,7 @@ public class App extends Application implements Application.ActivityLifecycleCal
     public void onActivityPaused(Activity activity) {
         if (isLockable(activity))
 
-            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            if ((FirebaseAuth.getInstance().getCurrentUser() != null) && !Lock.isIgnoreAction(false)) {
 
                 int delay = getPref().autoLockDelay();
 
@@ -122,45 +113,5 @@ public class App extends Application implements Application.ActivityLifecycleCal
         return Session.with(getApplicationContext());
     }
 
-    private boolean isLockable(Activity activity) {
-        return activity.getClass().getName().contains(BuildConfig.APPLICATION_ID)
-                && !(Arrays.asList(new Class[]{Login.class, Splash.class, Lock.class}).contains(activity.getClass()));
-    }
-
-    private GoogleApiClient googleApiClient;
-
-    public GoogleApiClient getGoogleApiClient(FragmentActivity fragmentActivity) {
-        if (googleApiClient == null)
-            googleApiClient = new GoogleApiClient.Builder(this)
-                    .enableAutoManage(fragmentActivity, this)
-                    .addApi(Auth.GOOGLE_SIGN_IN_API, getGoogleSignInOptions())
-                    .build();
-
-        if (!googleApiClient.isConnected())
-            googleApiClient.connect();
-
-        return googleApiClient;
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, getString(R.string.google_conn_failed), Toast.LENGTH_LONG).show();
-    }
-
-
-    private GoogleSignInOptions googleSignInOptions;
-
-    public GoogleSignInOptions getGoogleSignInOptions() {
-
-        if (googleSignInOptions == null)
-            googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id))
-                    .requestProfile()
-                    .requestEmail()
-                    .build();
-
-
-        return googleSignInOptions;
-    }
 
 }

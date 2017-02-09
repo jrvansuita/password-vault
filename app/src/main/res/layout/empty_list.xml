@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/empty_data_set"
+    android:layout_width="match_parent"
+    android:layout_gravity="center"
+    android:layout_marginTop="-40dp"
+    android:visibility="gone"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="50dp">
+
+
+    <ImageView
+        android:id="@+id/empty_icon"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:scaleType="centerInside"
+        android:src="@mipmap/empty_open_vault" />
+
+    <TextView
+        android:id="@+id/empty_msg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top|center"
+        android:padding="10dp"
+        android:text="@string/empty_list" />
+
+</LinearLayout>

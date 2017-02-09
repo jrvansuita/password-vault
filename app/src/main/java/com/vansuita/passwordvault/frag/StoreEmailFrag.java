@@ -141,7 +141,7 @@ public class StoreEmailFrag extends BaseStoreFragment<Email> {
     }
 
     private void fillDomainIcon() {
-        EEmailDomain domain = EEmailDomain.match(actvDomain.getText().toString());
+        EEmailDomain domain = EEmailDomain.findDomain(actvDomain.getText().toString());
 
         if (domain != null) {
             Icon.put(ivDomainIcon, domain.getIcon());

@@ -51,25 +51,27 @@ public class PrefDAO extends Pref {
     private void restoreFromSnapshot(DataSnapshot snapshot) {
         Map<String, ?> entries = (Map<String, ?>) snapshot.getValue();
 
-        SharedPreferences.Editor editor = getShared().edit();
+        if (entries != null) {
+            SharedPreferences.Editor editor = getShared().edit();
 
-        for (Map.Entry<String, ?> entry : entries.entrySet()) {
-            Object v = entry.getValue();
-            String key = entry.getKey();
+            for (Map.Entry<String, ?> entry : entries.entrySet()) {
+                Object v = entry.getValue();
+                String key = entry.getKey();
 
-            if (v instanceof Boolean)
-                editor.putBoolean(key, ((Boolean) v).booleanValue());
-            else if (v instanceof Float)
-                editor.putFloat(key, ((Float) v).floatValue());
-            else if (v instanceof Integer)
-                editor.putInt(key, ((Integer) v).intValue());
-            else if (v instanceof Long)
-                editor.putLong(key, ((Long) v).longValue());
-            else if (v instanceof String)
-                editor.putString(key, ((String) v));
+                if (v instanceof Boolean)
+                    editor.putBoolean(key, ((Boolean) v).booleanValue());
+                else if (v instanceof Float)
+                    editor.putFloat(key, ((Float) v).floatValue());
+                else if (v instanceof Integer)
+                    editor.putInt(key, ((Integer) v).intValue());
+                else if (v instanceof Long)
+                    editor.putLong(key, ((Long) v).longValue());
+                else if (v instanceof String)
+                    editor.putString(key, ((String) v));
+            }
+
+            editor.apply();
         }
-
-        editor.apply();
     }
 
 

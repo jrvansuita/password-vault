@@ -38,6 +38,14 @@ public class Session extends Shared {
         putStr(R.string.key_vault_password, pass);
     }
 
+    public void setAuthToken(String pass) {
+        putStr(R.string.key_auth_token, pass);
+    }
+
+    public void setAuthPassword(String pass) {
+        putStr(R.string.key_auth_password, pass);
+    }
+
     public String getVaultPassword() {
         return getStr(R.string.key_vault_password, "");
     }
@@ -51,4 +59,12 @@ public class Session extends Shared {
     }
 
 
+    public String getAuthToken() {
+        return getStr(R.string.key_auth_token, "");
+    }
+
+
+    public String getAuthPassword() {
+        return getStr(R.string.key_auth_password, "");
+    }
 }

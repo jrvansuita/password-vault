@@ -45,6 +45,7 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
         super(query);
     }
 
+
     class ViewHolder extends RecyclerView.ViewHolder {
         View root;
         TextView tvTitle;
@@ -91,10 +92,7 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
 
     @Override
     public VaultListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item, parent, false);
-
-        return new ViewHolder(view);
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false));
     }
 
     @Override
@@ -141,6 +139,7 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
         }
 
         ViewCompat.setBackground(holder.vColor, Ripple.getAdaptiveRippleDrawable(bean.getColor(), Util.darker(bean.getColor())));
+
     }
 
     @Override
@@ -194,7 +193,6 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
         }
     }
 
-
     public void attachSwipe(RecyclerView rv) {
         if (Pref.with(rv.getContext()).isSwipeToDeleteActive())
             swipeToDismiss.attachToRecyclerView(rv);
@@ -220,4 +218,39 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
         }
     });
 
+
+    @Override
+    protected void itemAdded(Bean item, String key, int position) {
+        super.itemAdded(item, key, position);
+
+        callAdapterLoad(true);
+    }
+
+    @Override
+    protected void itemRemoved(Bean item, String key, int position) {
+        super.itemRemoved(item, key, position);
+
+        callAdapterLoad(getItemCount() > 0);
+    }
+
+    private boolean last = false;
+
+    private void callAdapterLoad(boolean hasItems){
+        if (last != hasItems){
+            if (onAdapterLoad != null) {
+                last = hasItems;
+                onAdapterLoad.onLoad(hasItems);
+            }
+        }
+    }
+
+    private OnAdapterLoad onAdapterLoad;
+
+    public void setOnAdapterLoad(OnAdapterLoad onAdapterLoad) {
+        this.onAdapterLoad = onAdapterLoad;
+    }
+
+    public interface OnAdapterLoad {
+        void onLoad(boolean hasItems);
+    }
 }

@@ -97,36 +97,30 @@ public abstract class FirebaseRecyclerAdapter<ViewHolder extends RecyclerView.Vi
 
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-           //String clazz =  dataSnapshot.child(VaultCnt.CLAZZ).getValue(String.class);
+            String key = dataSnapshot.getKey();
 
-           // if (clazz != null) {
-
-                String key = dataSnapshot.getKey();
-
-                if (!mKeys.contains(key)) {
-                    T item = getConvertedObject(dataSnapshot);
-                    int insertedPosition;
-                    if (previousChildName == null) {
-                        addAt(0, key, item);
-                        insertedPosition = 0;
+            if (!mKeys.contains(key)) {
+                T item = getConvertedObject(dataSnapshot);
+                int insertedPosition;
+                if (previousChildName == null) {
+                    addAt(0, key, item);
+                    insertedPosition = 0;
+                } else {
+                    int previousIndex = mKeys.indexOf(previousChildName);
+                    int nextIndex = previousIndex + 1;
+                    if (nextIndex == mItems.size()) {
+                        add(key, item);
                     } else {
-                        int previousIndex = mKeys.indexOf(previousChildName);
-                        int nextIndex = previousIndex + 1;
-                        if (nextIndex == mItems.size()) {
-                            add(key, item);
-                        } else {
-                            addAt(nextIndex, key, item);
-                        }
-
-                        insertedPosition = nextIndex;
+                        addAt(nextIndex, key, item);
                     }
 
-                    notifyItemInserted(insertedPosition);
-                    itemAdded(item, key, insertedPosition);
+                    insertedPosition = nextIndex;
                 }
-            //}
-        }
 
+                notifyItemInserted(insertedPosition);
+                itemAdded(item, key, insertedPosition);
+            }
+        }
 
         private void set(int pos, T o) {
             if (pos >= 0) {
@@ -348,7 +342,6 @@ public abstract class FirebaseRecyclerAdapter<ViewHolder extends RecyclerView.Vi
         return (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     }
 
-
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -388,6 +381,10 @@ public abstract class FirebaseRecyclerAdapter<ViewHolder extends RecyclerView.Vi
             }
         };
     }
+
+
+
+
 
 
 }

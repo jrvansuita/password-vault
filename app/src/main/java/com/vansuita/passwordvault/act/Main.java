@@ -37,22 +37,22 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 import com.squareup.picasso.Transformation;
-import com.vansuita.passwordvault.BuildConfig;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.adapter.CategoryChooserAdapter;
 import com.vansuita.passwordvault.adapter.CategoryListPageAdapter;
 import com.vansuita.passwordvault.adapter.FavoriteListPageAdapter;
 import com.vansuita.passwordvault.adapter.TrashListPageAdapter;
 import com.vansuita.passwordvault.enums.ECategory;
+import com.vansuita.passwordvault.fire.account.Account;
 import com.vansuita.passwordvault.fire.storage.ImageStorage;
 import com.vansuita.passwordvault.lis.IOnResult;
 import com.vansuita.passwordvault.receiver.NetworkStateChangeReceiver;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
 import com.vansuita.passwordvault.view.Snack;
-import com.vansuita.pickimage.PickImageDialog;
-import com.vansuita.pickimage.PickSetup;
 import com.vansuita.pickimage.bean.PickResult;
+import com.vansuita.pickimage.bundle.PickSetup;
+import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
 
 import butterknife.BindView;
@@ -217,7 +217,7 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
                 break;
 
             case R.id.logout:
-                signOut();
+                Account.with(Main.this).signOut();
                 break;
         }
 
@@ -296,8 +296,10 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
                 imAvatar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        PickSetup setup = new PickSetup(BuildConfig.APPLICATION_ID);
-                        PickImageDialog.on(Main.this, setup);
+                        PickSetup setup = new PickSetup();
+                        Lock.isIgnoreAction(true);
+
+                        PickImageDialog.build(setup).show(Main.this);
                     }
                 });
             }

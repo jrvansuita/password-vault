@@ -36,6 +36,10 @@ public class DatabaseAccess {
         return getDatabaseNode().child(PREF_NODE);
     }
 
+    public static  void deleteAccountData(){
+        getDatabaseNode().removeValue();
+    }
+
 
     public static void clear(){
         databaseReference = null;

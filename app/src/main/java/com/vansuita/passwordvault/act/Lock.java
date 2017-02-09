@@ -1,5 +1,6 @@
 package com.vansuita.passwordvault.act;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,12 +23,16 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.vansuita.library.Icon;
+import com.vansuita.passwordvault.BuildConfig;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.enums.ELockScreenType;
+import com.vansuita.passwordvault.fire.account.Account;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
 import com.vansuita.passwordvault.util.Validation;
 import com.vansuita.passwordvault.util.Visible;
+
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +50,8 @@ public class Lock extends AbstractActivity {
 
     private static final String REQUESTER_TAG = "REQUESTER_TAG";
     private static final String CREATE_PASSWORD_TAG = "CREATE_PASSWORD_TAG";
+
+    private static boolean ignoreAction = false;
 
     private ELockScreenType screenType;
 
@@ -170,11 +177,12 @@ public class Lock extends AbstractActivity {
         ivIcon.setSelected(true);
         tvSubTitle.setText(R.string.vault_access);
 
-/*
-        edPassword.setText("testes");
-        edRetypePassword.setText("testes");
-        edHint.setText("tes");
-*/
+        if (BuildConfig.DEBUG) {
+            edPassword.setText("developer");
+            edRetypePassword.setText("developer");
+            edHint.setText("developer password");
+            onSubmit();
+        }
 
     }
 
@@ -362,7 +370,7 @@ public class Lock extends AbstractActivity {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                signOut();
+                                Account.with(Lock.this).signOut();
                             }
                         })
                         .show();
@@ -371,5 +379,18 @@ public class Lock extends AbstractActivity {
         }
 
         return false;
+    }
+
+    public static boolean isIgnoreAction(boolean ignore) {
+        boolean result = ignoreAction;
+        ignoreAction = ignore;
+        return result;
+    }
+
+
+
+    public static boolean isLockable(Activity activity) {
+        return activity.getClass().getName().contains(BuildConfig.APPLICATION_ID)
+                && !(Arrays.asList(new Class[]{Login.class, Splash.class, Lock.class}).contains(activity.getClass()));
     }
 }

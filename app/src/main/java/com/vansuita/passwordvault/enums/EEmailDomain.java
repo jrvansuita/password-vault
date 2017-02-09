@@ -47,14 +47,4 @@ public enum EEmailDomain {
 
         return DEFAULT;
     }
-
-    public static EEmailDomain match(String name) {
-        if (name != null)
-            for (EEmailDomain domain : values())
-                if (name.toLowerCase().equalsIgnoreCase(domain.getDomain()))
-                    return domain;
-
-        return null;
-    }
-
 }

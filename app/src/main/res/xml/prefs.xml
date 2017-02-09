@@ -2,9 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="@string/key_root">
 
-    <PreferenceCategory
-        android:key="@string/key_layout_dynamics"
-        android:title="@string/layout_dynamics">
+    <PreferenceCategory android:title="@string/layout_dynamics">
 
         <CheckBoxPreference
             android:defaultValue="false"
@@ -25,9 +23,7 @@
     </PreferenceCategory>
 
 
-    <PreferenceCategory
-        android:key="@string/key_ordination"
-        android:title="@string/ordination">
+    <PreferenceCategory android:title="@string/ordination">
 
 
         <ListPreference
@@ -40,21 +36,28 @@
     </PreferenceCategory>
 
 
-    <PreferenceCategory
-        android:key="@string/key_auto_lock"
-        android:title="@string/auto_lock">
+    <PreferenceCategory android:title="@string/vault_password">
 
         <Preference
             android:key="@string/key_reset_lock_password"
             android:title="@string/reset_vault_password" />
 
         <ListPreference
-            android:defaultValue="1000"
+            android:defaultValue="5000"
             android:entries="@array/auto_lock_entry"
             android:entryValues="@array/auto_lock_values"
             android:key="@string/key_time_to_lock"
             android:title="@string/auto_lock_delay" />
 
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/account">
+
+        <Preference
+            android:key="@string/key_key_delete_account"
+            android:title="@string/delete_account" />
 
     </PreferenceCategory>
 </PreferenceScreen>

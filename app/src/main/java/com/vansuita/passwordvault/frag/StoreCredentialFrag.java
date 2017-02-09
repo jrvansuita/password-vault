@@ -121,6 +121,11 @@ public class StoreCredentialFrag extends BaseStoreFragment<Credential> {
         if (!Validation.isEmpty(edEmail))
             good = good & UI.error(tilEmail, !Validation.isEmail(edEmail), R.string.email_not_right);
 
+
+        if (!Validation.isEmpty(edWebsite))
+            good = good & UI.error(tilWebsite, !Validation.isWebsite(edWebsite), R.string.website_not_right);
+
+
         return good;
     }
 

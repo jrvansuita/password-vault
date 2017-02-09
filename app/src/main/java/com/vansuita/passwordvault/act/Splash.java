@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.vansuita.passwordvault.fire.account.Account;
 
 /**
  * Created by jrvansuita on 27/10/16.
@@ -17,11 +18,9 @@ public class Splash extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(new LinearLayout(this));
 
-       // getApp().initGoogleApiClient(this);
-
         //When app reinstalled, getCurrentUser() is not getting null...
         if (getSession().getUserID().isEmpty()) {
-            signOut();
+            Account.with(Splash.this).signOut();
             return;
         } else {
 

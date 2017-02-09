@@ -35,7 +35,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.vansuita.passwordvault.R;
+import com.vansuita.passwordvault.fire.account.Account;
 import com.vansuita.passwordvault.fire.dao.PrefDAO;
+import com.vansuita.passwordvault.pref.Session;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Validation;
 import com.vansuita.passwordvault.util.Visible;
@@ -111,7 +113,7 @@ public class Login extends AbstractActivity implements GoogleApiClient.OnConnect
         this.progress = new MaterialDialog.Builder(this)
                 .contentColorRes(R.color.primary_text)
                 .widgetColorRes(R.color.primary_text)
-                .content(R.string.loading)
+                .content(R.string.signing_in)
                 .cancelable(false)
                 .progress(true, 0).build();
 
@@ -297,7 +299,11 @@ public class Login extends AbstractActivity implements GoogleApiClient.OnConnect
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
+                        String token = loginResult.getAccessToken().getToken();
+
+                        Session.with(Login.this).setAuthToken(token);
+
+                        AuthCredential credential = FacebookAuthProvider.getCredential(token);
                         auth.signInWithCredential(credential)
                                 .addOnCompleteListener(Login.this, defaultTask);
                     }
@@ -403,7 +409,7 @@ public class Login extends AbstractActivity implements GoogleApiClient.OnConnect
         if (!progress.isShowing())
             progress.show();
 
-        startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(getApp().getGoogleApiClient(this)), RC_SIGN_IN);
+        startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(Account.with(this).getGoogleApiClient()), RC_SIGN_IN);
     }
 
     private void facebookLogin() {
@@ -422,7 +428,12 @@ public class Login extends AbstractActivity implements GoogleApiClient.OnConnect
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();
-                AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+
+                String token = acct.getIdToken();
+
+                Session.with(Login.this).setAuthToken(acct.getIdToken());
+
+                AuthCredential credential = GoogleAuthProvider.getCredential(token, null);
                 auth.signInWithCredential(credential)
                         .addOnCompleteListener(this, defaultTask);
             } else {
@@ -434,7 +445,9 @@ public class Login extends AbstractActivity implements GoogleApiClient.OnConnect
     private OnCompleteListener<AuthResult> defaultTask = new OnCompleteListener<AuthResult>() {
         @Override
         public void onComplete(@NonNull Task<AuthResult> task) {
-            if (!task.isSuccessful()) {
+            if (task.isSuccessful()) {
+                Session.with(Login.this).setAuthPassword(getPassword());
+            } else {
                 showSnack(task.getException().getMessage());
             }
         }

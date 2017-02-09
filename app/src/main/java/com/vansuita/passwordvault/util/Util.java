@@ -3,6 +3,7 @@ package com.vansuita.passwordvault.util;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -19,8 +20,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import static android.graphics.BitmapFactory.decodeStream;
 
-public class Util extends com.vansuita.pickimage.Util {
+
+public class Util extends com.vansuita.pickimage.util.Util {
 
     public static boolean internet(Context context) {
         if (context == null) {
@@ -110,9 +113,35 @@ public class Util extends com.vansuita.pickimage.Util {
         return result;
     }
 
+
+    public static Bitmap decode(Uri uri, Context context, int size) throws FileNotFoundException {
+
+        // Decode image size
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        decodeStream(context.getContentResolver().openInputStream(uri), null, options);
+
+        // Find the correct scale value. It should be the power of 2.
+        int width_tmp = options.outWidth, height_tmp = options.outHeight;
+        int scale = 1;
+        while (true) {
+            if (width_tmp / 2 < size || height_tmp / 2 < size)
+                break;
+
+            width_tmp /= 2;
+            height_tmp /= 2;
+            scale *= 2;
+        }
+
+        // Decode with inSampleSize
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = scale;
+        return BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, o2);
+    }
+
     public static byte[] bytes(Uri selectedImage, Context context) {
         try {
-            Bitmap bitmap = com.vansuita.pickimage.Util.decodeUri(selectedImage, context, 100);
+            Bitmap bitmap = decode(selectedImage, context, 100);
 
             if (bitmap != null) {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();

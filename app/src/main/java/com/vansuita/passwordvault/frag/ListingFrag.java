@@ -1,6 +1,7 @@
 package com.vansuita.passwordvault.frag;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,10 +18,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.afollestad.materialcab.MaterialCab;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.google.firebase.auth.FirebaseAuth;
+import com.vansuita.library.Icon;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.act.Main;
 import com.vansuita.passwordvault.act.Store;
@@ -29,6 +34,7 @@ import com.vansuita.passwordvault.enums.ECategory;
 import com.vansuita.passwordvault.enums.EShowType;
 import com.vansuita.passwordvault.fire.dao.VaultDAO;
 import com.vansuita.passwordvault.pref.Pref;
+import com.vansuita.passwordvault.util.Visible;
 import com.vansuita.passwordvault.view.Snack;
 
 import butterknife.BindView;
@@ -40,16 +46,24 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by jrvansuita on 20/01/17.
  */
 
-public class ListingFrag extends Fragment implements VaultListAdapter.Callback, SearchView.OnQueryTextListener {
+public class ListingFrag extends Fragment implements VaultListAdapter.Callback, SearchView.OnQueryTextListener, VaultListAdapter.OnAdapterLoad {
 
     @BindView(R.id.recycle_view)
     RecyclerView rvVaultList;
+
+    @BindView(R.id.empty_data_set)
+    View vEmptyDataSet;
+
+    @BindView(R.id.empty_icon)
+    ImageView ivEmptyIcon;
+
+    @BindView(R.id.empty_msg)
+    TextView tvEmptyText;
 
     private Main main;
     private MaterialCab cab;
     private VaultListAdapter adapter;
     private MenuItem searchMenuItem;
-    private SearchView searchView;
     private MenuItem editMenuItem;
     private ECategory category;
     private EShowType showType;
@@ -80,7 +94,6 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
 
         setHasOptionsMenu(true);
 
-
         Bundle bundle = getArguments();
         this.category = (ECategory) bundle.getSerializable(ECategory.TAG);
         this.showType = (EShowType) bundle.getSerializable(EShowType.TAG);
@@ -108,6 +121,18 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
 
         rvVaultList.setLayoutManager(layoutManager);
         rvVaultList.setItemAnimator(new DefaultItemAnimator());
+
+        if (isShowingTrash()) {
+            Icon.put(ivEmptyIcon, R.mipmap.garbage_can);
+            tvEmptyText.setText(R.string.empty_trash);
+        }else if (showType.equals(EShowType.FAVORITE)){
+            Icon.put(ivEmptyIcon, R.mipmap.empty_open_vault_fav);
+            tvEmptyText.setText(R.string.empty_fav);
+        }else{
+            tvEmptyText.setText(R.string.empty_list);
+        }
+
+        showEmptyDataSet(true);
     }
 
     @Override
@@ -118,6 +143,7 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
             if (adapter == null) {
                 this.adapter = new VaultListAdapter(VaultDAO.on(category, showType).get());
                 this.adapter.setCallback(this);
+                this.adapter.setOnAdapterLoad(this);
                 this.adapter.attachSwipe(rvVaultList);
 
                 rvVaultList.setAdapter(adapter);
@@ -284,7 +310,7 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
         inflater.inflate(R.menu.main, menu);
 
         searchMenuItem = menu.findItem(R.id.action_search);
-        searchView = (SearchView) searchMenuItem.getActionView();
+        SearchView searchView = (SearchView) searchMenuItem.getActionView();
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint(getString(R.string.search_hint));
     }
@@ -309,4 +335,42 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
         adapter.getFilter().filter(newText);
         return false;
     }
+
+
+    @Override
+    public void onLoad(boolean hasItems) {
+        showEmptyDataSet(!hasItems);
+    }
+
+    private Handler handler;
+
+    private Runnable runnerShow = new Runnable() {
+        @Override
+        public void run() {
+            Visible.with(vEmptyDataSet).gone(false);
+            vEmptyDataSet.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
+        }
+    };
+
+    private void showEmptyDataSet(boolean show) {
+        Visible.with(vEmptyDataSet).gone(true);
+
+        if (handler != null){
+            handler.removeCallbacks(runnerShow);
+        }
+
+        if (show) {
+            handler = new Handler();
+            handler.postDelayed(runnerShow, 300);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (adapter != null)
+            adapter.destroy();
+
+        super.onDestroy();
+    }
+
 }

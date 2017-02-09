@@ -26,6 +26,7 @@
     <string name="new_access_password">New Access Password</string>
     <string name="domain">Domain</string>
     <string name="website">Website</string>
+    <string name="website_not_right">This website seems to be not right</string>
     <string name="x_selected">%1$d selected</string>
     <string name="sign_in">Sign in </string>
     <string name="search">Search</string>
@@ -39,6 +40,8 @@
     <string name="auth_failed">Authentication failed.</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="loading">Loading...</string>
+    <string name="signing_in">Signing in...</string>
+    <string name="deleting_account">Deleting account...</string>
     <string name="update">Update</string>
     <string name="wait">Please wait...</string>
     <string name="wanna_logout">Do you want to logout the app?</string>
@@ -60,6 +63,9 @@
     <string name="title">Title</string>
     <string name="save">save</string>
     <string name="account">Account</string>
+    <string name="empty_trash">You haven\'t deleted any content yet. It\'s good, it seems your passwords really matter to you.</string>
+    <string name="empty_list">You haven\'t added any content yet. Fill up your vault using the add button below.</string>
+    <string name="empty_fav">You haven\'t set any content as favorite yet. Mark some items as favorite and come back later.</string>
     <string name="first_intro">It\'s good to see you here! At this time you need to provide the vault password. This password will be requested every time you access the vault.</string>
     <string name="lock_intro">Please, provide your password to access the vault. Don\'t forget the hint!</string>
     <string name="reset_intro">Need a change? Please, provide a new password to access the vault. Don\'t forget the hint!</string>
@@ -97,9 +103,11 @@
     <string name="domain_icons">Show email domains icons</string>
     <string name="ordination">Ordination</string>
 
-    <string name="auto_lock">Auto lock</string>
+    <string name="vault_password">Vault password</string>
 
     <string name="items_order">Items order</string>
     <string name="auto_lock_delay">Auto lock delay</string>
     <string name="reset_vault_password">Reset vault password</string>
+    <string name="delete_account">Delete account</string>
+    <string name="signing_out">Signing out...</string>
 </resources>
