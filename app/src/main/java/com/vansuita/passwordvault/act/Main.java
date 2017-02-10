@@ -19,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -129,7 +130,7 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
 
         navigation.setNavigationItemSelectedListener(this);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         pager.addOnPageChangeListener(this);
@@ -237,23 +238,6 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
         }
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        menu.findItem(R.id.action_search).setVisible(false);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem i) {
-        switch (i.getItemId()) {
-            case R.id.action_settings:
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(i);
-        }
-    }*/
 
     private TextView tvName;
     private TextView tvEmail;
@@ -271,7 +255,7 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
                 tvEmail = (TextView) header.findViewById(R.id.email);
 
                 tvName.setText(Util.coalesce(user.getDisplayName(), getString(R.string.unknow)));
-                tvEmail.setText(Util.coalesce(user.getEmail(), getString(R.string.unknow)));
+                tvEmail.setText(Util.coalesce(user.getEmail(), ""));
 
                 imAvatar = (ImageView) header.findViewById(R.id.avatar);
 
@@ -296,7 +280,8 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
                 imAvatar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        PickSetup setup = new PickSetup();
+                        PickSetup setup = new PickSetup().setImageSize(300);
+
                         Lock.isIgnoreAction(true);
 
                         PickImageDialog.build(setup).show(Main.this);
@@ -388,6 +373,28 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
     public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
         if (onColorCallBack != null) {
             onColorCallBack.onColorSelection(dialog, selectedColor);
+        }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.lock:
+                Lock.start(this, false);
+                return true;
+            case R.id.exit:
+                System.exit(0);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

@@ -123,11 +123,6 @@ public class Login extends AbstractActivity implements GoogleApiClient.OnConnect
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
     @OnEditorAction({R.id.password, R.id.password_retype})
     public boolean onPasswordEnter(int id) {
         if (id == EditorInfo.IME_ACTION_DONE) {
@@ -304,8 +299,7 @@ public class Login extends AbstractActivity implements GoogleApiClient.OnConnect
                         Session.with(Login.this).setAuthToken(token);
 
                         AuthCredential credential = FacebookAuthProvider.getCredential(token);
-                        auth.signInWithCredential(credential)
-                                .addOnCompleteListener(Login.this, defaultTask);
+                        auth.signInWithCredential(credential).addOnCompleteListener(Login.this, defaultTask);
                     }
 
                     @Override
@@ -317,7 +311,9 @@ public class Login extends AbstractActivity implements GoogleApiClient.OnConnect
                     public void onError(FacebookException exception) {
                         showSnack(exception.getMessage());
                     }
-                });
+                }
+
+        );
 
     }
 

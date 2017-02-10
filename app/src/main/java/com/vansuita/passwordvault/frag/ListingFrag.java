@@ -307,7 +307,7 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.search_view, menu);
 
         searchMenuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchMenuItem.getActionView();

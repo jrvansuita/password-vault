@@ -19,7 +19,7 @@ public class Splash extends AbstractActivity {
         setContentView(new LinearLayout(this));
 
         //When app reinstalled, getCurrentUser() is not getting null...
-        if (getSession().getUserID().isEmpty()) {
+        if (FirebaseAuth.getInstance().getCurrentUser()!= null && getSession().getUserID().isEmpty()) {
             Account.with(Splash.this).signOut();
             return;
         } else {

@@ -391,6 +391,7 @@ public class Lock extends AbstractActivity {
 
     public static boolean isLockable(Activity activity) {
         return activity.getClass().getName().contains(BuildConfig.APPLICATION_ID)
-                && !(Arrays.asList(new Class[]{Login.class, Splash.class, Lock.class}).contains(activity.getClass()));
+                && !(Arrays.asList(new Class[]{Login.class, Splash.class, Lock.class}).contains(activity.getClass()))
+                && !Lock.isIgnoreAction(false);
     }
 }

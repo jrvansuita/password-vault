@@ -4,17 +4,17 @@
 
     <PreferenceCategory android:title="@string/layout_dynamics">
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="@string/key_swipe_to_delete"
             android:title="@string/swipe_to_delete" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="@string/key_changing_colors"
             android:title="@string/change_items_color" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="true"
             android:key="@string/key_domain_icons"
             android:title="@string/domain_icons" />

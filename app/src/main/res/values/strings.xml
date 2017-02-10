@@ -73,6 +73,8 @@
     <string name="sub_title">Keep your passwords safe.</string>
     <string name="category">Category</string>
     <string name="delete">Delete</string>
+    <string name="lock">Lock</string>
+    <string name="exit">Exit</string>
     <string name="color">Color</string>
     <string name="color_palette">Color Palette</string>
     <string name="shade">Shade</string>

@@ -14,8 +14,6 @@ import com.vansuita.passwordvault.fire.dao.PrefDAO;
 import com.vansuita.passwordvault.pref.Pref;
 import com.vansuita.passwordvault.pref.Session;
 
-import static com.vansuita.passwordvault.act.Lock.isLockable;
-
 /**
  * Created by jrvansuita on 08/11/16.
  */
@@ -40,7 +38,7 @@ public class App extends Application implements Application.ActivityLifecycleCal
         AppEventsLogger.activateApp(this);
 
         //if (!BuildConfig.DEBUG)
-            registerActivityLifecycleCallbacks(this);
+        registerActivityLifecycleCallbacks(this);
 
         handler = new Handler(getMainLooper());
         lock = !getSession().getUserID().isEmpty();
@@ -74,9 +72,9 @@ public class App extends Application implements Application.ActivityLifecycleCal
 
     @Override
     public void onActivityPaused(Activity activity) {
-        if (isLockable(activity))
+        if (Lock.isLockable(activity))
 
-            if ((FirebaseAuth.getInstance().getCurrentUser() != null) && !Lock.isIgnoreAction(false)) {
+            if ((FirebaseAuth.getInstance().getCurrentUser() != null)) {
 
                 int delay = getPref().autoLockDelay();
 

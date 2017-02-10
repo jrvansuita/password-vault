@@ -1,7 +1,9 @@
 package com.vansuita.passwordvault.fire.account;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -9,8 +11,6 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -32,6 +32,7 @@ public class Account implements GoogleApiClient.OnConnectionFailedListener {
 
     private AbstractActivity context;
     private MaterialDialog progress;
+    
 
     Account(AbstractActivity context) {
         this.context = context;
@@ -116,7 +117,6 @@ public class Account implements GoogleApiClient.OnConnectionFailedListener {
         }
     }
 
-
     public void signOut() {
         showProgress(R.string.signing_out);
 
@@ -126,25 +126,36 @@ public class Account implements GoogleApiClient.OnConnectionFailedListener {
 
         FirebaseAuth.getInstance().signOut();
 
-        final GoogleApiClient googleApiClient = getGoogleApiClient();
+        disconnectGoogleApi();
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (googleApiClient.isConnected()) {
-                    Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(@NonNull Status status) {
-                            context.goToLogin();
-                        }
-                    });
-                } else {
-                    context.goToLogin();
-                }
+                hideProgress();
+                context.goToLogin();
             }
         }, 500);
-
     }
+
+
+    private GoogleApiClient disconnectGoogleApi() {
+        final GoogleApiClient googleApiClient = getGoogleApiClient();
+
+        googleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+            @Override
+            public void onConnected(@Nullable Bundle bundle) {
+                Auth.GoogleSignInApi.signOut(googleApiClient);
+            }
+
+            @Override
+            public void onConnectionSuspended(int i) {
+
+            }
+        });
+
+        return googleApiClient;
+    }
+
 
     private GoogleSignInOptions getGoogleSignInOptions() {
         return new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
