@@ -124,8 +124,8 @@ public abstract class FirebaseRecyclerAdapter<ViewHolder extends RecyclerView.Vi
 
         private void set(int pos, T o) {
             if (pos >= 0) {
+                mShowItems.set(mShowItems.indexOf(mItems.get(pos)), o);
                 mItems.set(pos, o);
-                mShowItems.set(pos, o);
             }
         }
 
@@ -148,7 +148,7 @@ public abstract class FirebaseRecyclerAdapter<ViewHolder extends RecyclerView.Vi
 
         private void remove(int pos) {
             mKeys.remove(pos);
-            mShowItems.remove(pos);
+            mShowItems.remove(mShowItems.indexOf(mItems.get(pos)));
             mItems.remove(pos);
         }
 

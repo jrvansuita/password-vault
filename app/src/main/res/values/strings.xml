@@ -109,6 +109,7 @@
     <string name="layout_dynamics">Layout &amp; dynamics</string>
     <string name="swipe_to_delete">Swipe to delete items</string>
     <string name="change_items_color">Change items color</string>
+    <string name="show_cards">Display vault content as cards</string>
     <string name="domain_icons">Show email domains icons</string>
     <string name="ordination">Ordination</string>
 
@@ -116,6 +117,7 @@
 
     <string name="items_order">Items order</string>
     <string name="auto_lock_delay">Auto lock delay</string>
+    <string name="display_as_subtitle">Display as items subtitle</string>
     <string name="reset_vault_password">Reset vault password</string>
     <string name="delete_account">Delete account</string>
     <string name="about">About</string>

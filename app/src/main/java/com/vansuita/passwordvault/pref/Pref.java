@@ -8,7 +8,7 @@ import com.vansuita.passwordvault.R;
  * Created by jrvansuita on 03/02/17.
  */
 
-public class Pref extends Shared{
+public class Pref extends Shared {
 
     public static final String NAME = "PREF";
 
@@ -45,6 +45,14 @@ public class Pref extends Shared{
         return getStr(R.string.key_items_order, "0").equalsIgnoreCase("0");
     }
 
+    public boolean isDisplayCards() {
+        return getBool(R.string.key_show_cards);
+    }
+
+
+    public int getSubTitleType() {
+        return Integer.valueOf(getStr(R.string.key_subtitle_as, "0"));
+    }
 
 
 }

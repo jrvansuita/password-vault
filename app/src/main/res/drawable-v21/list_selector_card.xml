@@ -1,0 +1,13 @@
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/ripple_material_light">
+
+    <item android:drawable="@drawable/normal_item_card" />
+    <item>
+        <selector>
+            <item android:state_activated="true" android:drawable="@drawable/selected_item_card" />
+            <item android:drawable="@drawable/normal_item_card" />
+        </selector>
+    </item>
+
+
+</ripple>

@@ -1,5 +1,6 @@
 package com.vansuita.passwordvault.adapter;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
@@ -19,6 +20,7 @@ import com.vansuita.library.Icon;
 import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.bean.Bean;
 import com.vansuita.passwordvault.bean.Email;
+import com.vansuita.passwordvault.bean.refl.Reflect;
 import com.vansuita.passwordvault.cnt.VaultCnt;
 import com.vansuita.passwordvault.enums.EEmailDomain;
 import com.vansuita.passwordvault.fire.adapter.FirebaseRecyclerAdapter;
@@ -39,16 +41,22 @@ import java.util.Date;
 
 public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.ViewHolder, Bean> {
 
+    private Pref pref;
     private ArrayList<Integer> dataSelected = new ArrayList();
 
     public VaultListAdapter(Query query) {
         super(query);
     }
 
+    private void initPref(Context context) {
+        if (pref == null)
+            this.pref = Pref.with(context);
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         View root;
         TextView tvTitle;
+        TextView tvSubTitle;
         TextView tvDate;
         ImageView ivIcon;
         View vFavorite;
@@ -60,11 +68,14 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
 
             root = v.findViewById(R.id.content);
             tvTitle = (TextView) v.findViewById(R.id.title);
+            tvSubTitle = (TextView) v.findViewById(R.id.sub_title);
             tvDate = (TextView) v.findViewById(R.id.date);
             ivIcon = (ImageView) v.findViewById(R.id.icon);
             vFavorite = v.findViewById(R.id.favorite);
             vColor = v.findViewById(R.id.color);
             vSelected = v.findViewById(R.id.selected);
+
+            Util.background(root, ContextCompat.getDrawable(root.getContext(), pref.isDisplayCards() ? R.drawable.list_selector_card : R.drawable.list_selector));
 
             ivIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -92,7 +103,11 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
 
     @Override
     public VaultListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false));
+        initPref(parent.getContext());
+
+        int layout = pref.isDisplayCards() ? R.layout.list_item_card : R.layout.list_item;
+
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
     }
 
     @Override
@@ -101,10 +116,18 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
         holder.root.setActivated(isSelected);
         Bean bean = getItem(position);
 
+        Reflect reflect = new Reflect(bean);
 
-        Pref pref = Pref.with(holder.ivIcon.getContext());
 
         holder.tvTitle.setText(bean.getTitle());
+
+        switch (pref.getSubTitleType()){
+            case 0 : holder.tvSubTitle.setText(reflect.getDefaultSubTitle()); break;
+            case 1 : holder.tvSubTitle.setText(reflect.getPassword()); break;
+            case 2 : holder.tvSubTitle.setText(Util.hidePass(3,reflect.getPassword())); break;
+        }
+
+        Visible.with(holder.tvSubTitle).gone(holder.tvSubTitle.getText().toString().isEmpty());
 
         CharSequence s = DateUtils.getRelativeTimeSpanString(bean.getLastTime(), new Date().getTime(), 0L, DateUtils.FORMAT_ABBREV_ALL);
 
@@ -119,7 +142,7 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
             bean.setColor(Color.WHITE);
 
         if (bean instanceof Email && pref.showEmailDomainsIcons()) {
-            EEmailDomain domain = EEmailDomain.findDomain(((Email) bean).getEmail());
+            EEmailDomain domain = EEmailDomain.findDomain(reflect.getEmail());
             Icon.on(holder.ivIcon).icon(domain.getIcon()).put();
         } else {
             Icon.on(holder.ivIcon).color(android.R.color.white).icon(bean.getCategory().getIconRes()).put();
@@ -240,7 +263,7 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
         this.onItemDuplicatedAdded = onItemDuplicatedAdded;
     }
 
-    public interface IOnItemDuplicatedAdded{
+    public interface IOnItemDuplicatedAdded {
         void onItemDuplicatedAdded(int position);
     }
 
@@ -248,7 +271,7 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
     protected void itemAdded(Bean item, String key, int position) {
         super.itemAdded(item, key, position);
 
-        if (onItemDuplicatedAdded != null){
+        if (onItemDuplicatedAdded != null) {
             onItemDuplicatedAdded.onItemDuplicatedAdded(position);
             onItemDuplicatedAdded = null;
         }

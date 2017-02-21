@@ -8,6 +8,7 @@
     <string name="key_root">key_root</string>
     <string name="key_swipe_to_delete">key_swipe_to_delete</string>
     <string name="key_changing_colors">key_changing_colors</string>
+    <string name="key_show_cards">key_show_cards</string>
     <string name="key_domain_icons">key_domain_icons</string>
 
     <string name="key_items_order">key_items_order</string>
@@ -17,6 +18,7 @@
     <string name="key_about">key_about</string>
     <string name="key_reset_lock_password">key_reset_lock_password</string>
     <string name="key_time_to_lock">key_time_to_lock</string>
+    <string name="key_subtitle_as">key_subtitle_as</string>
     <string name="key_user_uid">key_user_uid</string>
 
 </resources>

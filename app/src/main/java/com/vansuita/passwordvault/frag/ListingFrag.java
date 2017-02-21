@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -120,6 +121,9 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
             layoutManager.setStackFromEnd(true);
         }
 
+        if (!Pref.with(getContext()).isDisplayCards())
+            rvVaultList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+
         rvVaultList.setLayoutManager(layoutManager);
         rvVaultList.setItemAnimator(new DefaultItemAnimator());
 
@@ -148,6 +152,7 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
                 this.adapter.attachSwipe(rvVaultList);
 
                 rvVaultList.setAdapter(adapter);
+
             }
 
         getActivity().invalidateOptionsMenu();
@@ -321,7 +326,8 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
             main.selectionState(false);
             adapter.clearSelected();
             miEdit = null;
-            miSearch = null;
+
+
             return true;
         }
     };

@@ -196,5 +196,14 @@ public class Util extends com.vansuita.pickimage.util.Util {
         return Color.rgb((int)(r*.9), (int)(g*.9), (int)(b*.9));
     }
 
+    public static String hidePass(int count, String pass){
+        if (pass.length() > count) {
+            String showingPart = pass.substring(0, Math.min(pass.length(), count));
+
+            return showingPart + new String(new char[pass.length() - count]).replace("\0", "●");
+        }else{
+            return pass;
+        }
+    }
 
 }

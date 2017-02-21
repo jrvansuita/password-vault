@@ -6,6 +6,11 @@
 
         <SwitchPreference
             android:defaultValue="false"
+            android:key="@string/key_show_cards"
+            android:title="@string/show_cards" />
+
+        <SwitchPreference
+            android:defaultValue="false"
             android:key="@string/key_swipe_to_delete"
             android:title="@string/swipe_to_delete" />
 
@@ -18,6 +23,13 @@
             android:defaultValue="true"
             android:key="@string/key_domain_icons"
             android:title="@string/domain_icons" />
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/display_as_subtitle_entry"
+            android:entryValues="@array/display_as_subtitle_values"
+            android:key="@string/key_subtitle_as"
+            android:title="@string/display_as_subtitle" />
 
 
     </PreferenceCategory>
