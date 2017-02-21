@@ -45,13 +45,14 @@ dependencies {
     compile 'com.afollestad.material-dialogs:commons:0.9.2.3'
     compile 'com.makeramen:roundedimageview:2.0.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.github.jrvansuita:PickImage:v2.0.5'
+    compile 'com.github.jrvansuita:PickImage:2.0.9'
 
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
 
     compile 'com.afollestad:material-cab:0.1.12'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.github.jrvansuita:IconHandler:v2.0.0'
+    compile 'com.github.jrvansuita:MaterialAbout:0.0.9'
 }
 
 apply plugin: 'com.google.gms.google-services'

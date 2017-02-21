@@ -35,7 +35,6 @@ import com.vansuita.passwordvault.view.Snack;
 
 import java.lang.reflect.ParameterizedType;
 import java.text.DateFormat;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -179,8 +178,6 @@ public abstract class BaseStoreFragment<T extends Bean> extends Fragment impleme
 
     private void store() {
         object.setTitle(edTitle.getText().toString());
-        object.setLastDate(new Date());
-
         onStore(object);
     }
 
@@ -190,7 +187,7 @@ public abstract class BaseStoreFragment<T extends Bean> extends Fragment impleme
     }
 
     protected void autoFillTitle() {
-        if (Validation.isEmpty(edTitle) || !getAutoFillTitleValue().isEmpty())
+        if (Validation.isEmpty(edTitle) && !getAutoFillTitleValue().isEmpty())
             edTitle.setText(getAutoFillTitleValue());
     }
 

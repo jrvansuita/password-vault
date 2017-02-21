@@ -435,6 +435,7 @@ public class Login extends AbstractActivity implements GoogleApiClient.OnConnect
             } else {
                 showSnack(result.getStatus().getStatusMessage());
             }
+
         }
     }
 

@@ -56,8 +56,17 @@
     <PreferenceCategory android:title="@string/account">
 
         <Preference
-            android:key="@string/key_key_delete_account"
+            android:key="@string/key_logout_account"
+            android:title="@string/logout" />
+
+
+        <Preference
+            android:key="@string/key_delete_account"
             android:title="@string/delete_account" />
 
     </PreferenceCategory>
+
+    <Preference
+        android:key="@string/key_about"
+        android:title="@string/about" />
 </PreferenceScreen>

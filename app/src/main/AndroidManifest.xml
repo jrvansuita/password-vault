@@ -9,7 +9,7 @@
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/vault_green"
+        android:icon="@mipmap/green_vault"
         android:label="@string/app_name"
         android:launchMode="singleInstance"
         android:supportsRtl="true"
@@ -59,6 +59,10 @@
             android:theme="@style/AppTheme.Login"
             android:windowSoftInputMode="adjustPan|stateVisible"></activity>
 
+        <activity
+            android:name=".act.About"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
 
         <activity
             android:name="com.facebook.FacebookActivity"

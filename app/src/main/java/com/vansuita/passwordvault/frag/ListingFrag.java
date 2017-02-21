@@ -63,8 +63,9 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
     private Main main;
     private MaterialCab cab;
     private VaultListAdapter adapter;
-    private MenuItem searchMenuItem;
-    private MenuItem editMenuItem;
+    private MenuItem miSearch;
+    private MenuItem miEdit;
+    private MenuItem miToggleSelectAll;
     private ECategory category;
     private EShowType showType;
 
@@ -125,10 +126,10 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
         if (isShowingTrash()) {
             Icon.put(ivEmptyIcon, R.mipmap.garbage_can);
             tvEmptyText.setText(R.string.empty_trash);
-        }else if (showType.equals(EShowType.FAVORITE)){
+        } else if (showType.equals(EShowType.FAVORITE)) {
             Icon.put(ivEmptyIcon, R.mipmap.empty_open_vault_fav);
             tvEmptyText.setText(R.string.empty_fav);
-        }else{
+        } else {
             tvEmptyText.setText(R.string.empty_list);
         }
 
@@ -186,8 +187,8 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
 
         cab.setTitle(getString(R.string.x_selected, adapter.getSelectedCount()));
 
-        if (editMenuItem != null) {
-            editMenuItem.setVisible(adapter.getSelectedCount() == 1);
+        if (miEdit != null) {
+            miEdit.setVisible(adapter.getSelectedCount() == 1);
         }
     }
 
@@ -198,13 +199,14 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
         public boolean onCabCreated(MaterialCab cab, Menu menu) {
             main.selectionState(true);
 
-
             ViewCompat.setElevation(cab.getToolbar(), 0.01f);
 
             menu.findItem(R.id.action_favorite).setVisible(!isShowingTrash());
             menu.findItem(R.id.action_palette).setVisible(!isShowingTrash() && Pref.with(getContext()).canChangeItemsColor());
             menu.findItem(R.id.action_undo).setVisible(isShowingTrash());
-            editMenuItem = menu.findItem(R.id.action_edit);
+            menu.findItem(R.id.action_duplicate).setVisible(!isShowingTrash());
+            miEdit = menu.findItem(R.id.action_edit);
+            miToggleSelectAll = menu.findItem(R.id.action_toggle_select_all);
 
             return true;
         }
@@ -268,6 +270,38 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
                     }
                     break;
 
+                case R.id.action_toggle_select_all:
+                    boolean isSelect = adapter.toggleSelectAll();
+
+                    if (isSelect) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                miToggleSelectAll.setTitle(R.string.unselect_all);
+                                miEdit.setVisible(false);
+                            }
+                        }, 100);
+                    } else {
+                        cab.finish();
+                    }
+                    break;
+
+                case R.id.action_duplicate:
+                    msg = R.string.duplicated;
+
+                    adapter.setOnItemDuplicatedAdded(new VaultListAdapter.IOnItemDuplicatedAdded() {
+                        @Override
+                        public void onItemDuplicatedAdded(int position) {
+                            if (Pref.with(getContext()).isLastFirst()) {
+                                rvVaultList.scrollToPosition(position);
+                            }
+                        }
+                    });
+
+                    for (Integer pos : adapter.getDataSelected())
+                        VaultDAO.duplicate(adapter.getItem(pos));
+
+                    break;
 
                 case R.id.action_edit:
                     openEditItem(adapter.getDataSelected().get(0));
@@ -286,7 +320,8 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
         public boolean onCabFinished(MaterialCab cab) {
             main.selectionState(false);
             adapter.clearSelected();
-            editMenuItem = null;
+            miEdit = null;
+            miSearch = null;
             return true;
         }
     };
@@ -309,8 +344,8 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search_view, menu);
 
-        searchMenuItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchMenuItem.getActionView();
+        miSearch = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) miSearch.getActionView();
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint(getString(R.string.search_hint));
     }
@@ -320,8 +355,8 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        if (searchMenuItem.isActionViewExpanded()) {
-            MenuItemCompat.collapseActionView(searchMenuItem);
+        if (miSearch.isActionViewExpanded()) {
+            MenuItemCompat.collapseActionView(miSearch);
         }
     }
 
@@ -355,7 +390,7 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
     private void showEmptyDataSet(boolean show) {
         Visible.with(vEmptyDataSet).gone(true);
 
-        if (handler != null){
+        if (handler != null) {
             handler.removeCallbacks(runnerShow);
         }
 

@@ -161,6 +161,21 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
     }
 
 
+    public boolean toggleSelectAll() {
+        boolean isSelect = dataSelected.size() != getItems().size();
+
+        dataSelected.clear();
+
+        if (isSelect)
+            for (int i = 0; i < getItems().size(); i++) {
+                dataSelected.add(i);
+            }
+
+        notifyDataSetChanged();
+
+        return isSelect;
+    }
+
     /* Click interaction */
 
     public void setCallback(Callback callback) {
@@ -219,9 +234,24 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
     });
 
 
+    private IOnItemDuplicatedAdded onItemDuplicatedAdded;
+
+    public void setOnItemDuplicatedAdded(IOnItemDuplicatedAdded onItemDuplicatedAdded) {
+        this.onItemDuplicatedAdded = onItemDuplicatedAdded;
+    }
+
+    public interface IOnItemDuplicatedAdded{
+        void onItemDuplicatedAdded(int position);
+    }
+
     @Override
     protected void itemAdded(Bean item, String key, int position) {
         super.itemAdded(item, key, position);
+
+        if (onItemDuplicatedAdded != null){
+            onItemDuplicatedAdded.onItemDuplicatedAdded(position);
+            onItemDuplicatedAdded = null;
+        }
 
         callAdapterLoad(true);
     }
@@ -235,8 +265,8 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
 
     private boolean last = false;
 
-    private void callAdapterLoad(boolean hasItems){
-        if (last != hasItems){
+    private void callAdapterLoad(boolean hasItems) {
+        if (last != hasItems) {
             if (onAdapterLoad != null) {
                 last = hasItems;
                 onAdapterLoad.onLoad(hasItems);

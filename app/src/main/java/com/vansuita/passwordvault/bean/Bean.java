@@ -86,10 +86,10 @@ public class Bean implements Serializable{
     public Bean(ECategory category) {
         setTitle("");
         setDate(new Date());
+        setLastDate(new Date());
         setCategory(category);
         setFavorite(false);
         setColor(Color.WHITE);
-        setLastDate(new Date());
     }
 
     //Prevent Firebase Database to serealize this method

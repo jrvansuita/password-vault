@@ -220,6 +220,12 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
             case R.id.logout:
                 Account.with(Main.this).signOut();
                 break;
+            case R.id.lock:
+                Lock.start(this, false);
+                break;
+            case R.id.exit:
+                System.exit(0);
+                break;
         }
 
         navigation.setCheckedItem(res);
@@ -321,9 +327,11 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
         if (is) {
             UI.setStatusBarColor(Main.this, R.color.primary_inactive);
             tabLayout.setBackgroundColor(ContextCompat.getColor(Main.this, R.color.primary_inactive));
+            fab.hide();
         } else {
             UI.setStatusBarColor(Main.this, R.color.primary);
             tabLayout.setBackgroundColor(ContextCompat.getColor(Main.this, R.color.primary));
+            fab.show();
         }
     }
 
@@ -382,7 +390,6 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

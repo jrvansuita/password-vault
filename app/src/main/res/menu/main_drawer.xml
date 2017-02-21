@@ -21,6 +21,21 @@
             android:title="@string/settings" />
     </group>
 
+
+    <item android:title="@string/vault">
+        <menu>
+            <item
+                android:icon="@drawable/lock"
+                android:id="@+id/lock"
+                android:title="@string/lock" />
+
+            <item
+                android:icon="@drawable/exit"
+                android:id="@+id/exit"
+                android:title="@string/exit" />
+        </menu>
+    </item>
+
     <item android:title="@string/account">
         <menu>
             <item
@@ -29,6 +44,7 @@
                 android:title="@string/logout" />
         </menu>
     </item>
+
 
 
 </menu>

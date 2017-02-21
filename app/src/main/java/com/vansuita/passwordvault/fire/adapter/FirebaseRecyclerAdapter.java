@@ -383,9 +383,5 @@ public abstract class FirebaseRecyclerAdapter<ViewHolder extends RecyclerView.Vi
     }
 
 
-
-
-
-
 }
 

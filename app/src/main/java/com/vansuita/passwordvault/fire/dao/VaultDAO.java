@@ -11,6 +11,7 @@ import com.vansuita.passwordvault.enums.ECategory;
 import com.vansuita.passwordvault.enums.EShowType;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.vansuita.passwordvault.fire.database.DatabaseAccess.getTrashNode;
@@ -133,15 +134,33 @@ public class VaultDAO {
         }
     }
 
+
+    /**
+     * Duplicate items
+     *
+     * @param items Items to iterate.
+     */
+
+    public static void duplicate(Bean... items) {
+        for (Bean bean : items) {
+            bean.setKey("");
+            put(bean);
+        }
+    }
+
+
     public static void put(Bean bean) {
         DatabaseReference databaseReference;
 
         if (bean.isNew()) {
             databaseReference = getVaultNode().push();
             bean.setKey(databaseReference.getKey());
+            bean.setDate(new Date());
         } else {
             databaseReference = getVaultNode().child(bean.getKey());
         }
+
+        bean.setLastDate(new Date());
 
         databaseReference.setValue(bean);
     }

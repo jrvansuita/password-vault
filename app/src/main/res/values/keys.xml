@@ -12,7 +12,9 @@
 
     <string name="key_items_order">key_items_order</string>
 
-    <string name="key_key_delete_account">key_delete_account</string>
+    <string name="key_logout_account">key_logout_account</string>
+    <string name="key_delete_account">key_delete_account</string>
+    <string name="key_about">key_about</string>
     <string name="key_reset_lock_password">key_reset_lock_password</string>
     <string name="key_time_to_lock">key_time_to_lock</string>
     <string name="key_user_uid">key_user_uid</string>

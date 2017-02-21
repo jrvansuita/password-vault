@@ -32,6 +32,18 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/action_toggle_select_all"
+        android:orderInCategory="101"
+        android:title="@string/select_all"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_duplicate"
+        android:orderInCategory="101"
+        android:title="@string/duplicate"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_edit"
         android:orderInCategory="101"
         android:title="@string/edit"

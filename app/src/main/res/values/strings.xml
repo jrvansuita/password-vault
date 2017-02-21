@@ -31,6 +31,9 @@
     <string name="sign_in">Sign in </string>
     <string name="search">Search</string>
     <string name="edit">Edit</string>
+    <string name="duplicate">Duplicate</string>
+    <string name="unselect_all">Unselect all</string>
+    <string name="select_all">Select all</string>
     <string name="renew_password">Renew Password</string>
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
@@ -44,7 +47,8 @@
     <string name="deleting_account">Deleting account...</string>
     <string name="update">Update</string>
     <string name="wait">Please wait...</string>
-    <string name="wanna_logout">Do you want to logout the app?</string>
+    <string name="wanna_delete_account">Are you sure you want to delete your account? This action is irreversible.</string>
+    <string name="wanna_logout">Are you sure you want to logout your account?</string>
     <string name="want_delete">Do you want to delete the selected items?</string>
     <string name="authenticating">Authenticating...</string>
     <string name="forgot_title">Did you forget the title?</string>
@@ -63,6 +67,7 @@
     <string name="title">Title</string>
     <string name="save">save</string>
     <string name="account">Account</string>
+    <string name="vault">Vault</string>
     <string name="empty_trash">You haven\'t deleted any content yet. It\'s good, it seems your passwords really matter to you.</string>
     <string name="empty_list">You haven\'t added any content yet. Fill up your vault using the add button below.</string>
     <string name="empty_fav">You haven\'t set any content as favorite yet. Mark some items as favorite and come back later.</string>
@@ -82,9 +87,10 @@
     <string name="favorites">Favorites</string>
     <string name="search_hint">Search by title</string>
     <string name="palette">Palette</string>
-    <string name="deleted">Deleted!</string>
+    <string name="deleted">Deleted successfully!</string>
     <string name="moved_to_trash">Moved to trash!</string>
-    <string name="restored">Restored!</string>
+    <string name="duplicated">Duplicated successfully!</string>
+    <string name="restored">Restored successfully!</string>
     <string name="toggled_favorite">Toggled favorite!</string>
     <string name="undo">Undo</string>
     <string name="all">All</string>
@@ -98,7 +104,8 @@
     <string name="trash">Trash</string>
     <string name="saved">Saved! Do you have another one?</string>
     <string name="updated">Updated! Do you want to save a new one?</string>
-
+    <string name="developer_subtitle">Android Developer</string>
+    <string name="developer_brief">I\'m warmed of mobile technologies. Ideas maker, curious and nature lover.</string>
     <string name="layout_dynamics">Layout &amp; dynamics</string>
     <string name="swipe_to_delete">Swipe to delete items</string>
     <string name="change_items_color">Change items color</string>
@@ -111,5 +118,6 @@
     <string name="auto_lock_delay">Auto lock delay</string>
     <string name="reset_vault_password">Reset vault password</string>
     <string name="delete_account">Delete account</string>
+    <string name="about">About</string>
     <string name="signing_out">Signing out...</string>
 </resources>

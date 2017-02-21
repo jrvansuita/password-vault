@@ -32,7 +32,7 @@ public class Account implements GoogleApiClient.OnConnectionFailedListener {
 
     private AbstractActivity context;
     private MaterialDialog progress;
-    
+
 
     Account(AbstractActivity context) {
         this.context = context;
@@ -41,7 +41,6 @@ public class Account implements GoogleApiClient.OnConnectionFailedListener {
     public static Account with(AbstractActivity context) {
         return new Account(context);
     }
-
 
     private void showProgress(int msg) {
         if (progress == null)
@@ -145,11 +144,12 @@ public class Account implements GoogleApiClient.OnConnectionFailedListener {
             @Override
             public void onConnected(@Nullable Bundle bundle) {
                 Auth.GoogleSignInApi.signOut(googleApiClient);
+                Account.googleApiClient = null;
             }
 
             @Override
             public void onConnectionSuspended(int i) {
-
+                Account.googleApiClient = null;
             }
         });
 
@@ -166,11 +166,14 @@ public class Account implements GoogleApiClient.OnConnectionFailedListener {
     }
 
 
+    private static GoogleApiClient googleApiClient;
+
     public GoogleApiClient getGoogleApiClient() {
-        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)
-                .enableAutoManage(context, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, getGoogleSignInOptions())
-                .build();
+        if (googleApiClient == null)
+            googleApiClient = new GoogleApiClient.Builder(context)
+                    .enableAutoManage(context, this)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, getGoogleSignInOptions())
+                    .build();
 
         if (!googleApiClient.isConnected())
             googleApiClient.connect();

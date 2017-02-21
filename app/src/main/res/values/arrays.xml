@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="items_order_entry">
-        <item>The last will be the first</item>
-        <item>The first will be the first</item>
+        <item>The recent items will be the firsts</item>
+        <item>The recent items will be the lasts</item>
     </string-array>
 
     <string-array name="items_order_values">
