@@ -31,6 +31,10 @@
             android:key="@string/key_subtitle_as"
             android:title="@string/display_as_subtitle" />
 
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/key_hide_passwords"
+            android:title="@string/hide_passwords" />
 
     </PreferenceCategory>
 

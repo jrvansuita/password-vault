@@ -83,7 +83,7 @@ public class StoreCredentialFrag extends BaseStoreFragment<Credential> {
 
     @Override
     public void onSetup() {
-
+        applyPassword(edPassword);
     }
 
     @OnFocusChange(R.id.password)

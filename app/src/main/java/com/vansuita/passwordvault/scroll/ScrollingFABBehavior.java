@@ -1,7 +1,9 @@
 package com.vansuita.passwordvault.scroll;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
@@ -69,6 +71,13 @@ public class ScrollingFABBehavior extends FloatingActionButton.Behavior  {
     }*/
 
 
+    //This method prevent the bug introduced in support library 24.2.1
+    //java.lang.IllegalArgumentException: Rect should intersect with child's bounds.
+    @Override
+    public boolean getInsetDodgeRect(@NonNull CoordinatorLayout parent, @NonNull FloatingActionButton child, @NonNull Rect rect) {
+        super.getInsetDodgeRect(parent, child, rect);
+        return false;
+    }
 
     @Override
     public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View directTargetChild, View target, int nestedScrollAxes) {

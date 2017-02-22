@@ -5,6 +5,7 @@
     <string name="facebook_app_id">353681961648398</string>
     <string name="user_profile_updated">User profile updated.</string>
     <string name="renew_password_msg">An email to renew your password was sent to you.</string>
+    <string name="serializing_collections">Serializing Collections is not supported by Firebase.</string>
     <string name="email">Email</string>
     <string name="login">Login</string>
     <string name="credential">Credential</string>
@@ -111,6 +112,7 @@
     <string name="change_items_color">Change items color</string>
     <string name="show_cards">Display vault content as cards</string>
     <string name="domain_icons">Show email domains icons</string>
+    <string name="hide_passwords">Always hide passwords</string>
     <string name="ordination">Ordination</string>
 
     <string name="vault_password">Vault password</string>

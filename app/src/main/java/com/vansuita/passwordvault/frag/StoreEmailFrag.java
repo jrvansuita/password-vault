@@ -104,6 +104,8 @@ public class StoreEmailFrag extends BaseStoreFragment<Email> {
 
     @Override
     public void onSetup() {
+        applyPassword(edPassword);
+
         domainAdapter = new DomainAdapter(getActivity());
         actvDomain.setAdapter(domainAdapter);
         actvDomain.setOnItemClickListener(new AdapterView.OnItemClickListener() {

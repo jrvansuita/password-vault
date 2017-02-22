@@ -55,4 +55,9 @@ public class Pref extends Shared {
     }
 
 
+    public boolean isHidePasswords() {
+        return getBool(R.string.key_hide_passwords);
+    }
+
+
 }

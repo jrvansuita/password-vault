@@ -107,7 +107,8 @@ public class Util extends com.vansuita.pickimage.util.Util {
         String result = "";
 
         for (int i = 0; i < list.size(); i++) {
-            result += list.get(i) + (i == (list.size() - 1) ? "" : divider);
+            if (!list.get(i).isEmpty())
+                result += list.get(i) + (i == (list.size() - 1) ? "" : divider);
         }
 
         return result;
@@ -188,22 +189,26 @@ public class Util extends com.vansuita.pickimage.util.Util {
         }
     }
 
-    public static int darker(int color){
+    public static int darker(int color) {
         int r = Color.red(color);
         int b = Color.blue(color);
         int g = Color.green(color);
 
-        return Color.rgb((int)(r*.9), (int)(g*.9), (int)(b*.9));
+        return Color.rgb((int) (r * .9), (int) (g * .9), (int) (b * .9));
     }
 
-    public static String hidePass(int count, String pass){
+    public static String hidePass(int count, String pass) {
         if (pass.length() > count) {
             String showingPart = pass.substring(0, Math.min(pass.length(), count));
 
             return showingPart + new String(new char[pass.length() - count]).replace("\0", "●");
-        }else{
+        } else {
             return pass;
         }
+    }
+
+    public static String password(boolean hide, String pass) {
+        return hide ? hidePass(3, pass) : pass;
     }
 
 }

@@ -33,8 +33,8 @@
 
     <string-array name="display_as_subtitle_entry">
         <item>Default</item>
-        <item>Passwords</item>
-        <item>Passwords initials</item>
+        <item>Password</item>
+        <item>Email &amp; password</item>
         <item>None</item>
     </string-array>
 
@@ -44,5 +44,6 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+
 
 </resources>

@@ -20,7 +20,7 @@ public class Splash extends AbstractActivity {
 
         //When app reinstalled, getCurrentUser() is not getting null...
         //Actually, this bug went away, but will still let this code here.
-        if (FirebaseAuth.getInstance().getCurrentUser()!= null && getSession().getUserID().isEmpty()) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null && getSession().getUserID().isEmpty()) {
             Account.with(Splash.this).signOut();
             return;
         } else {

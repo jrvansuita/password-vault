@@ -20,7 +20,7 @@ public class Reflect {
     public String getDefaultSubTitle() {
         String result = getEmail();
 
-        return result.isEmpty() ? getString("getNote") : result;
+        return result.isEmpty() ? getText() : result;
     }
 
     public String getEmail() {
@@ -31,6 +31,11 @@ public class Reflect {
     public String getPassword() {
         return getString("getPassword");
     }
+
+    public String getText() {
+        return getString("getNote");
+    }
+
 
     private String getString(String methodName) {
         String result = "";

@@ -2,11 +2,13 @@ package com.vansuita.passwordvault.fire.dao;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.fire.database.DatabaseAccess;
 import com.vansuita.passwordvault.pref.Pref;
 
@@ -28,8 +30,16 @@ public class PrefDAO extends Pref {
 
 
     public void save() {
-        DatabaseReference databaseReference = DatabaseAccess.getPrefNode();
-        databaseReference.setValue(getShared().getAll());
+        try {
+            DatabaseReference databaseReference = DatabaseAccess.getPrefNode();
+            databaseReference.setValue(getShared().getAll());
+        }catch (Exception e){
+            if (e.getMessage().contains("Serializing Collections")){
+                Toast.makeText(getContext(), R.string.serializing_collections, Toast.LENGTH_LONG).show();
+            }else{
+                throw e;
+            }
+        }
     }
 
     public void restore() {

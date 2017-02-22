@@ -10,7 +10,7 @@
     <string name="key_changing_colors">key_changing_colors</string>
     <string name="key_show_cards">key_show_cards</string>
     <string name="key_domain_icons">key_domain_icons</string>
-
+    <string name="key_hide_passwords">key_hide_passwords</string>
     <string name="key_items_order">key_items_order</string>
 
     <string name="key_logout_account">key_logout_account</string>

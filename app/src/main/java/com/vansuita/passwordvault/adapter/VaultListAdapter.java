@@ -118,14 +118,8 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
 
         Reflect reflect = new Reflect(bean);
 
-
         holder.tvTitle.setText(bean.getTitle());
-
-        switch (pref.getSubTitleType()){
-            case 0 : holder.tvSubTitle.setText(reflect.getDefaultSubTitle()); break;
-            case 1 : holder.tvSubTitle.setText(reflect.getPassword()); break;
-            case 2 : holder.tvSubTitle.setText(Util.hidePass(3,reflect.getPassword())); break;
-        }
+        holder.tvSubTitle.setText(getSubTitle(reflect));
 
         Visible.with(holder.tvSubTitle).gone(holder.tvSubTitle.getText().toString().isEmpty());
 
@@ -305,5 +299,28 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
 
     public interface OnAdapterLoad {
         void onLoad(boolean hasItems);
+    }
+
+    private String getSubTitle(Reflect reflect) {
+        String result;
+
+        switch (pref.getSubTitleType()) {
+            case 0:
+                result = reflect.getDefaultSubTitle();
+                break;
+            case 1:
+                result = Util.password(pref.isHidePasswords(), reflect.getPassword());
+                break;
+            case 2:
+                result = Util.breakArray("\n", reflect.getEmail(), Util.password(pref.isHidePasswords(), reflect.getPassword()));
+                break;
+            default:
+                result = "";
+        }
+
+        if (result.isEmpty())
+            result = reflect.getText();
+
+        return result;
     }
 }
