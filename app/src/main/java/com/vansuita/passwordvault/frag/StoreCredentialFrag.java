@@ -13,6 +13,7 @@ import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
 import com.vansuita.passwordvault.util.Validation;
 import com.vansuita.passwordvault.view.FavIconWebView;
+import com.vansuita.passwordvault.view.PasswordStrengthView;
 
 import butterknife.BindView;
 import butterknife.OnFocusChange;
@@ -29,6 +30,10 @@ public class StoreCredentialFrag extends BaseStoreFragment<Credential> {
     EditText edEmail;
     @BindView(R.id.password)
     EditText edPassword;
+
+    @BindView(R.id.password_strength)
+    PasswordStrengthView vPasswordStrength;
+
     @BindView(R.id.website)
     EditText edWebsite;
     @BindView(R.id.website_favicon)
@@ -84,6 +89,9 @@ public class StoreCredentialFrag extends BaseStoreFragment<Credential> {
     @Override
     public void onSetup() {
         applyPassword(edPassword);
+        vPasswordStrength.setStrengthRequirement(2);
+        vPasswordStrength.setPasswordHolder(edPassword);
+
     }
 
     @OnFocusChange(R.id.password)
@@ -153,5 +161,6 @@ public class StoreCredentialFrag extends BaseStoreFragment<Credential> {
         Icon.clear(edEmail);
         UI.setError(tilEmail);
         favIconWebView.clear();
+        UI.clear(tilWebsite, edWebsite);
     }
 }

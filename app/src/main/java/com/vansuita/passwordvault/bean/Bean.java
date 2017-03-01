@@ -1,6 +1,7 @@
 package com.vansuita.passwordvault.bean;
 
 import android.graphics.Color;
+import android.support.annotation.Keep;
 
 import com.google.firebase.database.Exclude;
 import com.vansuita.passwordvault.enums.ECategory;
@@ -12,7 +13,10 @@ import java.util.Date;
  * Created by jrvansuita on 08/11/16.
  */
 
+
+@Keep
 public class Bean implements Serializable {
+
 
     private String key;
     private String title;
@@ -125,9 +129,6 @@ public class Bean implements Serializable {
     public boolean isNew() {
         return getKey() == null || getKey().isEmpty();
     }
-
-
-
 
 
 }

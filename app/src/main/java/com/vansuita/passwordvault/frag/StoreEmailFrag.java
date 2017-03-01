@@ -17,6 +17,7 @@ import com.vansuita.passwordvault.frag.base.BaseStoreFragment;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
 import com.vansuita.passwordvault.util.Validation;
+import com.vansuita.passwordvault.view.PasswordStrengthView;
 
 import butterknife.BindView;
 import butterknife.OnFocusChange;
@@ -38,6 +39,9 @@ public class StoreEmailFrag extends BaseStoreFragment<Email> {
 
     @BindView(R.id.password_label)
     TextInputLayout tilPassword;
+
+    @BindView(R.id.password_strength)
+    PasswordStrengthView vPasswordStrength;
 
     @BindView(R.id.domain)
     AutoCompleteTextView actvDomain;
@@ -105,6 +109,9 @@ public class StoreEmailFrag extends BaseStoreFragment<Email> {
     @Override
     public void onSetup() {
         applyPassword(edPassword);
+
+        vPasswordStrength.setStrengthRequirement(2);
+        vPasswordStrength.setPasswordHolder(edPassword);
 
         domainAdapter = new DomainAdapter(getActivity());
         actvDomain.setAdapter(domainAdapter);

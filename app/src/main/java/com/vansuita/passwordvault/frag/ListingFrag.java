@@ -351,8 +351,11 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
         inflater.inflate(R.menu.search_view, menu);
 
         miSearch = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) miSearch.getActionView();
-        searchView.setOnQueryTextListener(this);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(miSearch);
+        if (searchView != null) {
+            searchView.setOnQueryTextListener(this);
+        }
+
         searchView.setQueryHint(getString(R.string.search_hint));
     }
 

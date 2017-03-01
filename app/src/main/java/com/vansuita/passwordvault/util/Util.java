@@ -201,7 +201,7 @@ public class Util extends com.vansuita.pickimage.util.Util {
         if (pass.length() > count) {
             String showingPart = pass.substring(0, Math.min(pass.length(), count));
 
-            return showingPart + new String(new char[pass.length() - count]).replace("\0", "●");
+            return showingPart + new String(new char[pass.length() - count]).replace("\0", "•");
         } else {
             return pass;
         }

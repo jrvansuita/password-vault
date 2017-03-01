@@ -1,11 +1,14 @@
 package com.vansuita.passwordvault.bean;
 
+import android.support.annotation.Keep;
+
 import com.vansuita.passwordvault.enums.ECategory;
 
 /**
  * Created by jrvansuita on 08/11/16.
  */
 
+@Keep
 public class Credential extends Bean {
 
     private String login;

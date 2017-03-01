@@ -1,5 +1,7 @@
 package com.vansuita.passwordvault.bean.refl;
 
+import android.support.annotation.Keep;
+
 import com.vansuita.passwordvault.bean.Bean;
 
 import java.lang.reflect.Method;
@@ -8,6 +10,7 @@ import java.lang.reflect.Method;
  * Created by jrvansuita on 21/02/17.
  */
 
+@Keep
 public class Reflect {
 
     private Bean object;
@@ -29,7 +32,9 @@ public class Reflect {
 
 
     public String getPassword() {
-        return getString("getPassword");
+        String s = getString("getPassword");
+
+        return s.substring(0, Math.min(10, s.length()));
     }
 
     public String getText() {

@@ -28,20 +28,20 @@
 
         <activity
             android:name=".act.Login"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme.Login"
             android:windowSoftInputMode="adjustPan|stateVisible"></activity>
 
         <activity
             android:name=".act.Main"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize"></activity>
 
         <activity
             android:name=".act.Store"
             android:parentActivityName=".act.Main"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan"></activity>
 
@@ -49,20 +49,20 @@
         <activity
             android:name=".act.Preferences"
             android:parentActivityName=".act.Main"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme.Pref"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
 
 
         <activity
             android:name=".act.Lock"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme.Login"
             android:windowSoftInputMode="adjustPan|stateVisible"></activity>
 
         <activity
             android:name=".act.About"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme"></activity>
 
         <activity

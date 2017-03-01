@@ -329,7 +329,7 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
             tabLayout.setBackgroundColor(ContextCompat.getColor(Main.this, R.color.primary_inactive));
             fab.hide();
         } else {
-            UI.setStatusBarColor(Main.this, R.color.primary);
+            UI.setStatusBarColor(Main.this, android.R.color.transparent);
             tabLayout.setBackgroundColor(ContextCompat.getColor(Main.this, R.color.primary));
             fab.show();
         }
