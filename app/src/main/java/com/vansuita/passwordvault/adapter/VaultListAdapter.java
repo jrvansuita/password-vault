@@ -151,8 +151,11 @@ public class VaultListAdapter extends FirebaseRecyclerAdapter<VaultListAdapter.V
         holder.vColor.setVisibility(isSelected ? View.GONE : View.VISIBLE);
 
         if (canColor) {
-            holder.tvTitle.setTextColor(ContextCompat.getColor(holder.ivIcon.getContext(), isDarken && !isSelected ? android.R.color.white : R.color.secondary_text));
-            holder.tvDate.setTextColor(ContextCompat.getColor(holder.ivIcon.getContext(), isDarken && !isSelected ? android.R.color.white : R.color.secondary_text));
+            int color = ContextCompat.getColor(holder.ivIcon.getContext(), isDarken && !isSelected ? android.R.color.white : R.color.secondary_text);
+
+            holder.tvTitle.setTextColor(color);
+            holder.tvDate.setTextColor(color);
+            holder.tvSubTitle.setTextColor(color);
         }
 
         ViewCompat.setBackground(holder.vColor, Ripple.getAdaptiveRippleDrawable(bean.getColor(), Util.darker(bean.getColor())));
