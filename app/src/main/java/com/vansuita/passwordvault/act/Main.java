@@ -43,10 +43,12 @@ import com.vansuita.passwordvault.adapter.CategoryChooserAdapter;
 import com.vansuita.passwordvault.adapter.CategoryListPageAdapter;
 import com.vansuita.passwordvault.adapter.FavoriteListPageAdapter;
 import com.vansuita.passwordvault.adapter.TrashListPageAdapter;
+import com.vansuita.passwordvault.ads.Ads;
 import com.vansuita.passwordvault.enums.ECategory;
 import com.vansuita.passwordvault.fire.account.Account;
 import com.vansuita.passwordvault.fire.storage.ImageStorage;
 import com.vansuita.passwordvault.lis.IOnResult;
+import com.vansuita.passwordvault.pref.Billing;
 import com.vansuita.passwordvault.receiver.NetworkStateChangeReceiver;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
@@ -80,6 +82,7 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
     private MaterialCab cab;
     private FirebaseAuth auth;
     private MaterialDialog progress;
+    private Ads advertise;
 
 
     public static Intent intent(Context context) {
@@ -112,6 +115,7 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
     @Override
     public void onStop() {
         super.onStop();
+
         if (authListener != null) {
             auth.removeAuthStateListener(authListener);
         }
@@ -141,6 +145,16 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
                 .setPopupMenuTheme(R.style.ThemeOverlay_AppCompat_Light)
                 .setBackgroundColorRes(R.color.primary_inactive)
                 .setCloseDrawableRes(R.drawable.mcab_nav_back);
+
+
+        if (!Billing.with(this).isRemoveAdsPurchased()) {
+            //Bottom banner
+            Ads.with(getWindow()).showBannerAd();
+
+            //Fullscreen banner
+            advertise = Ads.with(this).setAdUnitId(R.string.banner_ad_unit_id);
+            advertise.loadFullScreenAd();
+        }
     }
 
     private void swapViewPagerAdapter(PagerAdapter adapter) {
@@ -150,7 +164,6 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
 
     @OnClick(R.id.fab)
     public void onFabClick(View v) {
-
         CategoryChooserAdapter adapter = new CategoryChooserAdapter();
 
         final MaterialDialog md = new MaterialDialog.Builder(this)
@@ -240,6 +253,7 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
         } else if (cab.isActive()) {
             cab.finish();
         } else {
+            advertise.showFullScreenAd();
             super.onBackPressed();
         }
     }
@@ -404,5 +418,7 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 }
 

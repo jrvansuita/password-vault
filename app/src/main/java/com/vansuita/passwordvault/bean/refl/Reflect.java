@@ -49,7 +49,7 @@ public class Reflect {
             if (m != null)
                 result = (String) m.invoke(object);
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
 
         return result;

@@ -25,12 +25,12 @@
                 style="@style/match_wrap"
                 android:layout_width="0dp"
                 android:layout_weight="0.8"
-
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <include
                     layout="@layout/logo"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <android.support.design.widget.TextInputLayout
@@ -60,27 +60,12 @@
 
                 </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/password_label"
-                    style="@style/text_input"
-                    app:passwordToggleEnabled="true"
-                    app:passwordToggleTint="@android:color/white">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/password"
-                        style="@style/edit"
-                        android:hint="@string/password"
-                        android:inputType="textPassword"
-                        android:maxLines="1" />
-
-                </android.support.design.widget.TextInputLayout>
+                <include layout="@layout/password_item" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/password_retype_label"
-                    style="@style/text_input"
-                    android:visibility="gone"
-                    app:passwordToggleEnabled="true"
-                    app:passwordToggleTint="@android:color/white">
+                    style="@style/pass_input"
+                    android:visibility="gone">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/password_retype"

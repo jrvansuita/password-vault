@@ -108,7 +108,7 @@ public class StoreEmailFrag extends BaseStoreFragment<Email> {
 
     @Override
     public void onSetup() {
-        applyPassword(edPassword);
+        applyPassword(tilPassword);
 
         vPasswordStrength.setStrengthRequirement(2);
         vPasswordStrength.setPasswordHolder(edPassword);

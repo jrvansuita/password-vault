@@ -18,4 +18,6 @@
 
 -dontwarn com.squareup.okhttp.**
 -keep class android.support.v7.widget.SearchView { *; }
--keep com.vansuita.passwordvault.bean.**
+-keep public class com.vansuita.passwordvault.bean.** {
+  public protected *;
+}

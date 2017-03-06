@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 /**
- * Created by jrvansuita place 20/10/16.
+ * Created by jrvansuita placeBanner 20/10/16.
  */
 
 public class Snack {

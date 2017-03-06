@@ -46,7 +46,6 @@ public class Store extends AbstractActivity implements ColorChooserDialog.ColorC
         return intent;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

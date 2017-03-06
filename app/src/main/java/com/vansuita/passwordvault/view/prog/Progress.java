@@ -1,4 +1,4 @@
-package com.vansuita.passwordvault.prog;
+package com.vansuita.passwordvault.view.prog;
 
 import android.app.ProgressDialog;
 import android.content.Context;

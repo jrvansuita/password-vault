@@ -79,6 +79,7 @@
     <string name="sub_title">Keep your passwords safe.</string>
     <string name="category">Category</string>
     <string name="delete">Delete</string>
+    <string name="purchase_n_supported">Purchases is not supported :(</string>
     <string name="lock">Lock</string>
     <string name="exit">Exit</string>
     <string name="color">Color</string>
@@ -123,5 +124,7 @@
     <string name="reset_vault_password">Reset vault password</string>
     <string name="delete_account">Delete account</string>
     <string name="about">About</string>
+    <string name="action_cancelled">Action cancelled.</string>
+    <string name="feedback">Feedback from %s</string>
     <string name="signing_out">Signing out...</string>
 </resources>

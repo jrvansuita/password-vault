@@ -8,4 +8,7 @@
     <string name="developer_email">vansuita.jr@gmail.com</string>
     <string name="developer_gplus">JuniorVansuita</string>
     <string name="developer_play_store_user_name">Vansuita</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-7819301718588435/7151315100</string>
+    <string name="app_key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArcsDX2YZ5IK/fiE54r2H4fiY6CqXvtg2q5LEYnYdiFrKE04gFU57nI0SuzWUA/jjQQVw9rYMb6+VId1fWC12gtzVImk0PYMXokWc0JC0mzTYpWSCWQHsIAnb522GwZk9xlwdLPKIur2MEDFpcGJZmVOTgWbkpYQszhREM5tVyvsXahowEVgVAzfRpn2IXdGoPA06/ABXe1SGdNTZ4x2ym1OQ61l1MpGKoVFXD+2GAnZpnE6KOXMO4EkVi4mJF3ixvYzbDGpPKCUQmk5GCjrPLiu5yFM8YS+7RSrXfMPeCaz8OwvRZv7ROmYp5JzZOjHfRAXmLti5IvCskSFabo353wIDAQAB</string>
 </resources>

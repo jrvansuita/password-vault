@@ -24,9 +24,9 @@
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:transitionName="@string/app_name"
                     android:layout_height="?attr/actionBarSize"
                     android:background="?attr/colorPrimary"
+                    android:transitionName="@string/app_name"
                     app:layout_scrollFlags="scroll|enterAlways"
                     app:popupTheme="@style/AppTheme.PopupOverlay" />
 
@@ -70,17 +70,26 @@
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"
                 style="@style/wrap_wrap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="@dimen/fab_margin"
                 app:backgroundTint="@color/primary"
                 app:elevation="5dp"
-                app:layout_behavior="com.vansuita.passwordvault.scroll.ScrollingFABBehavior"
+                app:layout_behavior="com.vansuita.passwordvault.view.scroll.ScrollingFABBehavior"
                 app:pressedTranslationZ="12dp"
                 app:srcCompat="@drawable/ic_action_add" />
 
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/ad_view"
+                style="@style/wrap_wrap"
+                android:layout_gravity="bottom|center_horizontal"
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                ads:adSize="BANNER"
+                ads:adUnitId="@string/banner_ad_unit_id" />
+
         </android.support.design.widget.CoordinatorLayout>
+
+
     </FrameLayout>
 
     <android.support.design.widget.NavigationView
@@ -88,11 +97,11 @@
         style="@style/wrap_match"
         android:layout_gravity="start"
         android:background="@android:color/white"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header"
         app:itemBackground="@drawable/option_selector"
         app:itemIconTint="@color/option_selector"
         app:itemTextColor="@color/option_selector"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header"
         app:menu="@menu/main_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

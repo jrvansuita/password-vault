@@ -3,6 +3,7 @@ package com.vansuita.passwordvault.act;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -25,8 +26,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.vansuita.library.Icon;
 import com.vansuita.passwordvault.BuildConfig;
 import com.vansuita.passwordvault.R;
+import com.vansuita.passwordvault.ads.Ads;
 import com.vansuita.passwordvault.enums.ELockScreenType;
 import com.vansuita.passwordvault.fire.account.Account;
+import com.vansuita.passwordvault.pref.Billing;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
 import com.vansuita.passwordvault.util.Validation;
@@ -88,6 +91,8 @@ public class Lock extends AbstractActivity {
     @BindView(R.id.sub_title)
     TextView tvSubTitle;
 
+    @BindView(R.id.version)
+    TextView tvVersion;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -167,6 +172,12 @@ public class Lock extends AbstractActivity {
                 break;
         }
 
+        try {
+            tvVersion.setText(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         Visible.with(tilHintPassword).gone(screenType.equals(ELockScreenType.LOCK_TIME));
         Visible.with(tilRetypePassword).gone(screenType.equals(ELockScreenType.LOCK_TIME));
 
@@ -183,6 +194,9 @@ public class Lock extends AbstractActivity {
             edHint.setText("developer password");
             onSubmit();
         }
+
+        if (!Billing.with(this).isRemoveAdsPurchased())
+            Ads.with(getWindow()).showBannerAd();
 
     }
 
@@ -386,7 +400,6 @@ public class Lock extends AbstractActivity {
         ignoreAction = ignore;
         return result;
     }
-
 
 
     public static boolean isLockable(Activity activity) {

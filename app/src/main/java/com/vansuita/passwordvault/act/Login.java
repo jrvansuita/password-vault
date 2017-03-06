@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -405,7 +406,23 @@ public class Login extends AbstractActivity implements GoogleApiClient.OnConnect
         if (!progress.isShowing())
             progress.show();
 
-        startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(Account.with(this).getGoogleApiClient()), RC_SIGN_IN);
+        GoogleApiClient  googleApiClient;
+
+        googleApiClient = Account.with(this).getGoogleApiClient();
+
+       /*googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestProfile()
+                        .requestEmail()
+                        .build())
+                .build();*/
+
+
+        Log.i("TEF", "Conn: " + googleApiClient.isConnected());
+
+        startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(googleApiClient), RC_SIGN_IN);
     }
 
     private void facebookLogin() {
@@ -419,6 +436,11 @@ public class Login extends AbstractActivity implements GoogleApiClient.OnConnect
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_CANCELED){
+            showSnack(getString(R.string.action_cancelled));
+            return;
+        }
 
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);

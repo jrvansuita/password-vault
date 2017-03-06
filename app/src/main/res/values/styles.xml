@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="AppThemeParent">
@@ -109,6 +109,12 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textColorHint">@android:color/white</item>
         <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <style name="pass_input" parent="text_input">
+        <item name="passwordToggleTint">@android:color/white</item>
+        <item name="passwordToggleEnabled">true</item>
+        <item name="passwordToggleDrawable">@drawable/password_eye</item>
     </style>
 
 

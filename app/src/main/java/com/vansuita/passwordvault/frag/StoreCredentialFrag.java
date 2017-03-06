@@ -88,7 +88,7 @@ public class StoreCredentialFrag extends BaseStoreFragment<Credential> {
 
     @Override
     public void onSetup() {
-        applyPassword(edPassword);
+        applyPassword(tilPassword);
         vPasswordStrength.setStrengthRequirement(2);
         vPasswordStrength.setPasswordHolder(edPassword);
 

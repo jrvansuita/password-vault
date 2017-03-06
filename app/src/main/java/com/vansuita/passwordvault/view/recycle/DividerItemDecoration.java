@@ -1,4 +1,4 @@
-package com.vansuita.passwordvault.recycle;
+package com.vansuita.passwordvault.view.recycle;
 
 import android.content.Context;
 import android.content.res.TypedArray;

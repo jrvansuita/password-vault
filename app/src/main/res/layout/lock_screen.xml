@@ -47,28 +47,34 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center">
 
-                    <include
-                        layout="@layout/logo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                    <FrameLayout
+                        android:id="@+id/top_holder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="vertical">
+
+                        <include
+                            layout="@layout/logo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </FrameLayout>
 
                     <TextView
                         android:id="@+id/intro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/title_holder"
+                        android:layout_below="@+id/top_holder"
                         android:layout_marginTop="50dp"
                         android:text="@string/first_intro"
                         android:textColor="@android:color/white" />
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/password_label"
-                        style="@style/text_input"
+                        style="@style/pass_input"
                         android:layout_below="@+id/intro"
                         android:layout_centerInParent="true"
-                        android:layout_marginTop="50dp"
-                        app:passwordToggleEnabled="true"
-                        app:passwordToggleTint="@android:color/white">
+                        android:layout_marginTop="50dp">
 
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/password"
@@ -81,11 +87,9 @@
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/password_retype_label"
-                        style="@style/text_input"
+                        style="@style/pass_input"
                         android:layout_below="@+id/password_label"
-                        android:layout_centerInParent="true"
-                        app:passwordToggleEnabled="true"
-                        app:passwordToggleTint="@android:color/white">
+                        android:layout_centerInParent="true">
 
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/password_retype"
@@ -125,6 +129,14 @@
 
         </LinearLayout>
 
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/ad_view"
+            style="@style/wrap_wrap"
+            android:layout_gravity="bottom|center_horizontal"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id" />
+
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
             style="@style/wrap_wrap"
@@ -134,7 +146,7 @@
             android:layout_margin="@dimen/fab_margin"
             app:backgroundTint="@color/primary"
             app:elevation="5dp"
-            app:layout_behavior="com.vansuita.passwordvault.scroll.ScrollingFABBehavior"
+            app:layout_behavior="com.vansuita.passwordvault.view.scroll.ScrollingFABBehavior"
             app:pressedTranslationZ="12dp"
             app:srcCompat="@drawable/forward" />
 

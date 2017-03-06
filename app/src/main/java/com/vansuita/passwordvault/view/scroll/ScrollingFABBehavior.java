@@ -1,4 +1,4 @@
-package com.vansuita.passwordvault.scroll;
+package com.vansuita.passwordvault.view.scroll;
 
 import android.content.Context;
 import android.graphics.Rect;
