@@ -21,7 +21,6 @@
                 android:layout_weight="0.1" />
 
             <LinearLayout
-                android:id="@+id/email_login_form"
                 style="@style/match_wrap"
                 android:layout_width="0dp"
                 android:layout_weight="0.8"

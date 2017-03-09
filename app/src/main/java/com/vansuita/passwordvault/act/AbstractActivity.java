@@ -33,4 +33,5 @@ public class AbstractActivity extends AppCompatActivity {
         return getApp().getSession();
     }
 
+
 }

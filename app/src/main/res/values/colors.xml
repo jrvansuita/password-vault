@@ -6,16 +6,13 @@
 -->
     <color name="primary">#009688</color>
     <color name="primary_dark">#00796B</color>
-    <color name="primary_light">#B2DFDB</color>
     <color name="accent">#00796B</color>
     <color name="primary_inactive">#5c736f</color>
     <color name="primary_text">#262626</color>
     <color name="secondary_text">#545454</color>
-    <color name="icons">#FFFFFF</color>
-    <color name="white_alpha">#adffffff</color>
-    <color name="divider">#c9c8c8</color>
     <color name="background">#e5e5e5</color>
     <color name="favorite">#ffca28</color>
+    <color name="primary_dark_weak">#7d014b42</color>
     <color name="primary_dark_alpha">#f3014b42</color>
     <color name="primary_dark_alpha_stronger">#f301352e</color>
     <color name="primary_pressed">#e7f1f0</color>

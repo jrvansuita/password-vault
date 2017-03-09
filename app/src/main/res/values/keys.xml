@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
     <string name="key_vault_password">key_vault_password</string>
     <string name="key_auth_token">key_auth_token</string>
     <string name="key_auth_password">key_auth_password</string>

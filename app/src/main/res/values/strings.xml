@@ -1,11 +1,9 @@
 <resources>
     <string name="app_name">Password Vault</string>
     <string name="settings">Settings</string>
-    <string name="action_settings">Settings</string>
-    <string name="facebook_app_id">353681961648398</string>
+    <string name="open_widget">Open widget</string>
     <string name="user_profile_updated">User profile updated.</string>
     <string name="renew_password_msg">An email to renew your password was sent to you.</string>
-    <string name="serializing_collections">Serializing Collections is not supported by Firebase.</string>
     <string name="email">Email</string>
     <string name="login">Login</string>
     <string name="credential">Credential</string>
@@ -32,26 +30,29 @@
     <string name="sign_in">Sign in </string>
     <string name="search">Search</string>
     <string name="edit">Edit</string>
+
+    <string name="keep_it_organized">Keep it organized.</string>
+    <string name="keep_it_organized_msg">Password Vault helps you to keep all your passwords organized by categories. Also, you can set some passwords as favorites to make it is easy to find.</string>
+    <string name="keep_it_synced">Keep it synced.</string>
+    <string name="keep_it_synced_msg">Password Vault helps you to keep all your passwords synced. You can access your password vault from any android devices you owns. </string>
+    <string name="keep_it_noted">Keep it noted.</string>
+    <string name="keep_it_noted_msg">Password Vault also helps you to keep all your passwords, emails, credentials and notes in one place.</string>
+    <string name="keep_it_safe">Keep it safe.</string>
+    <string name="keep_it_safe_msg">Password Vault helps you to keep all your passwords safe. On the next screen you will be asked for a vault password. Every time you leave the vault, this password will be asked to grant access.</string>
+
     <string name="duplicate">Duplicate</string>
     <string name="unselect_all">Unselect all</string>
     <string name="select_all">Select all</string>
     <string name="renew_password">Renew Password</string>
-    <string name="facebook">Facebook</string>
-    <string name="google">Google</string>
     <string name="create_account">Create Account</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_invalid_hint">This hint is too short</string>
-    <string name="auth_failed">Authentication failed.</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
     <string name="loading">Loading...</string>
     <string name="signing_in">Signing in...</string>
     <string name="deleting_account">Deleting account...</string>
     <string name="update">Update</string>
-    <string name="wait">Please wait...</string>
     <string name="wanna_delete_account">Are you sure you want to delete your account? This action is irreversible.</string>
     <string name="wanna_logout">Are you sure you want to logout your account?</string>
-    <string name="want_delete">Do you want to delete the selected items?</string>
-    <string name="authenticating">Authenticating...</string>
     <string name="forgot_title">Did you forget the title?</string>
     <string name="new_account_link">No account yet? Create one</string>
     <string name="forgot_password">Forgot password?</string>
@@ -59,7 +60,6 @@
     <string name="logout">Logout</string>
     <string name="unknow">Unknow</string>
     <string name="conn_failed">Connection failed.</string>
-    <string name="google_conn_failed">Google API client connection failed.</string>
     <string name="name">Name</string>
     <string name="all_passwords">All passwords</string>
     <string name="email_registering">Entering your email information.</string>
@@ -82,7 +82,6 @@
     <string name="purchase_n_supported">Purchases is not supported :(</string>
     <string name="lock">Lock</string>
     <string name="exit">Exit</string>
-    <string name="color">Color</string>
     <string name="color_palette">Color Palette</string>
     <string name="shade">Shade</string>
     <string name="favorite">Favorite</string>
@@ -127,4 +126,11 @@
     <string name="action_cancelled">Action cancelled.</string>
     <string name="feedback">Feedback from %s</string>
     <string name="signing_out">Signing out...</string>
+
+    <string name="recent_first">The recent items will be the firsts</string>
+    <string name="recent_last">The recent items will be the lasts</string>
+    <string name="disable">Disable</string>
+    <string name="def">Default</string>
+    <string name="email_password">Email &amp; password</string>
+    <string name="none">None</string>
 </resources>

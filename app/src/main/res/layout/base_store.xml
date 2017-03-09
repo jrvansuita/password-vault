@@ -62,21 +62,22 @@
 
                     </LinearLayout>
 
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/save"
+                        style="@style/button"
+                        android:text="@string/save" />
+
 
                     <TextView
                         android:id="@+id/dates"
                         style="@style/link"
-                        android:textColor="@color/secondary_text"
+                        android:textColor="@android:color/white"
                         android:textSize="12sp"
                         android:paddingTop="10dp"
                         android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent" />
 
-                    <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/save"
-                        style="@style/button"
-                        android:text="@string/save" />
                 </LinearLayout>
 
 

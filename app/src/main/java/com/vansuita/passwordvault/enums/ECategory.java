@@ -3,9 +3,10 @@ package com.vansuita.passwordvault.enums;
 import android.support.v4.app.Fragment;
 
 import com.vansuita.passwordvault.R;
-import com.vansuita.passwordvault.frag.StoreCredentialFrag;
-import com.vansuita.passwordvault.frag.StoreEmailFrag;
-import com.vansuita.passwordvault.frag.StoreNoteFrag;
+import com.vansuita.passwordvault.frag.store.StoreCredentialFrag;
+import com.vansuita.passwordvault.frag.store.StoreEmailFrag;
+import com.vansuita.passwordvault.frag.store.StoreNoteFrag;
+
 
 /**
  * Created by jrvansuita on 08/11/16.

@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string-array name="items_order_entry">
-        <item>The recent items will be the firsts</item>
-        <item>The recent items will be the lasts</item>
+        <item>@string/recent_first</item>
+        <item>@string/recent_last</item>
     </string-array>
 
-    <string-array name="items_order_values">
+    <string-array name="items_order_values" tools:ignore="MissingTranslation">
         <item>0</item>
         <item>1</item>
     </string-array>
 
 
-    <string-array name="auto_lock_entry">
-        <item>Disable</item>
-        <item>5 seconds</item>
-        <item>15 seconds</item>
-        <item>30 seconds</item>
-        <item>1 minute</item>
-        <item>5 minutes</item>
-        <item>15 minutes</item>
+    <string-array name="auto_lock_entry" tools:ignore="MissingTranslation">
+        <item>@string/disable</item>
+        <item>5 s.</item>
+        <item>15 s.</item>
+        <item>30 s.</item>
+        <item>1 m.</item>
+        <item>5 m.</item>
+        <item>15 m.</item>
     </string-array>
 
-    <string-array name="auto_lock_values">
+    <string-array name="auto_lock_values" tools:ignore="MissingTranslation">
         <item>0</item>
         <item>5000</item>
         <item>15000</item>
@@ -32,13 +32,13 @@
     </string-array>
 
     <string-array name="display_as_subtitle_entry">
-        <item>Default</item>
-        <item>Password</item>
-        <item>Email &amp; password</item>
-        <item>None</item>
+        <item>@string/def</item>
+        <item>@string/password</item>
+        <item>@string/email_password</item>
+        <item>@string/none</item>
     </string-array>
 
-    <string-array name="display_as_subtitle_values">
+    <string-array name="display_as_subtitle_values" tools:ignore="MissingTranslation">
         <item>0</item>
         <item>1</item>
         <item>2</item>

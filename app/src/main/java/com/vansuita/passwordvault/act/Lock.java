@@ -335,7 +335,7 @@ public class Lock extends AbstractActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (requesterActivityClass.equals(Login.class))
+                if (requesterActivityClass.equals(Intro.class))
                     startActivity(new Intent(Lock.this, Main.class));
 
                 Lock.this.finish();
@@ -404,7 +404,7 @@ public class Lock extends AbstractActivity {
 
     public static boolean isLockable(Activity activity) {
         return activity.getClass().getName().contains(BuildConfig.APPLICATION_ID)
-                && !(Arrays.asList(new Class[]{Login.class, Splash.class, Lock.class}).contains(activity.getClass()))
+                && !(Arrays.asList(new Class[]{Login.class, Splash.class, Lock.class, Intro.class}).contains(activity.getClass()))
                 && !Lock.isIgnoreAction(false);
     }
 }

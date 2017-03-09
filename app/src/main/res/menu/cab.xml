@@ -49,9 +49,10 @@
         android:title="@string/edit"
         app:showAsAction="never" />
 
-    <!--<item
-        android:id="@+id/action_settings"
+    <item
+        android:id="@+id/action_open_widget"
         android:orderInCategory="101"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />-->
+        android:icon="@mipmap/ic_launch"
+        android:title="@string/open_widget"
+        app:showAsAction="always" />
 </menu>

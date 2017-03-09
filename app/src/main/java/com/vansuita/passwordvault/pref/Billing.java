@@ -31,7 +31,8 @@ public class Billing extends Shared {
     }
 
     public boolean isRemoveAdsPurchased() {
-        return getBool(R.string.key_remove_ads_purchased, false);
+        //return getBool(R.string.key_remove_ads_purchased, false);
+        return true;
     }
 
 }

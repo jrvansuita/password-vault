@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/wrap_wrap">
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/primary_dark_weak"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/label"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/close"
+                android:padding="0dp"
+                android:text="@string/title"
+                android:textSize="20sp" />
+
+            <ImageButton
+                android:id="@+id/close"
+                style="@style/glyph"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/cancel" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/email_holder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/email"
+                    style="@style/label"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="25dp"
+                    android:layout_toLeftOf="@+id/email_copy"
+                    android:padding="0dp"
+                    android:text="@string/email"
+                    android:textStyle="normal" />
+
+                <ImageButton
+                    android:id="@+id/email_copy"
+                    style="@style/glyph"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/copy" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/login_holder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/login"
+                    style="@style/label"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="25dp"
+                    android:layout_toLeftOf="@+id/login_copy"
+                    android:padding="0dp"
+                    android:text="@string/login"
+                    android:textStyle="normal" />
+
+                <ImageButton
+                    android:id="@+id/login_copy"
+                    style="@style/glyph"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/copy" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/password"
+                    style="@style/label"
+                    android:maxLines="1"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/password_eye"
+                    android:padding="0dp"
+                    android:text="@string/password"
+                    android:textStyle="normal" />
+
+                <android.support.design.widget.CheckableImageButton
+                    android:id="@+id/password_eye"
+                    style="@style/glyph"
+                    android:layout_toLeftOf="@+id/password_copy"
+                    android:src="@drawable/password_eye" />
+
+                <ImageButton
+                    android:id="@+id/password_copy"
+                    style="@style/glyph"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/copy" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

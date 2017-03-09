@@ -259,11 +259,10 @@ public class Login extends AbstractActivity implements GoogleApiClient.OnConnect
                     progress.hide();
 
                     if (getSession().getUserID().isEmpty()) {
-
                         PrefDAO.with(Login.this).restore();
 
                         getSession().setUserID(user.getUid());
-                        Lock.start(Login.this, true);
+                        startActivity(new Intent(Login.this, Intro.class));
                         finish();
                     }
                 }

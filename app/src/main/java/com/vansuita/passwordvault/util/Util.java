@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -210,5 +212,26 @@ public class Util extends com.vansuita.pickimage.util.Util {
     public static String password(boolean hide, String pass) {
         return hide ? hidePass(3, pass) : pass;
     }
+
+
+    public static void toClipboard(Context context, String label,  String text) {
+        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+            android.text.ClipboardManager clipboard = (android.text.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard.setText(text);
+        } else {
+            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            android.content.ClipData clip = android.content.ClipData.newPlainText(label, text);
+            clipboard.setPrimaryClip(clip);
+        }
+    }
+
+    public static boolean canShowWidget(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return Settings.canDrawOverlays(context);
+        }else{
+            return true;
+        }
+    }
+
 
 }

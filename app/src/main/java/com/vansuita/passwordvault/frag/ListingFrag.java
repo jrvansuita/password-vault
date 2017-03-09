@@ -35,6 +35,8 @@ import com.vansuita.passwordvault.enums.ECategory;
 import com.vansuita.passwordvault.enums.EShowType;
 import com.vansuita.passwordvault.fire.dao.VaultDAO;
 import com.vansuita.passwordvault.pref.Pref;
+import com.vansuita.passwordvault.serv.FloatingPasswordService;
+import com.vansuita.passwordvault.util.Util;
 import com.vansuita.passwordvault.util.Visible;
 import com.vansuita.passwordvault.view.Snack;
 
@@ -65,8 +67,9 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
     private MaterialCab cab;
     private VaultListAdapter adapter;
     private MenuItem miSearch;
+    private MenuItem miOpenWidget;
     private MenuItem miEdit;
-    private MenuItem miToggleSelectAll;
+    private MenuItem miSelectAll;
     private ECategory category;
     private EShowType showType;
 
@@ -195,6 +198,10 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
         if (miEdit != null) {
             miEdit.setVisible(adapter.getSelectedCount() == 1);
         }
+
+        if (miOpenWidget != null) {
+            miOpenWidget.setVisible(adapter.getSelectedCount() == 1 && Util.canShowWidget(getContext()));
+        }
     }
 
 
@@ -210,8 +217,9 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
             menu.findItem(R.id.action_palette).setVisible(!isShowingTrash() && Pref.with(getContext()).canChangeItemsColor());
             menu.findItem(R.id.action_undo).setVisible(isShowingTrash());
             menu.findItem(R.id.action_duplicate).setVisible(!isShowingTrash());
+            miOpenWidget = menu.findItem(R.id.action_open_widget);
             miEdit = menu.findItem(R.id.action_edit);
-            miToggleSelectAll = menu.findItem(R.id.action_toggle_select_all);
+            miSelectAll = menu.findItem(R.id.action_toggle_select_all);
 
             return true;
         }
@@ -282,8 +290,9 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                miToggleSelectAll.setTitle(R.string.unselect_all);
+                                miSelectAll.setTitle(R.string.unselect_all);
                                 miEdit.setVisible(false);
+                                miOpenWidget.setVisible(false);
                             }
                         }, 100);
                     } else {
@@ -311,6 +320,11 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
                 case R.id.action_edit:
                     openEditItem(adapter.getDataSelected().get(0));
                     break;
+
+                case R.id.action_open_widget:
+                    FloatingPasswordService.start(getActivity(), adapter.getItem(adapter.getDataSelected().get(0)));
+                    cab.finish();
+                    break;
             }
 
             if (msg > 0) {
@@ -326,7 +340,7 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
             main.selectionState(false);
             adapter.clearSelected();
             miEdit = null;
-
+            miOpenWidget = null;
 
             return true;
         }

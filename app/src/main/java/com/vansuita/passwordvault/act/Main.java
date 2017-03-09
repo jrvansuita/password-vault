@@ -419,6 +419,5 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
         }
     }
 
-
 }
 

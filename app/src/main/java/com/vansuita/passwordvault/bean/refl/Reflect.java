@@ -30,6 +30,9 @@ public class Reflect {
         return getString("getEmail");
     }
 
+    public String getLogin() {
+        return getString("getLogin");
+    }
 
     public String getPassword() {
         String s = getString("getPassword");
