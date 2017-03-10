@@ -15,11 +15,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "189776501926-b50a04fd9cd8si9fe928d4ab3q96ab8s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vansuita.passwordvault",
+            "certificate_hash": "82dd6e71e8f22ee14e01031c70ac74edc44c209f"
+          }
+        },
+        {
           "client_id": "189776501926-8blgkj870r0k1c8hg1bn3fl833jlsemk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.vansuita.passwordvault",
-            "certificate_hash": "A95748981CDF62286024E606481BFD5144F46BAD"
+            "certificate_hash": "a95748981cdf62286024e606481bfd5144f46bad"
           }
         },
         {
