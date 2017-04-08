@@ -300,7 +300,7 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
                 imAvatar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        PickSetup setup = new PickSetup().setImageSize(300);
+                        PickSetup setup = new PickSetup().setMaxSize(300);
 
                         Lock.isIgnoreAction(true);
 
