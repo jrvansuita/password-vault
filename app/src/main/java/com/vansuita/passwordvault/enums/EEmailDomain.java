@@ -10,15 +10,10 @@ public enum EEmailDomain {
 
     GMAIL("gmail.com", R.mipmap.gmail),
     OUTLOOK("outlook.com", R.mipmap.outlook),
-    HOTMAL("hotmail.com", R.mipmap.hotmail),
-    YAHOO("yahoo.com", R.mipmap.yahoo),
-    TERRA("terra.com", R.mipmap.terra),
-    AOL("aol.com", R.mipmap.aol),
+    HOTMAIL("hotmail.com", R.mipmap.hotmail),
     APPLE("apple.com", R.mipmap.apple),
     MAIL("mail.com", R.mipmap.mail),
-    ZOHO("zoho.com", R.mipmap.zoho),
     LIVE("live.com", R.mipmap.live),
-    YANDEX("yandex.com", R.mipmap.yandex),
     DEFAULT("", R.mipmap.envelop);
 
 

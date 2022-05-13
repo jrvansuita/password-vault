@@ -2,11 +2,15 @@ package com.vansuita.passwordvault;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
+
 import com.facebook.appevents.AppEventsLogger;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+
 import com.google.firebase.database.FirebaseDatabase;
 import com.vansuita.passwordvault.act.Lock;
 import com.vansuita.passwordvault.act.Preferences;
@@ -32,8 +36,11 @@ public class App extends Application implements Application.ActivityLifecycleCal
 
     @Override
     public void onCreate() {
+
         super.onCreate();
+
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
 
         AppEventsLogger.activateApp(this);
 

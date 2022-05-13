@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +32,6 @@ import com.vansuita.passwordvault.R;
 import com.vansuita.passwordvault.ads.Ads;
 import com.vansuita.passwordvault.enums.ELockScreenType;
 import com.vansuita.passwordvault.fire.account.Account;
-import com.vansuita.passwordvault.pref.Billing;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
 import com.vansuita.passwordvault.util.Validation;
@@ -122,6 +124,7 @@ public class Lock extends AbstractActivity {
         setup();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     public void setup() {
 
         //Get the already stored password.
@@ -137,9 +140,9 @@ public class Lock extends AbstractActivity {
         boolean createPassword = bundle.getBoolean(CREATE_PASSWORD_TAG, false);
 
         //Defining screen type
-        if (storedVaultPassword.isEmpty()) {
+        if (TextUtils.isEmpty(storedVaultPassword)) {
             screenType = ELockScreenType.FIRST_TIME;
-        } else if (!storedVaultPassword.isEmpty() && createPassword) {
+        } else if (!TextUtils.isEmpty(storedVaultPassword) && createPassword) {
             screenType = ELockScreenType.RESET_TIME;
         } else {
             screenType = ELockScreenType.LOCK_TIME;
@@ -195,8 +198,8 @@ public class Lock extends AbstractActivity {
             onSubmit();
         }
 
-        if (!Billing.with(this).isRemoveAdsPurchased())
-            Ads.with(getWindow()).showBannerAd();
+
+        Ads.with(getWindow()).showBannerAd();
 
     }
 

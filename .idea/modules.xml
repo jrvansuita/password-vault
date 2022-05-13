@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PasswordVault.iml" filepath="$PROJECT_DIR$/PasswordVault.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/passwordvault.iml" filepath="$PROJECT_DIR$/.idea/modules/passwordvault.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/passwordvault.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/passwordvault.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/material-cab/passwordvault.material-cab.iml" filepath="$PROJECT_DIR$/.idea/modules/material-cab/passwordvault.material-cab.iml" />
     </modules>
   </component>
 </project>

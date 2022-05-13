@@ -21,8 +21,8 @@ public class Intro extends AppIntro2 {
 
 
         addSlide(AppIntroFragment.newInstance(getString(R.string.keep_it_organized), getString(R.string.keep_it_organized_msg), R.mipmap.tags, ContextCompat.getColor(this, R.color.accent)));
-        addSlide(AppIntroFragment.newInstance(getString(R.string.keep_it_noted),  getString(R.string.keep_it_noted_msg), R.mipmap.book_open, ContextCompat.getColor(this, R.color.accent)));
-        addSlide(AppIntroFragment.newInstance(getString(R.string.keep_it_synced),  getString(R.string.keep_it_synced_msg), R.mipmap.cloud_refresh, ContextCompat.getColor(this, R.color.accent)));
+        addSlide(AppIntroFragment.newInstance(getString(R.string.keep_it_noted),  getString(R.string.keep_it_noted_msg), R.mipmap.book, ContextCompat.getColor(this, R.color.accent)));
+        addSlide(AppIntroFragment.newInstance(getString(R.string.keep_it_synced),  getString(R.string.keep_it_synced_msg), R.mipmap.sync, ContextCompat.getColor(this, R.color.accent)));
         addSlide(AppIntroFragment.newInstance(getString(R.string.keep_it_safe),  getString(R.string.keep_it_safe_msg), R.mipmap.vault, ContextCompat.getColor(this, R.color.accent)));
 
         showSkipButton(false);

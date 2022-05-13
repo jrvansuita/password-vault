@@ -211,7 +211,7 @@ public class ListingFrag extends Fragment implements VaultListAdapter.Callback, 
         public boolean onCabCreated(MaterialCab cab, Menu menu) {
             main.selectionState(true);
 
-            ViewCompat.setElevation(cab.getToolbar(), 0.01f);
+            //ViewCompat.setElevation(cab.getToolbar(), 0.01f);
 
             menu.findItem(R.id.action_favorite).setVisible(!isShowingTrash());
             menu.findItem(R.id.action_palette).setVisible(!isShowingTrash() && Pref.with(getContext()).canChangeItemsColor());

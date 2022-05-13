@@ -48,7 +48,6 @@ import com.vansuita.passwordvault.enums.ECategory;
 import com.vansuita.passwordvault.fire.account.Account;
 import com.vansuita.passwordvault.fire.storage.ImageStorage;
 import com.vansuita.passwordvault.lis.IOnResult;
-import com.vansuita.passwordvault.pref.Billing;
 import com.vansuita.passwordvault.receiver.NetworkStateChangeReceiver;
 import com.vansuita.passwordvault.util.UI;
 import com.vansuita.passwordvault.util.Util;
@@ -142,19 +141,16 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
         this.cab = new MaterialCab(this, R.id.cab_stub)
                 .setTitle(getString(R.string.category))
                 .setMenu(R.menu.cab)
-                .setPopupMenuTheme(R.style.ThemeOverlay_AppCompat_Light)
-                .setBackgroundColorRes(R.color.primary_inactive)
-                .setCloseDrawableRes(R.drawable.mcab_nav_back);
+        .setPopupMenuTheme(R.style.ThemeOverlay_AppCompat_Light)
+        .setBackgroundColorRes(R.color.primary_inactive)
+        .setCloseDrawableRes(R.drawable.mcab_nav_back);
 
-
-        if (!Billing.with(this).isRemoveAdsPurchased()) {
             //Bottom banner
             Ads.with(getWindow()).showBannerAd();
 
             //Fullscreen banner
             advertise = Ads.with(this).setAdUnitId(R.string.banner_ad_unit_id);
             advertise.loadFullScreenAd();
-        }
     }
 
     private void swapViewPagerAdapter(PagerAdapter adapter) {
@@ -354,8 +350,11 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
+
+
     @Override
     public void onPageSelected(int position) {
+
         if (cab.isActive())
             cab.finish();
     }
