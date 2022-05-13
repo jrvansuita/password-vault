@@ -19,6 +19,31 @@ This is a very awesome android app that I build back in 2017 for keeping my pass
 <img src="/published/screenshots/framed/settings.png" height='auto' width='210'/>
 <img src="/published/screenshots/framed/about.png" height='auto' width='210'/>
 
+
+### Libraries
+
+- __[Material Dialogs](https://github.com/afollestad/material-dialogs)__ by [@afollestad](https://github.com/afollestad)
+- __[Material Cab](https://github.com/afollestad/material-cab)__ by [@afollestad](https://github.com/afollestad)
+- __[RoundedImageView](https://github.com/vinc3m1/RoundedImageView)__ by [@vinc3m1](https://github.com/vinc3m1)
+- __[SmartTabLayout](https://github.com/ogaclejapan/SmartTabLayout)__ by [@ogaclejapan](https://github.com/ogaclejapan)
+- __[IconHandler](https://github.com/jrvansuita/IconHandler)__ by [Myself 😂](https://github.com/jrvansuita)
+- __[MaterialAbout](https://github.com/jrvansuita/MaterialAbout)__ by [Myself 😂](https://github.com/jrvansuita)
+- __[PickImage](https://github.com/jrvansuita/PickImage)__ by [Myself 😍](https://github.com/jrvansuita)
+- __[AppIntro](https://github.com/AppIntro/AppIntro)__ by [@AppIntro](https://github.com/AppIntro)
+- __[ButterKnife](https://github.com/JakeWharton/butterknife)__ by [@JakeWharton](https://github.com/JakeWharton)
+- __[Picasso](https://github.com/square/picasso)__ by [@square](https://github.com/square)
+
+
+### Technologies
+##### In this project I really wanted to test the Google Firebase tools, so ended using most of it.
+
+- Database: __[Firebase Realtime DB](https://firebase.google.com/products/realtime-database)__
+- Auth: __[Firebase Auth](https://firebase.google.com/products/auth)__
+- Ads: __[Google Ads](https://ads.google.com/)__
+- Image Storing: __[Firebase Storage](https://firebase.google.com/products/storage)__
+- Analytics:  __[Facebook App Events](https://developers.facebook.com/docs/app-events/overview/)__
+
+
 #
 
 <a href="https://www.instagram.com/jnrvans/" target="_blank">
