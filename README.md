@@ -14,8 +14,10 @@ This is a very awesome android app that I build back in 2017 for keeping my pass
 </br>
 
 <img src="/published/screenshots/framed/login.png" height='auto' width='210'/><img src="/published/screenshots/framed/list.png" height='auto' width='210'/>
+<img src="/published/screenshots/framed/menu.png" height='auto' width='210'/>
 <img src="/published/screenshots/framed/adding.png" height='auto' width='210'/>
 <img src="/published/screenshots/framed/settings.png" height='auto' width='210'/>
+<img src="/published/screenshots/framed/about.png" height='auto' width='210'/>
 
 #
 
