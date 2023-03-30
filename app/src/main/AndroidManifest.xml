@@ -18,7 +18,8 @@
         tools:replace="android:allowBackup">
         <activity
             android:name=".act.Splash"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -109,6 +110,9 @@
                 android:resource="@xml/picker_provider_paths"/>
         </provider>
 
+        <receiver android:name="com.google.android.gms.measurement.AppMeasurementInstallReferrerReceiver"
+            android:exported="true"
+            tools:node="merge" />
 
     </application>
 

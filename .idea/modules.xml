@@ -2,6 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/password-vault.iml" filepath="$PROJECT_DIR$/.idea/modules/password-vault.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/password-vault.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/password-vault.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/password-vault.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/password-vault.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/password-vault.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/password-vault.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/password-vault.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/password-vault.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/material-cab/password-vault.material-cab.iml" filepath="$PROJECT_DIR$/.idea/modules/material-cab/password-vault.material-cab.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/material-cab/password-vault.material-cab.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/material-cab/password-vault.material-cab.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/material-cab/password-vault.material-cab.main.iml" filepath="$PROJECT_DIR$/.idea/modules/material-cab/password-vault.material-cab.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/material-cab/password-vault.material-cab.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/material-cab/password-vault.material-cab.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/passwordvault.iml" filepath="$PROJECT_DIR$/.idea/modules/passwordvault.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/passwordvault.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/passwordvault.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/material-cab/passwordvault.material-cab.iml" filepath="$PROJECT_DIR$/.idea/modules/material-cab/passwordvault.material-cab.iml" />

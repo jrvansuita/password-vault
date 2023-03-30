@@ -20,7 +20,6 @@ public class Ads extends AdListener {
 
     private View holder;
     private Context context;
-    private int adUnitId;
 
     Ads(Context context) {
         this.context = context;
@@ -41,11 +40,6 @@ public class Ads extends AdListener {
 
     public static Ads with(Window window) {
         return new Ads(window);
-    }
-
-    public Ads setAdUnitId(int adUnitId) {
-        this.adUnitId = adUnitId;
-        return this;
     }
 
     private AdRequest getAdRequest() {
@@ -71,35 +65,6 @@ public class Ads extends AdListener {
                 adView.setAdListener(this);
             }
         }
-    }
-
-
-    private InterstitialAd fullScreen;
-
-    public void loadFullScreenAd() {
-        if (context != null && adUnitId != 0) {
-            if (fullScreen == null) {
-                fullScreen = new InterstitialAd(context);
-                fullScreen.setAdUnitId(context.getString(adUnitId));
-                fullScreen.setAdListener(this);
-            }
-
-            fullScreen.loadAd(getAdRequest());
-        }
-    }
-
-    public void showFullScreenAd() {
-        if (fullScreen != null && fullScreen.isLoaded()) {
-            fullScreen.show();
-        }
-    }
-
-    @Override
-    public void onAdClosed() {
-        super.onAdClosed();
-
-        if (fullScreen != null)
-            loadFullScreenAd();
     }
 
     @Override

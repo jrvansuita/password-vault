@@ -81,8 +81,6 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
     private MaterialCab cab;
     private FirebaseAuth auth;
     private MaterialDialog progress;
-    private Ads advertise;
-
 
     public static Intent intent(Context context) {
         Intent intent = new Intent(context, Main.class);
@@ -141,16 +139,12 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
         this.cab = new MaterialCab(this, R.id.cab_stub)
                 .setTitle(getString(R.string.category))
                 .setMenu(R.menu.cab)
-        .setPopupMenuTheme(R.style.ThemeOverlay_AppCompat_Light)
-        .setBackgroundColorRes(R.color.primary_inactive)
-        .setCloseDrawableRes(R.drawable.mcab_nav_back);
+                .setPopupMenuTheme(R.style.ThemeOverlay_AppCompat_Light)
+                .setBackgroundColorRes(R.color.primary_inactive)
+                .setCloseDrawableRes(R.drawable.mcab_nav_back);
 
-            //Bottom banner
-            Ads.with(getWindow()).showBannerAd();
-
-            //Fullscreen banner
-            advertise = Ads.with(this).setAdUnitId(R.string.banner_ad_unit_id);
-            advertise.loadFullScreenAd();
+        //Bottom banner
+        Ads.with(getWindow()).showBannerAd();
     }
 
     private void swapViewPagerAdapter(PagerAdapter adapter) {
@@ -249,7 +243,8 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
         } else if (cab.isActive()) {
             cab.finish();
         } else {
-            advertise.showFullScreenAd();
+            //Removing full screen ad
+            //advertise.showFullScreenAd();
             super.onBackPressed();
         }
     }
@@ -349,7 +344,6 @@ public class Main extends AbstractActivity implements ColorChooserDialog.ColorCa
 
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
-
 
 
     @Override
